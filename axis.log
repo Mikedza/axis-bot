@@ -1,0 +1,15 @@
+2026-03-31 11:59:34 [WARNING] PyNaCl is not installed, voice will NOT be supported
+2026-03-31 11:59:34 [WARNING] davey is not installed, voice will NOT be supported
+2026-03-31 11:59:34 [INFO] logging in using static token
+2026-03-31 12:10:10 [WARNING] PyNaCl is not installed, voice will NOT be supported
+2026-03-31 12:10:10 [WARNING] davey is not installed, voice will NOT be supported
+2026-03-31 12:10:10 [INFO] logging in using static token
+2026-03-31 12:11:10 [WARNING] PyNaCl is not installed, voice will NOT be supported
+2026-03-31 12:11:10 [WARNING] davey is not installed, voice will NOT be supported
+2026-03-31 12:11:10 [INFO] logging in using static token
+2026-03-31 12:11:12 [INFO] Shard ID None has connected to Gateway (Session ID: 22cd7a5fb6c86b80c7516b45ba433996).
+2026-03-31 12:11:14 [INFO] Database initialised.
+2026-03-31 12:11:14 [INFO] Axis is online as Axis#7942  |  concurrency=2  |  timeout=120s  |  memory_limit=8 exchanges/personality
+2026-03-31 12:11:27 [INFO] [kitakura] Queued (depth=1)
+2026-03-31 12:11:27 [INFO] [kitakura] Sending prompt (1118 chars) to Ollama …
+2026-03-31 12:13:10 [INFO] [kitakura] Ollama replied in 102.8s (108 chars).
