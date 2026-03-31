@@ -29,9 +29,6 @@ log = logging.getLogger("Axis")
 # ---------------------------------------------
 #  Config
 # ---------------------------------------------
-# IMPORTANT: Voice / music requires PyNaCl.
-#   Install it with:  pip install PyNaCl
-#   Without it every /play call raises RuntimeError.
 
 TOKEN = os.getenv("DISCORD_TOKEN", "token")
 DB_PATH = "database.db"
