@@ -33,7 +33,7 @@ log = logging.getLogger("Axis")
 #   Install it with:  pip install PyNaCl
 #   Without it every /play call raises RuntimeError.
 
-TOKEN = os.getenv("DISCORD_TOKEN", "MTQ4NDIzNjg2OTU5MDg0NzY1OA.GnsmOr.THd8jZz3yjE2JSVubwQCTHY66qX5HZsFYk184A")
+TOKEN = os.getenv("DISCORD_TOKEN", "token")
 DB_PATH = "database.db"
 OLLAMA_URL = "http://localhost:11434/api/generate"
 OLLAMA_MODEL = "mistral-nemo"
