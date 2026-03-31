@@ -29,26 +29,30 @@ log = logging.getLogger("Axis")
 # ---------------------------------------------
 #  Config
 # ---------------------------------------------
-TOKEN = os.getenv("DISCORD_TOKEN", "token") #Put your Discord bot token here.
+# IMPORTANT: Voice / music requires PyNaCl.
+#   Install it with:  pip install PyNaCl
+#   Without it every /play call raises RuntimeError.
+
+TOKEN = os.getenv("DISCORD_TOKEN", "MTQ4NDIzNjg2OTU5MDg0NzY1OA.GnsmOr.THd8jZz3yjE2JSVubwQCTHY66qX5HZsFYk184A")
 DB_PATH = "database.db"
 OLLAMA_URL = "http://localhost:11434/api/generate"
 OLLAMA_MODEL = "mistral-nemo"
 
-MEMORY_LIMIT = 12 #Max conversation exchanges kept per personality per user.
-MAX_CONCURRENT = 2 #Max simultaneous Ollama requests. Raise with caution.
-REQUEST_TIMEOUT = 120 #Seconds before an Ollama call times out.
-DISCORD_MAX_LEN = 1990 #Character cap per Discord message (hard limit is 2000).
+MEMORY_LIMIT = 12       # Max conversation exchanges kept per personality per user.
+MAX_CONCURRENT = 2      # Max simultaneous Ollama requests. Raise with caution.
+REQUEST_TIMEOUT = 120   # Seconds before an Ollama call times out.
+DISCORD_MAX_LEN = 1990  # Character cap per Discord message (hard limit is 2000).
 
 # ---------------------------------------------
 #  Discord Client
 # ---------------------------------------------
 intents = discord.Intents.default()
-intents.voice_states = True #Required to detect which voice channel the user is in.
+intents.voice_states = True  # Required to detect which voice channel the user is in.
 client = discord.Client(intents=intents)
 tree = app_commands.CommandTree(client)
 
-ai_semaphore = asyncio.Semaphore(MAX_CONCURRENT) #Limits concurrent Ollama calls without blocking the event loop.
-_queue_depth = 0 #Tracks how many AI requests are currently waiting or running.
+ai_semaphore = asyncio.Semaphore(MAX_CONCURRENT)
+_queue_depth = 0
 
 # =============================================
 #  AI / CHATBOT
@@ -95,9 +99,7 @@ PERSONALITIES: dict[str, str] = {
 # ---------------------------------------------
 async def init_db() -> None:
     """
-    This function; creates the users table and migrates any missing columns for existing databases.
-    input: none.
-    output: none. Logs confirmation on success.
+    Creates the users table and migrates any missing columns for existing databases.
     """
     async with aiosqlite.connect(DB_PATH) as db:
         await db.execute("""
@@ -111,7 +113,6 @@ async def init_db() -> None:
                 prompt_count        INTEGER NOT NULL DEFAULT 0
             )
         """)
-        # Migrate existing tables that are missing the newer columns.
         for col, definition in [
             ("user_name", "TEXT NOT NULL DEFAULT ''"),
             ("prompt_count", "INTEGER NOT NULL DEFAULT 0"),
@@ -119,17 +120,12 @@ async def init_db() -> None:
             try:
                 await db.execute(f"ALTER TABLE users ADD COLUMN {col} {definition}")
             except Exception:
-                pass #Column already exists; safe to ignore.
+                pass
         await db.commit()
     log.info("Database initialised.")
 
 
 async def get_user(user_id: str) -> tuple | None:
-    """
-    This function; fetches a single user row from the database.
-    input: user_id - Discord user ID as a string.
-    output: tuple of (user_id, personality, memories_json, traits, mood, user_name, prompt_count), or None if not found.
-    """
     async with aiosqlite.connect(DB_PATH) as db:
         cursor = await db.execute("SELECT * FROM users WHERE user_id = ?", (user_id,))
         return await cursor.fetchone()
@@ -144,17 +140,6 @@ async def save_user(
     user_name: str = "",
     prompt_count: int = 0,
 ) -> None:
-    """
-    This function; inserts or replaces a user row in the database.
-    input: user_id - Discord user ID string,
-           personality - active personality key,
-           memories - dict mapping personality keys to history strings,
-           traits - observed user traits string,
-           mood - current mood label string,
-           user_name - the user's remembered name,
-           prompt_count - total number of AI prompts sent by this user.
-    output: none. Raises on database error.
-    """
     async with aiosqlite.connect(DB_PATH) as db:
         await db.execute(
             "INSERT OR REPLACE INTO users "
@@ -166,22 +151,12 @@ async def save_user(
 
 
 async def user_exists(user_id: str) -> bool:
-    """
-    This function; checks whether a user profile exists in the database.
-    input: user_id - Discord user ID as a string.
-    output: True if the user exists, False otherwise.
-    """
     return (await get_user(user_id)) is not None
 
 # ---------------------------------------------
 #  Memory Helpers
 # ---------------------------------------------
 def parse_memories(raw: str | None) -> dict:
-    """
-    This function; safely deserialises the memories JSON string from the database.
-    input: raw - JSON string or None.
-    output: dict mapping personality keys to history strings. Returns empty dict on any failure.
-    """
     if not raw:
         return {}
     try:
@@ -193,14 +168,8 @@ def parse_memories(raw: str | None) -> dict:
 
 
 def trim_history(history: str, limit: int) -> str:
-    """
-    This function; trims conversation history to the most recent exchanges.
-    input: history - newline-separated conversation string,
-           limit - max number of exchanges to keep (one exchange = one User line + one Assistant line).
-    output: trimmed string keeping only the last `limit` exchanges.
-    """
     lines = [line for line in history.split("\n") if line.strip()]
-    return "\n".join(lines[-(limit * 2):]) #Each exchange = 2 lines.
+    return "\n".join(lines[-(limit * 2):])
 
 # ---------------------------------------------
 #  Prompt Builder
@@ -213,16 +182,6 @@ def build_prompt(
     user_message: str,
     user_name: str = "",
 ) -> str:
-    """
-    This function; assembles the complete prompt string sent to the AI model.
-    input: personality - key into PERSONALITIES dict,
-           traits - observed user traits string,
-           mood - current user mood label,
-           history - trimmed conversation history string,
-           user_message - the user's latest message,
-           user_name - the user's remembered name (empty string if unknown).
-    output: formatted prompt string ready for Ollama.
-    """
     history_block = f"[Conversation History]\n{history.strip()}\n\n" if history.strip() else ""
     name_line = (
         f"User's Name: {user_name} — always address them by this name and never forget it.\n"
@@ -245,12 +204,6 @@ def build_prompt(
 #  AI Call
 # ---------------------------------------------
 async def ask_ai(prompt: str, user_tag: str) -> str:
-    """
-    This function; sends a prompt to the local Ollama instance and returns the response text.
-    input: prompt - the fully formatted prompt string,
-           user_tag - human-readable user identifier used only in log messages.
-    output: response string from the model, or a 'System Error: ...' string on failure.
-    """
     payload = {"model": OLLAMA_MODEL, "prompt": prompt, "stream": False}
     timeout = aiohttp.ClientTimeout(total=REQUEST_TIMEOUT)
 
@@ -291,24 +244,11 @@ class ConfirmClearView(discord.ui.View):
         super().__init__(timeout=30)
 
     def _disable_all(self) -> None:
-        """
-        This function; disables all child buttons so they cannot be clicked again.
-        input: none.
-        output: none.
-        """
         for child in self.children:
             child.disabled = True  # type: ignore[attr-defined]
 
     @discord.ui.button(label="Confirm Reset", style=discord.ButtonStyle.danger)
-    async def confirm(
-        self, interaction: discord.Interaction, button: discord.ui.Button
-    ) -> None:
-        """
-        This function; permanently deletes the user's database row after they confirm.
-        input: interaction - Discord interaction object,
-               button - the button that was pressed.
-        output: none. Edits the original message with a deletion confirmation.
-        """
+    async def confirm(self, interaction: discord.Interaction, button: discord.ui.Button) -> None:
         async with aiosqlite.connect(DB_PATH) as db:
             await db.execute("DELETE FROM users WHERE user_id = ?", (str(interaction.user.id),))
             await db.commit()
@@ -317,47 +257,23 @@ class ConfirmClearView(discord.ui.View):
         await interaction.response.edit_message(content="Memory wiped. We are strangers now.", view=self)
 
     @discord.ui.button(label="Cancel", style=discord.ButtonStyle.secondary)
-    async def cancel(
-        self, interaction: discord.Interaction, button: discord.ui.Button
-    ) -> None:
-        """
-        This function; cancels the memory-wipe and disables the buttons.
-        input: interaction - Discord interaction object,
-               button - the button that was pressed.
-        output: none. Edits the original message to show cancellation.
-        """
+    async def cancel(self, interaction: discord.Interaction, button: discord.ui.Button) -> None:
         self._disable_all()
         await interaction.response.edit_message(content="Reset cancelled.", view=self)
 
 
 class PersonalityView(discord.ui.View):
-    """View that presents personality-selection buttons for new setup or switching."""
+    """View that presents personality-selection buttons for first-time setup."""
 
-    def __init__(self, user_id: int, is_switch: bool = False) -> None:
-        """
-        input: user_id - Discord user ID integer,
-               is_switch - True when changing an existing user's personality, False for first setup.
-        """
+    def __init__(self, user_id: int) -> None:
         super().__init__(timeout=60)
         self.user_id = user_id
-        self.is_switch = is_switch
 
     def _disable_all(self) -> None:
-        """
-        This function; disables all child buttons to prevent duplicate selections.
-        input: none.
-        output: none.
-        """
         for child in self.children:
             child.disabled = True  # type: ignore[attr-defined]
 
     async def set_personality(self, interaction: discord.Interaction, personality: str) -> None:
-        """
-        This function; saves the selected personality and confirms the change to the user.
-        input: interaction - Discord interaction object,
-               personality - the personality key that was selected.
-        output: none. Edits the original message with a confirmation and disables buttons.
-        """
         user = await get_user(str(self.user_id))
         memories = parse_memories(user[2] if user else None)
         traits = user[3] if user else ""
@@ -369,11 +285,10 @@ class PersonalityView(discord.ui.View):
             memories[personality] = ""
 
         await save_user(str(self.user_id), personality, memories, traits, mood, user_name, prompt_count)
-        action = "switched to" if self.is_switch else "set to"
-        log.info(f"[{interaction.user}] Personality {action} '{personality}'.")
+        log.info(f"[{interaction.user}] Personality set to '{personality}'.")
         self._disable_all()
         await interaction.response.edit_message(
-            content=f"Personality {action} **{personality.capitalize()}**.", view=self
+            content=f"Personality set to **{personality.capitalize()}**. Use `/say` to start chatting!", view=self
         )
 
     @discord.ui.button(label="Gym Bro", style=discord.ButtonStyle.primary)
@@ -397,53 +312,23 @@ class PersonalityView(discord.ui.View):
 # ---------------------------------------------
 @tree.command(name="start-axis", description="Initialize your Axis AI companion")
 async def start_axis(interaction: discord.Interaction) -> None:
-    """
-    This function; starts the onboarding flow for a brand-new user.
-    input: interaction - Discord interaction object.
-    output: none. Sends a personality selection view, or an error if the user is already set up.
-    """
     if await user_exists(str(interaction.user.id)):
         await interaction.response.send_message(
             "You already have an Axis profile. "
-            "Use `/switch-axis` to change personality or `/clear-axis` to start over.",
+            "Use `/clear-axis` to start over.",
             ephemeral=True,
         )
         return
     log.info(f"[{interaction.user}] Starting Axis setup.")
     await interaction.response.send_message(
         "Who would you like to talk to?",
-        view=PersonalityView(interaction.user.id, is_switch=False),
-        ephemeral=True,
-    )
-
-
-@tree.command(name="switch-axis", description="Switch to a different Axis personality")
-async def switch_axis(interaction: discord.Interaction) -> None:
-    """
-    This function; lets an existing user change their active personality without clearing memories.
-    input: interaction - Discord interaction object.
-    output: none. Sends a personality selection view, or an error if the user has no profile.
-    """
-    if not await user_exists(str(interaction.user.id)):
-        await interaction.response.send_message(
-            "You don't have an Axis profile yet. Use `/start-axis` first.", ephemeral=True
-        )
-        return
-    log.info(f"[{interaction.user}] Switching personality.")
-    await interaction.response.send_message(
-        "Choose a new personality:",
-        view=PersonalityView(interaction.user.id, is_switch=True),
+        view=PersonalityView(interaction.user.id),
         ephemeral=True,
     )
 
 
 @tree.command(name="clear-axis", description="Permanently delete your Axis memory")
 async def clear_axis(interaction: discord.Interaction) -> None:
-    """
-    This function; prompts the user to confirm permanent deletion of all their memories.
-    input: interaction - Discord interaction object.
-    output: none. Sends a confirmation view, or an error if the user has no profile to clear.
-    """
     if not await user_exists(str(interaction.user.id)):
         await interaction.response.send_message(
             "You don't have an Axis profile to clear.", ephemeral=True
@@ -459,11 +344,6 @@ async def clear_axis(interaction: discord.Interaction) -> None:
 
 @tree.command(name="status-axis", description="View your current Axis profile")
 async def status_axis(interaction: discord.Interaction) -> None:
-    """
-    This function; displays the user's current personality, name, mood, traits, and memory size.
-    input: interaction - Discord interaction object.
-    output: none. Sends an ephemeral embed summarising the user's profile.
-    """
     user = await get_user(str(interaction.user.id))
     if not user:
         await interaction.response.send_message(
@@ -487,18 +367,12 @@ async def status_axis(interaction: discord.Interaction) -> None:
     embed.add_field(name="Observed Traits", value=traits, inline=False)
     embed.add_field(name="Memory", value=f"{exchange_count}/{MEMORY_LIMIT} exchanges stored", inline=True)
     embed.add_field(name="Total Prompts", value=str(prompt_count), inline=True)
-    embed.set_footer(text="/switch-axis to change personality | /clear-axis to reset | /setname to set your name")
+    embed.set_footer(text="/clear-axis to reset | /setname to set your name")
     await interaction.response.send_message(embed=embed, ephemeral=True)
 
 
 @tree.command(name="setname", description="Tell Axis your name so it never forgets")
 async def setname(interaction: discord.Interaction, name: str) -> None:
-    """
-    This function; saves the user's name persistently so every AI personality remembers it.
-    input: interaction - Discord interaction object,
-           name - the name the user wants to be addressed by.
-    output: none. Confirms the name was saved, or prompts setup if no profile exists.
-    """
     user = await get_user(str(interaction.user.id))
     if not user:
         await interaction.response.send_message("Please use `/start-axis` first!", ephemeral=True)
@@ -513,24 +387,80 @@ async def setname(interaction: discord.Interaction, name: str) -> None:
 
 @tree.command(name="say", description="Talk to Axis publicly in the channel")
 async def say(interaction: discord.Interaction, prompt: str) -> None:
-    """
-    This function; public-facing chat command that posts the AI response in the channel.
-    input: interaction - Discord interaction object,
-           prompt - the user's message text.
-    output: none.
-    """
     await handle_chat(interaction, prompt, private=False)
 
 
 @tree.command(name="whisper", description="Talk to Axis privately via DM")
 async def whisper(interaction: discord.Interaction, prompt: str) -> None:
-    """
-    This function; private chat command that delivers the AI response via DM.
-    input: interaction - Discord interaction object,
-           prompt - the user's message text.
-    output: none.
-    """
     await handle_chat(interaction, prompt, private=True)
+
+
+@tree.command(name="history", description="View your full conversation history with Axis")
+async def history(interaction: discord.Interaction) -> None:
+    """
+    Shows the stored conversation history for the user's currently active personality.
+    History is shown only to the user (ephemeral). If the history is too long for one
+    Discord message it is split across multiple follow-up messages.
+    """
+    user = await get_user(str(interaction.user.id))
+    if not user:
+        await interaction.response.send_message(
+            "No profile found. Use `/start-axis` to get started.", ephemeral=True
+        )
+        return
+
+    personality = user[1]
+    memories = parse_memories(user[2])
+    raw_history = memories.get(personality, "").strip()
+
+    if not raw_history:
+        await interaction.response.send_message(
+            f"No conversation history yet for **{personality.capitalize()}**. "
+            "Use `/say` to start chatting!",
+            ephemeral=True,
+        )
+        return
+
+    # Parse into numbered exchanges for readability.
+    lines = [l for l in raw_history.split("\n") if l.strip()]
+    formatted_lines: list[str] = []
+    exchange_num = 1
+    i = 0
+    while i < len(lines):
+        user_line = lines[i] if i < len(lines) else ""
+        bot_line = lines[i + 1] if i + 1 < len(lines) else ""
+        formatted_lines.append(f"**[{exchange_num}]**")
+        formatted_lines.append(f"🧑 {user_line}")
+        if bot_line:
+            formatted_lines.append(f"🤖 {bot_line}")
+        formatted_lines.append("")  # blank line between exchanges
+        exchange_num += 1
+        i += 2
+
+    full_text = "\n".join(formatted_lines).strip()
+    header = (
+        f"📜 **Conversation history with {personality.capitalize()}** "
+        f"({exchange_num - 1} exchanges)\n\n"
+    )
+
+    # Split into chunks that fit within Discord's message limit.
+    chunks: list[str] = []
+    current_chunk = header
+    for line in formatted_lines:
+        candidate = current_chunk + line + "\n"
+        if len(candidate) > DISCORD_MAX_LEN:
+            chunks.append(current_chunk.rstrip())
+            current_chunk = line + "\n"
+        else:
+            current_chunk = candidate
+    if current_chunk.strip():
+        chunks.append(current_chunk.rstrip())
+
+    await interaction.response.send_message(chunks[0], ephemeral=True)
+    for chunk in chunks[1:]:
+        await interaction.followup.send(chunk, ephemeral=True)
+
+    log.info(f"[{interaction.user}] History viewed ({exchange_num - 1} exchanges, {personality}).")
 
 # ---------------------------------------------
 #  Core Chat Handler
@@ -538,13 +468,6 @@ async def whisper(interaction: discord.Interaction, prompt: str) -> None:
 async def handle_chat(
     interaction: discord.Interaction, prompt: str, private: bool = False
 ) -> None:
-    """
-    This function; the main pipeline that processes a user's message and delivers the AI response.
-    input: interaction - Discord interaction object,
-           prompt - the raw user message text,
-           private - if True the response is sent via DM; if False it is posted in the channel.
-    output: none. Sends the AI response or an error message. All exceptions are caught and logged.
-    """
     global _queue_depth
     user_tag = str(interaction.user)
 
@@ -561,7 +484,7 @@ async def handle_chat(
         traits = user[3] or ""
         mood = user[4] or "Neutral"
         user_name = user[5] or ""
-        prompt_count = (user[6] or 0) + 1 #Increment on each successful chat.
+        prompt_count = (user[6] or 0) + 1
         history = memories.get(personality, "")
 
         full_prompt = build_prompt(personality, traits, mood, history, prompt, user_name)
@@ -573,7 +496,7 @@ async def handle_chat(
             async with ai_semaphore:
                 response = await ask_ai(full_prompt, user_tag)
         finally:
-            _queue_depth -= 1 #Always decrement, even on exception.
+            _queue_depth -= 1
 
         new_history = history + f"\nUser: {prompt}\nAssistant: {response}"
         memories[personality] = trim_history(new_history, MEMORY_LIMIT)
@@ -601,7 +524,7 @@ async def handle_chat(
         try:
             await interaction.followup.send("Something broke internally. Please try again.", ephemeral=True)
         except Exception:
-            pass #If the followup itself fails there is nothing more we can do.
+            pass
 
 # =============================================
 #  MUSIC
@@ -609,8 +532,8 @@ async def handle_chat(
 # ---------------------------------------------
 #  Queue & State
 # ---------------------------------------------
-music_queues: dict[int, list[dict]] = defaultdict(list) #Per-guild song queue keyed by guild_id.
-voice_clients: dict[int, discord.VoiceClient] = {} #Active voice clients keyed by guild_id.
+music_queues: dict[int, list[dict]] = defaultdict(list)
+voice_clients: dict[int, discord.VoiceClient] = {}
 
 YDL_OPTIONS = {
     "format": "bestaudio/best",
@@ -629,12 +552,6 @@ FFMPEG_OPTIONS = {
 #  Music Helpers
 # ---------------------------------------------
 async def fetch_track(query: str, requester: str) -> dict | None:
-    """
-    This function; searches YouTube or fetches a direct URL and returns track metadata.
-    input: query - a YouTube search term or full URL,
-           requester - display name of the user who requested the track.
-    output: dict with keys title, webpage_url, duration, requester — or None on failure.
-    """
     loop = asyncio.get_running_loop()
     try:
         with yt_dlp.YoutubeDL(YDL_OPTIONS) as ydl:
@@ -660,11 +577,6 @@ async def fetch_track(query: str, requester: str) -> dict | None:
 
 
 async def get_stream_url(webpage_url: str) -> str | None:
-    """
-    This function; extracts a fresh audio stream URL from a YouTube page URL.
-    input: webpage_url - canonical YouTube watch URL for the track.
-    output: direct streamable audio URL string, or None on failure.
-    """
     loop = asyncio.get_running_loop()
     try:
         with yt_dlp.YoutubeDL(YDL_OPTIONS) as ydl:
@@ -676,25 +588,20 @@ async def get_stream_url(webpage_url: str) -> str | None:
 
 
 async def play_next(guild_id: int) -> None:
-    """
-    This function; plays the next track in the guild queue, or does nothing if the queue is empty.
-    input: guild_id - Discord guild ID whose queue should advance.
-    output: none. Starts audio playback and schedules the next track via the after callback.
-    """
     vc = voice_clients.get(guild_id)
     if not vc or not vc.is_connected():
         return
-    if vc.is_playing(): #Don't interrupt a track that is already running.
+    if vc.is_playing():
         return
 
     queue = music_queues[guild_id]
     if not queue:
         return
 
-    track = queue[0] #Item stays in queue until playback ends; popped inside after_playing.
+    track = queue[0]
     stream_url = await get_stream_url(track["webpage_url"])
 
-    if not stream_url: #Skip unplayable tracks and try the next one.
+    if not stream_url:
         queue.pop(0)
         await play_next(guild_id)
         return
@@ -704,7 +611,7 @@ async def play_next(guild_id: int) -> None:
     def after_playing(error: Exception | None) -> None:
         if error:
             log.error(f"[Guild {guild_id}] Playback error: {error}")
-        if music_queues[guild_id]: #Guard against queue being cleared mid-play.
+        if music_queues[guild_id]:
             music_queues[guild_id].pop(0)
         asyncio.run_coroutine_threadsafe(play_next(guild_id), client.loop)
 
@@ -713,11 +620,6 @@ async def play_next(guild_id: int) -> None:
 
 
 def format_duration(seconds: int) -> str:
-    """
-    This function; converts a duration in seconds to a MM:SS display string.
-    input: seconds - total duration in seconds.
-    output: formatted string in MM:SS format.
-    """
     m, s = divmod(seconds, 60)
     return f"{m}:{s:02d}"
 
@@ -726,12 +628,6 @@ def format_duration(seconds: int) -> str:
 # ---------------------------------------------
 @tree.command(name="play", description="Play a song in your voice channel (search or URL)")
 async def play(interaction: discord.Interaction, query: str) -> None:
-    """
-    This function; searches or fetches a track and adds it to the guild queue.
-    input: interaction - Discord interaction object,
-           query - a search term (e.g. 'i quit pewdiepie') or a direct YouTube URL.
-    output: none. Sends an embed confirming whether the track is now playing or queued.
-    """
     if not interaction.guild:
         await interaction.response.send_message("This command only works in a server.", ephemeral=True)
         return
@@ -780,11 +676,6 @@ async def play(interaction: discord.Interaction, query: str) -> None:
 
 @tree.command(name="play-queue", description="Show the current music queue")
 async def play_queue(interaction: discord.Interaction) -> None:
-    """
-    This function; displays all tracks in the guild's current play queue.
-    input: interaction - Discord interaction object.
-    output: none. Sends an embed listing queued tracks, or a notice if the queue is empty.
-    """
     if not interaction.guild:
         await interaction.response.send_message("This command only works in a server.", ephemeral=True)
         return
@@ -807,11 +698,6 @@ async def play_queue(interaction: discord.Interaction) -> None:
 
 @tree.command(name="skip", description="Skip the current song")
 async def skip(interaction: discord.Interaction) -> None:
-    """
-    This function; stops the current track and advances to the next in the queue.
-    input: interaction - Discord interaction object.
-    output: none. Confirms the skip, or reports that nothing is playing.
-    """
     if not interaction.guild:
         await interaction.response.send_message("This command only works in a server.", ephemeral=True)
         return
@@ -821,18 +707,13 @@ async def skip(interaction: discord.Interaction) -> None:
         await interaction.response.send_message("Nothing is playing right now.", ephemeral=True)
         return
 
-    vc.stop() #Triggers after_playing, which pops the track and calls play_next.
+    vc.stop()
     await interaction.response.send_message("Skipped ⏭️")
     log.info(f"[{interaction.user}] Skipped track in guild {interaction.guild.id}.")
 
 
 @tree.command(name="leave-call", description="Make Axis leave the voice channel")
 async def leave_call(interaction: discord.Interaction) -> None:
-    """
-    This function; disconnects the bot from the voice channel and clears the queue.
-    input: interaction - Discord interaction object.
-    output: none. Confirms the disconnect, or reports the bot is not in a channel.
-    """
     if not interaction.guild:
         await interaction.response.send_message("This command only works in a server.", ephemeral=True)
         return
@@ -852,11 +733,6 @@ async def leave_call(interaction: discord.Interaction) -> None:
 
 @tree.command(name="reset-queue", description="Clear the entire music queue")
 async def reset_queue(interaction: discord.Interaction) -> None:
-    """
-    This function; stops playback and empties the queue without disconnecting the bot.
-    input: interaction - Discord interaction object.
-    output: none. Confirms the queue was cleared.
-    """
     if not interaction.guild:
         await interaction.response.send_message("This command only works in a server.", ephemeral=True)
         return
@@ -872,16 +748,8 @@ async def reset_queue(interaction: discord.Interaction) -> None:
 # =============================================
 #  FUN
 # =============================================
-# ---------------------------------------------
-#  Slash Commands (Fun)
-# ---------------------------------------------
 @tree.command(name="popularity", description="See who has chatted with Axis the most")
 async def popularity(interaction: discord.Interaction) -> None:
-    """
-    This function; fetches the top chatters from the database and displays a leaderboard.
-    input: interaction - Discord interaction object.
-    output: none. Sends an embed leaderboard with display names, personalities, and message counts.
-    """
     async with aiosqlite.connect(DB_PATH) as db:
         cursor = await db.execute(
             "SELECT user_id, current_personality, prompt_count FROM users "
@@ -912,11 +780,6 @@ async def popularity(interaction: discord.Interaction) -> None:
 
 @tree.command(name="help", description="See all available Axis commands")
 async def help_command(interaction: discord.Interaction) -> None:
-    """
-    This function; sends a simple overview of every command grouped by category.
-    input: interaction - Discord interaction object.
-    output: none. Sends an ephemeral embed listing all commands with emoji labels.
-    """
     embed = discord.Embed(
         title="Axis — Command Guide",
         description="Everything I can do, all in one place.",
@@ -925,12 +788,12 @@ async def help_command(interaction: discord.Interaction) -> None:
 
     embed.add_field(name="🤖  AI Companion", value="\u200b", inline=False)
     embed.add_field(name="`/start-axis`", value="Set up your AI companion for the first time.", inline=False)
-    embed.add_field(name="`/switch-axis`", value="Switch personality without losing your memories.", inline=False)
-    embed.add_field(name="`/clear-axis`", value="Permanently wipe all your memories.", inline=False)
+    embed.add_field(name="`/clear-axis`", value="Permanently wipe all your memories and start fresh.", inline=False)
     embed.add_field(name="`/status-axis`", value="View your profile — personality, mood, memory, and more.", inline=False)
     embed.add_field(name="`/setname <name>`", value="Tell Axis your name so it never forgets.", inline=False)
     embed.add_field(name="`/say <message>`", value="Talk to Axis publicly in the channel.", inline=False)
     embed.add_field(name="`/whisper <message>`", value="Talk to Axis privately — response arrives via DM.", inline=False)
+    embed.add_field(name="`/history`", value="View your full conversation history with your current personality.", inline=False)
 
     embed.add_field(name="🎵  Music", value="\u200b", inline=False)
     embed.add_field(name="`/play <query or URL>`", value="Play a song by name or YouTube link. Queues automatically if something is already playing.", inline=False)
@@ -950,11 +813,6 @@ async def help_command(interaction: discord.Interaction) -> None:
 # =============================================
 @client.event
 async def on_ready() -> None:
-    """
-    This function; called once the bot connects to Discord. Sets up the database, syncs commands, and sets the status.
-    input: none.
-    output: none. Logs a ready message with the current configuration.
-    """
     await init_db()
     await tree.sync()
     await client.change_presence(

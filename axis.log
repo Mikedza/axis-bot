@@ -13,3 +13,467 @@
 2026-03-31 12:11:27 [INFO] [kitakura] Queued (depth=1)
 2026-03-31 12:11:27 [INFO] [kitakura] Sending prompt (1118 chars) to Ollama …
 2026-03-31 12:13:10 [INFO] [kitakura] Ollama replied in 102.8s (108 chars).
+2026-03-31 15:32:52 [WARNING] PyNaCl is not installed, voice will NOT be supported
+2026-03-31 15:32:52 [WARNING] davey is not installed, voice will NOT be supported
+2026-03-31 15:32:52 [INFO] logging in using static token
+2026-03-31 15:32:53 [INFO] Shard ID None has connected to Gateway (Session ID: 9ceff9b8e399d13da61ffb0c419e95f5).
+2026-03-31 15:32:55 [INFO] Database initialised.
+2026-03-31 15:32:55 [INFO] Axis is online as Axis#7942  |  concurrency=2  |  timeout=120s  |  memory_limit=12 exchanges/personality
+2026-03-31 15:33:16 [INFO] [mikedza] Starting Axis setup.
+2026-03-31 15:33:16 [ERROR] Ignoring exception in command 'start-axis'
+Traceback (most recent call last):
+  File "c:\Users\oluny\AppData\Local\Programs\Python\Python314\Lib\site-packages\discord\app_commands\commands.py", line 859, in _do_call
+    return await self._callback(interaction, **params)  # type: ignore
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\oluny\Desktop\Folders\Coding+Programming\Projects\Nitzanim\Hackathon2026\axis-bot\axis.py", line 413, in start_axis
+    await interaction.response.send_message(
+    ...<3 lines>...
+    )
+  File "c:\Users\oluny\AppData\Local\Programs\Python\Python314\Lib\site-packages\discord\interactions.py", line 1085, in send_message
+    data = await adapter.create_interaction_response(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<6 lines>...
+    )
+    ^
+  File "c:\Users\oluny\AppData\Local\Programs\Python\Python314\Lib\site-packages\discord\webhook\async_.py", line 224, in request
+    raise NotFound(response, data)
+discord.errors.NotFound: 404 Not Found (error code: 10062): Unknown interaction
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "c:\Users\oluny\AppData\Local\Programs\Python\Python314\Lib\site-packages\discord\app_commands\tree.py", line 1302, in _call
+    await command._invoke_with_namespace(interaction, namespace)
+  File "c:\Users\oluny\AppData\Local\Programs\Python\Python314\Lib\site-packages\discord\app_commands\commands.py", line 884, in _invoke_with_namespace
+    return await self._do_call(interaction, transformed_values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\oluny\AppData\Local\Programs\Python\Python314\Lib\site-packages\discord\app_commands\commands.py", line 877, in _do_call
+    raise CommandInvokeError(self, e) from e
+discord.app_commands.errors.CommandInvokeError: Command 'start-axis' raised an exception: NotFound: 404 Not Found (error code: 10062): Unknown interaction
+2026-03-31 15:33:24 [ERROR] [mikedza] CRASH in handle_chat
+Traceback (most recent call last):
+  File "C:\Users\oluny\Desktop\Folders\Coding+Programming\Projects\Nitzanim\Hackathon2026\axis-bot\axis.py", line 552, in handle_chat
+    await interaction.response.defer(ephemeral=private)
+  File "c:\Users\oluny\AppData\Local\Programs\Python\Python314\Lib\site-packages\discord\interactions.py", line 892, in defer
+    response = await adapter.create_interaction_response(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<6 lines>...
+    )
+    ^
+  File "c:\Users\oluny\AppData\Local\Programs\Python\Python314\Lib\site-packages\discord\webhook\async_.py", line 224, in request
+    raise NotFound(response, data)
+discord.errors.NotFound: 404 Not Found (error code: 10062): Unknown interaction
+2026-03-31 15:35:46 [WARNING] PyNaCl is not installed, voice will NOT be supported
+2026-03-31 15:35:46 [WARNING] davey is not installed, voice will NOT be supported
+2026-03-31 15:35:46 [INFO] logging in using static token
+2026-03-31 15:35:47 [INFO] Shard ID None has connected to Gateway (Session ID: 60b09388472bd6ed3194c3d225bb6256).
+2026-03-31 15:35:49 [INFO] Database initialised.
+2026-03-31 15:35:49 [INFO] Axis is online as Axis#7942  |  concurrency=2  |  timeout=120s  |  memory_limit=12 exchanges/personality
+2026-03-31 15:36:03 [INFO] [mikedza] Starting Axis setup.
+2026-03-31 15:36:07 [INFO] [mikedza] Personality set to 'dominant'.
+2026-03-31 15:36:12 [INFO] [mikedza] Queued (depth=1)
+2026-03-31 15:36:12 [INFO] [mikedza] Sending prompt (457 chars) to Ollama ...
+2026-03-31 15:37:23 [INFO] [mikedza] Ollama replied in 70.3s (69 chars).
+2026-03-31 15:40:40 [WARNING] PyNaCl is not installed, voice will NOT be supported
+2026-03-31 15:40:40 [WARNING] davey is not installed, voice will NOT be supported
+2026-03-31 15:40:40 [INFO] logging in using static token
+2026-03-31 15:40:41 [INFO] Shard ID None has connected to Gateway (Session ID: 6cd01befbdf613ec73b97f12b6519e47).
+2026-03-31 15:40:43 [INFO] Database initialised.
+2026-03-31 15:40:43 [INFO] Axis is online as Axis#7942  |  concurrency=2  |  timeout=120s  |  memory_limit=12 exchanges/personality
+2026-03-31 15:40:52 [ERROR] Ignoring exception in command 'play'
+Traceback (most recent call last):
+  File "c:\Users\oluny\AppData\Local\Programs\Python\Python314\Lib\site-packages\discord\app_commands\commands.py", line 859, in _do_call
+    return await self._callback(interaction, **params)  # type: ignore
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\oluny\Desktop\Folders\Coding+Programming\Projects\Nitzanim\Hackathon2026\axis-bot\axis.py", line 751, in play
+    vc = await channel.connect()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\oluny\AppData\Local\Programs\Python\Python314\Lib\site-packages\discord\abc.py", line 2144, in connect
+    voice: T = cls(client, self)
+               ~~~^^^^^^^^^^^^^^
+  File "c:\Users\oluny\AppData\Local\Programs\Python\Python314\Lib\site-packages\discord\voice_client.py", line 220, in __init__
+    raise RuntimeError('PyNaCl library needed in order to use voice')
+RuntimeError: PyNaCl library needed in order to use voice
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "c:\Users\oluny\AppData\Local\Programs\Python\Python314\Lib\site-packages\discord\app_commands\tree.py", line 1302, in _call
+    await command._invoke_with_namespace(interaction, namespace)
+  File "c:\Users\oluny\AppData\Local\Programs\Python\Python314\Lib\site-packages\discord\app_commands\commands.py", line 884, in _invoke_with_namespace
+    return await self._do_call(interaction, transformed_values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\oluny\AppData\Local\Programs\Python\Python314\Lib\site-packages\discord\app_commands\commands.py", line 877, in _do_call
+    raise CommandInvokeError(self, e) from e
+discord.app_commands.errors.CommandInvokeError: Command 'play' raised an exception: RuntimeError: PyNaCl library needed in order to use voice
+2026-03-31 15:45:14 [WARNING] PyNaCl is not installed, voice will NOT be supported
+2026-03-31 15:45:14 [WARNING] davey is not installed, voice will NOT be supported
+2026-03-31 15:45:14 [INFO] logging in using static token
+2026-03-31 15:45:15 [INFO] Shard ID None has connected to Gateway (Session ID: 023e37b6cb8c631339757d7292bca116).
+2026-03-31 15:45:17 [INFO] Database initialised.
+2026-03-31 15:45:17 [INFO] Axis is online as Axis#7942  |  concurrency=2  |  timeout=120s  |  memory_limit=12 exchanges/personality
+2026-03-31 15:47:56 [WARNING] davey is not installed, voice will NOT be supported
+2026-03-31 15:47:56 [INFO] logging in using static token
+2026-03-31 15:47:58 [INFO] Shard ID None has connected to Gateway (Session ID: 6c2835ef0c2c299a2af30ef1052d2df6).
+2026-03-31 15:48:00 [INFO] Database initialised.
+2026-03-31 15:48:00 [INFO] Axis is online as Axis#7942  |  concurrency=2  |  timeout=120s  |  memory_limit=12 exchanges/personality
+2026-03-31 15:48:14 [ERROR] Ignoring exception in command 'play'
+Traceback (most recent call last):
+  File "c:\Users\oluny\AppData\Local\Programs\Python\Python314\Lib\site-packages\discord\app_commands\commands.py", line 859, in _do_call
+    return await self._callback(interaction, **params)  # type: ignore
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\oluny\Desktop\Folders\Coding+Programming\Projects\Nitzanim\Hackathon2026\axis-bot\axis.py", line 647, in play
+    vc = await channel.connect()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\oluny\AppData\Local\Programs\Python\Python314\Lib\site-packages\discord\abc.py", line 2144, in connect
+    voice: T = cls(client, self)
+               ~~~^^^^^^^^^^^^^^
+  File "c:\Users\oluny\AppData\Local\Programs\Python\Python314\Lib\site-packages\discord\voice_client.py", line 222, in __init__
+    raise RuntimeError('davey library needed in order to use voice')
+RuntimeError: davey library needed in order to use voice
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "c:\Users\oluny\AppData\Local\Programs\Python\Python314\Lib\site-packages\discord\app_commands\tree.py", line 1302, in _call
+    await command._invoke_with_namespace(interaction, namespace)
+  File "c:\Users\oluny\AppData\Local\Programs\Python\Python314\Lib\site-packages\discord\app_commands\commands.py", line 884, in _invoke_with_namespace
+    return await self._do_call(interaction, transformed_values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\oluny\AppData\Local\Programs\Python\Python314\Lib\site-packages\discord\app_commands\commands.py", line 877, in _do_call
+    raise CommandInvokeError(self, e) from e
+discord.app_commands.errors.CommandInvokeError: Command 'play' raised an exception: RuntimeError: davey library needed in order to use voice
+2026-03-31 15:50:14 [WARNING] davey is not installed, voice will NOT be supported
+2026-03-31 15:50:14 [INFO] logging in using static token
+2026-03-31 15:50:16 [INFO] Shard ID None has connected to Gateway (Session ID: b427a95381ae479a6faeac49c69e12f5).
+2026-03-31 15:50:18 [INFO] Database initialised.
+2026-03-31 15:50:18 [INFO] Axis is online as Axis#7942  |  concurrency=2  |  timeout=120s  |  memory_limit=12 exchanges/personality
+2026-03-31 15:50:25 [ERROR] Ignoring exception in command 'play'
+Traceback (most recent call last):
+  File "c:\Users\oluny\AppData\Local\Programs\Python\Python314\Lib\site-packages\discord\app_commands\commands.py", line 859, in _do_call
+    return await self._callback(interaction, **params)  # type: ignore
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\oluny\Desktop\Folders\Coding+Programming\Projects\Nitzanim\Hackathon2026\axis-bot\axis.py", line 647, in play
+    vc = await channel.connect()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\oluny\AppData\Local\Programs\Python\Python314\Lib\site-packages\discord\abc.py", line 2144, in connect
+    voice: T = cls(client, self)
+               ~~~^^^^^^^^^^^^^^
+  File "c:\Users\oluny\AppData\Local\Programs\Python\Python314\Lib\site-packages\discord\voice_client.py", line 222, in __init__
+    raise RuntimeError('davey library needed in order to use voice')
+RuntimeError: davey library needed in order to use voice
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "c:\Users\oluny\AppData\Local\Programs\Python\Python314\Lib\site-packages\discord\app_commands\tree.py", line 1302, in _call
+    await command._invoke_with_namespace(interaction, namespace)
+  File "c:\Users\oluny\AppData\Local\Programs\Python\Python314\Lib\site-packages\discord\app_commands\commands.py", line 884, in _invoke_with_namespace
+    return await self._do_call(interaction, transformed_values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\oluny\AppData\Local\Programs\Python\Python314\Lib\site-packages\discord\app_commands\commands.py", line 877, in _do_call
+    raise CommandInvokeError(self, e) from e
+discord.app_commands.errors.CommandInvokeError: Command 'play' raised an exception: RuntimeError: davey library needed in order to use voice
+2026-03-31 15:52:16 [WARNING] davey is not installed, voice will NOT be supported
+2026-03-31 15:52:16 [INFO] logging in using static token
+2026-03-31 15:52:17 [INFO] Shard ID None has connected to Gateway (Session ID: e01b3e9b68bb47eb70915541ca020f7a).
+2026-03-31 15:52:19 [INFO] Database initialised.
+2026-03-31 15:52:19 [INFO] Axis is online as Axis#7942  |  concurrency=2  |  timeout=120s  |  memory_limit=12 exchanges/personality
+2026-03-31 15:52:24 [ERROR] Ignoring exception in command 'play'
+Traceback (most recent call last):
+  File "c:\Users\oluny\AppData\Local\Programs\Python\Python314\Lib\site-packages\discord\app_commands\commands.py", line 859, in _do_call
+    return await self._callback(interaction, **params)  # type: ignore
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\oluny\Desktop\Folders\Coding+Programming\Projects\Nitzanim\Hackathon2026\axis-bot\axis.py", line 647, in play
+    vc = await channel.connect()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\oluny\AppData\Local\Programs\Python\Python314\Lib\site-packages\discord\abc.py", line 2144, in connect
+    voice: T = cls(client, self)
+               ~~~^^^^^^^^^^^^^^
+  File "c:\Users\oluny\AppData\Local\Programs\Python\Python314\Lib\site-packages\discord\voice_client.py", line 222, in __init__
+    raise RuntimeError('davey library needed in order to use voice')
+RuntimeError: davey library needed in order to use voice
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "c:\Users\oluny\AppData\Local\Programs\Python\Python314\Lib\site-packages\discord\app_commands\tree.py", line 1302, in _call
+    await command._invoke_with_namespace(interaction, namespace)
+  File "c:\Users\oluny\AppData\Local\Programs\Python\Python314\Lib\site-packages\discord\app_commands\commands.py", line 884, in _invoke_with_namespace
+    return await self._do_call(interaction, transformed_values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\oluny\AppData\Local\Programs\Python\Python314\Lib\site-packages\discord\app_commands\commands.py", line 877, in _do_call
+    raise CommandInvokeError(self, e) from e
+discord.app_commands.errors.CommandInvokeError: Command 'play' raised an exception: RuntimeError: davey library needed in order to use voice
+2026-03-31 15:58:15 [WARNING] davey is not installed, voice will NOT be supported
+2026-03-31 15:58:15 [INFO] logging in using static token
+2026-03-31 15:58:16 [INFO] Shard ID None has connected to Gateway (Session ID: 5164be33f65ad7fd3d873cef677e505b).
+2026-03-31 15:58:18 [INFO] Database initialised.
+2026-03-31 15:58:18 [INFO] Axis is online as Axis#7942  |  concurrency=2  |  timeout=120s  |  memory_limit=12 exchanges/personality
+2026-03-31 15:58:31 [ERROR] Ignoring exception in command 'play'
+Traceback (most recent call last):
+  File "c:\Users\oluny\AppData\Local\Programs\Python\Python314\Lib\site-packages\discord\app_commands\commands.py", line 859, in _do_call
+    return await self._callback(interaction, **params)  # type: ignore
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\oluny\Desktop\Folders\Coding+Programming\Projects\Nitzanim\Hackathon2026\axis-bot\axis.py", line 647, in play
+    vc = await channel.connect()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\oluny\AppData\Local\Programs\Python\Python314\Lib\site-packages\discord\abc.py", line 2144, in connect
+    voice: T = cls(client, self)
+               ~~~^^^^^^^^^^^^^^
+  File "c:\Users\oluny\AppData\Local\Programs\Python\Python314\Lib\site-packages\discord\voice_client.py", line 222, in __init__
+    raise RuntimeError('davey library needed in order to use voice')
+RuntimeError: davey library needed in order to use voice
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "c:\Users\oluny\AppData\Local\Programs\Python\Python314\Lib\site-packages\discord\app_commands\tree.py", line 1302, in _call
+    await command._invoke_with_namespace(interaction, namespace)
+  File "c:\Users\oluny\AppData\Local\Programs\Python\Python314\Lib\site-packages\discord\app_commands\commands.py", line 884, in _invoke_with_namespace
+    return await self._do_call(interaction, transformed_values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\oluny\AppData\Local\Programs\Python\Python314\Lib\site-packages\discord\app_commands\commands.py", line 877, in _do_call
+    raise CommandInvokeError(self, e) from e
+discord.app_commands.errors.CommandInvokeError: Command 'play' raised an exception: RuntimeError: davey library needed in order to use voice
+2026-03-31 16:05:28 [INFO] logging in using static token
+2026-03-31 16:05:29 [INFO] Shard ID None has connected to Gateway (Session ID: 2b790b515ac610e304ca5047936610ef).
+2026-03-31 16:05:31 [INFO] Database initialised.
+2026-03-31 16:05:32 [INFO] Axis is online as Axis#7942  |  concurrency=2  |  timeout=120s  |  memory_limit=12 exchanges/personality
+2026-03-31 16:05:40 [INFO] Connecting to voice...
+2026-03-31 16:05:40 [INFO] Starting voice handshake... (connection attempt 1)
+2026-03-31 16:05:40 [INFO] Voice handshake complete. Endpoint found: tel-aviv12005.discord.media:443
+2026-03-31 16:05:40 [INFO] Voice connection complete.
+2026-03-31 16:05:44 [ERROR] Ignoring exception in command 'play'
+Traceback (most recent call last):
+  File "c:\Users\oluny\AppData\Local\Programs\Python\Python314\Lib\site-packages\discord\app_commands\commands.py", line 859, in _do_call
+    return await self._callback(interaction, **params)  # type: ignore
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\oluny\Desktop\Folders\Coding+Programming\Projects\Nitzanim\Hackathon2026\axis-bot\axis.py", line 671, in play
+    await play_next(guild_id)
+  File "C:\Users\oluny\Desktop\Folders\Coding+Programming\Projects\Nitzanim\Hackathon2026\axis-bot\axis.py", line 609, in play_next
+    source = discord.FFmpegPCMAudio(stream_url, **FFMPEG_OPTIONS)
+  File "c:\Users\oluny\AppData\Local\Programs\Python\Python314\Lib\site-packages\discord\player.py", line 396, in __init__
+    super().__init__(source, executable=executable, args=args, **subprocess_kwargs)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\oluny\AppData\Local\Programs\Python\Python314\Lib\site-packages\discord\player.py", line 183, in __init__
+    self._process = self._spawn_process(args, **kwargs)
+                    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^
+  File "c:\Users\oluny\AppData\Local\Programs\Python\Python314\Lib\site-packages\discord\player.py", line 211, in _spawn_process
+    raise ClientException(executable + ' was not found.') from None
+discord.errors.ClientException: ffmpeg was not found.
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "c:\Users\oluny\AppData\Local\Programs\Python\Python314\Lib\site-packages\discord\app_commands\tree.py", line 1302, in _call
+    await command._invoke_with_namespace(interaction, namespace)
+  File "c:\Users\oluny\AppData\Local\Programs\Python\Python314\Lib\site-packages\discord\app_commands\commands.py", line 884, in _invoke_with_namespace
+    return await self._do_call(interaction, transformed_values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\oluny\AppData\Local\Programs\Python\Python314\Lib\site-packages\discord\app_commands\commands.py", line 877, in _do_call
+    raise CommandInvokeError(self, e) from e
+discord.app_commands.errors.CommandInvokeError: Command 'play' raised an exception: ClientException: ffmpeg was not found.
+2026-03-31 16:10:54 [INFO] logging in using static token
+2026-03-31 16:10:55 [INFO] Shard ID None has connected to Gateway (Session ID: 369868d77ebcc7d1987bb80397dcb9c2).
+2026-03-31 16:10:57 [INFO] Database initialised.
+2026-03-31 16:10:57 [INFO] Axis is online as Axis#7942  |  concurrency=2  |  timeout=120s  |  memory_limit=12 exchanges/personality
+2026-03-31 16:11:43 [INFO] [ani6565] Starting Axis setup.
+2026-03-31 16:11:45 [INFO] [kitakura] Starting Axis setup.
+2026-03-31 16:11:46 [INFO] [ani6565] Personality set to 'dominant'.
+2026-03-31 16:11:46 [INFO] [kitakura] Personality set to 'dominant'.
+2026-03-31 16:11:51 [INFO] [kitakura] Queued (depth=1)
+2026-03-31 16:11:51 [INFO] [kitakura] Sending prompt (457 chars) to Ollama ...
+2026-03-31 16:11:52 [INFO] [ani6565] Queued (depth=2)
+2026-03-31 16:11:52 [INFO] [ani6565] Sending prompt (457 chars) to Ollama ...
+2026-03-31 16:11:58 [INFO] [kitakura] Ollama replied in 7.9s (50 chars).
+2026-03-31 16:12:01 [INFO] [ani6565] Ollama replied in 9.2s (80 chars).
+2026-03-31 16:12:09 [INFO] [kitakura] History viewed (1 exchanges, dominant).
+2026-03-31 16:12:30 [INFO] [kitakura] History viewed (1 exchanges, dominant).
+2026-03-31 16:13:17 [INFO] [kitakura] Queued (depth=1)
+2026-03-31 16:13:17 [INFO] [kitakura] Sending prompt (561 chars) to Ollama ...
+2026-03-31 16:13:21 [INFO] [kitakura] Ollama replied in 4.0s (116 chars).
+2026-03-31 16:13:31 [INFO] [kitakura] History viewed (2 exchanges, dominant).
+2026-03-31 16:13:41 [INFO] [kitakura] Queued (depth=1)
+2026-03-31 16:13:41 [INFO] [kitakura] Sending prompt (716 chars) to Ollama ...
+2026-03-31 16:13:47 [INFO] [kitakura] Ollama replied in 5.8s (173 chars).
+2026-03-31 16:14:01 [INFO] [kitakura] Queued (depth=1)
+2026-03-31 16:14:01 [INFO] [kitakura] Sending prompt (926 chars) to Ollama ...
+2026-03-31 16:14:05 [INFO] [kitakura] Ollama replied in 3.9s (96 chars).
+2026-03-31 16:14:24 [INFO] [kitakura] Queued (depth=1)
+2026-03-31 16:14:24 [INFO] [kitakura] Sending prompt (1063 chars) to Ollama ...
+2026-03-31 16:14:26 [INFO] [kitakura] Ollama replied in 2.6s (61 chars).
+2026-03-31 16:14:38 [INFO] [kitakura] Queued (depth=1)
+2026-03-31 16:14:38 [INFO] [kitakura] Sending prompt (1159 chars) to Ollama ...
+2026-03-31 16:14:43 [INFO] [kitakura] Ollama replied in 4.2s (138 chars).
+2026-03-31 16:15:05 [INFO] [kitakura] Name set to 'mike'.
+2026-03-31 16:15:15 [INFO] [kitakura] Queued (depth=1)
+2026-03-31 16:15:15 [INFO] [kitakura] Sending prompt (1347 chars) to Ollama ...
+2026-03-31 16:15:19 [INFO] [kitakura] Ollama replied in 3.9s (118 chars).
+2026-03-31 16:15:36 [INFO] [kitakura] Queued (depth=1)
+2026-03-31 16:15:36 [INFO] [kitakura] Sending prompt (1504 chars) to Ollama ...
+2026-03-31 16:15:40 [INFO] [kitakura] Ollama replied in 4.1s (124 chars).
+2026-03-31 16:16:05 [INFO] [kitakura] Queued (depth=1)
+2026-03-31 16:16:05 [INFO] [kitakura] Sending prompt (1705 chars) to Ollama ...
+2026-03-31 16:16:08 [INFO] [kitakura] Ollama replied in 3.2s (94 chars).
+2026-03-31 16:16:24 [INFO] [kitakura] Queued (depth=1)
+2026-03-31 16:16:24 [INFO] [kitakura] Sending prompt (1858 chars) to Ollama ...
+2026-03-31 16:16:30 [INFO] [kitakura] Ollama replied in 5.4s (165 chars).
+2026-03-31 16:16:48 [INFO] [kitakura] History viewed (10 exchanges, dominant).
+2026-03-31 16:17:04 [INFO] [kitakura] Queued (depth=1)
+2026-03-31 16:17:04 [INFO] [kitakura] Sending prompt (2062 chars) to Ollama ...
+2026-03-31 16:17:08 [INFO] [kitakura] Ollama replied in 4.2s (139 chars).
+2026-03-31 16:17:23 [INFO] [kitakura] Requested memory clear.
+2026-03-31 16:17:25 [INFO] [kitakura] Memory wiped by user request.
+2026-03-31 16:17:32 [INFO] [kitakura] Starting Axis setup.
+2026-03-31 16:17:34 [INFO] [kitakura] Personality set to 'shy'.
+2026-03-31 16:18:00 [INFO] [kitakura] Name set to 'Mike'.
+2026-03-31 16:18:13 [INFO] [kitakura] Queued (depth=1)
+2026-03-31 16:18:13 [INFO] [kitakura] Sending prompt (669 chars) to Ollama ...
+2026-03-31 16:18:19 [INFO] [kitakura] Ollama replied in 6.1s (200 chars).
+2026-03-31 16:18:43 [INFO] [kitakura] Queued (depth=1)
+2026-03-31 16:18:43 [INFO] [kitakura] Sending prompt (935 chars) to Ollama ...
+2026-03-31 16:18:51 [INFO] [kitakura] Ollama replied in 7.5s (268 chars).
+2026-03-31 16:19:28 [INFO] [kitakura] Queued (depth=1)
+2026-03-31 16:19:28 [INFO] [kitakura] Sending prompt (1286 chars) to Ollama ...
+2026-03-31 16:19:39 [INFO] [kitakura] Ollama replied in 10.7s (410 chars).
+2026-03-31 16:20:09 [INFO] [kitakura] Queued (depth=1)
+2026-03-31 16:20:09 [INFO] [kitakura] Sending prompt (1730 chars) to Ollama ...
+2026-03-31 16:20:20 [INFO] [kitakura] Ollama replied in 11.6s (434 chars).
+2026-03-31 16:20:51 [INFO] [kitakura] Requested memory clear.
+2026-03-31 16:20:54 [INFO] [kitakura] Memory wiped by user request.
+2026-03-31 16:23:09 [INFO] logging in using static token
+2026-03-31 16:23:10 [INFO] Shard ID None has connected to Gateway (Session ID: 762a478019cd752c7450d864d56e37eb).
+2026-03-31 16:23:12 [INFO] Database initialised.
+2026-03-31 16:23:13 [INFO] Axis is online as Axis#7942  |  concurrency=2  |  timeout=120s  |  memory_limit=12 exchanges/personality
+2026-03-31 16:23:37 [INFO] [kitakura] Starting Axis setup.
+2026-03-31 16:23:46 [INFO] [kitakura] Personality set to 'shy'.
+2026-03-31 16:23:57 [INFO] [kitakura] Queued (depth=1)
+2026-03-31 16:23:57 [INFO] [kitakura] Sending prompt (697 chars) to Ollama ...
+2026-03-31 16:24:01 [INFO] [kitakura] Ollama replied in 3.4s (72 chars).
+2026-03-31 16:24:12 [INFO] [kitakura] Queued (depth=1)
+2026-03-31 16:24:12 [INFO] [kitakura] Sending prompt (821 chars) to Ollama ...
+2026-03-31 16:24:19 [INFO] [kitakura] Ollama replied in 7.6s (243 chars).
+2026-03-31 16:24:37 [INFO] [kitakura] Queued (depth=1)
+2026-03-31 16:24:37 [INFO] [kitakura] Sending prompt (1105 chars) to Ollama ...
+2026-03-31 16:24:49 [INFO] [kitakura] Ollama replied in 12.1s (402 chars).
+2026-03-31 16:25:20 [INFO] [kitakura] Queued (depth=1)
+2026-03-31 16:25:20 [INFO] [kitakura] Sending prompt (1540 chars) to Ollama ...
+2026-03-31 16:25:31 [INFO] [kitakura] Ollama replied in 10.5s (336 chars).
+2026-03-31 16:26:06 [INFO] [kitakura] Queued (depth=1)
+2026-03-31 16:26:06 [INFO] [kitakura] Sending prompt (1921 chars) to Ollama ...
+2026-03-31 16:26:19 [INFO] [kitakura] Ollama replied in 13.4s (406 chars).
+2026-03-31 16:26:45 [INFO] [kitakura] Queued (depth=1)
+2026-03-31 16:26:45 [INFO] [kitakura] Sending prompt (2381 chars) to Ollama ...
+2026-03-31 16:27:01 [INFO] [kitakura] Ollama replied in 15.6s (492 chars).
+2026-03-31 16:27:47 [INFO] [kitakura] Queued (depth=1)
+2026-03-31 16:27:47 [INFO] [kitakura] Sending prompt (2903 chars) to Ollama ...
+2026-03-31 16:28:00 [INFO] [kitakura] Ollama replied in 12.7s (383 chars).
+2026-03-31 16:28:49 [INFO] [pablikpablo] Starting Axis setup.
+2026-03-31 16:29:00 [INFO] [pablikpablo] Personality set to 'shy'.
+2026-03-31 16:29:06 [INFO] [pablikpablo] Queued (depth=1)
+2026-03-31 16:29:06 [INFO] [pablikpablo] Sending prompt (686 chars) to Ollama ...
+2026-03-31 16:29:07 [INFO] [kitakura] Queued (depth=2)
+2026-03-31 16:29:07 [INFO] [kitakura] Sending prompt (3328 chars) to Ollama ...
+2026-03-31 16:29:11 [INFO] [pablikpablo] Ollama replied in 4.2s (106 chars).
+2026-03-31 16:29:27 [INFO] [kitakura] Ollama replied in 19.3s (459 chars).
+2026-03-31 16:29:45 [INFO] [kitakura] History viewed (8 exchanges, shy).
+2026-03-31 16:35:05 [INFO] logging in using static token
+2026-03-31 16:35:06 [INFO] Shard ID None has connected to Gateway (Session ID: d29c74ee1d05168bd02cd92f37cf911f).
+2026-03-31 16:35:08 [INFO] Database initialised.
+2026-03-31 16:35:09 [INFO] Axis is online as Axis#7942  |  concurrency=2  |  timeout=120s  |  memory_limit=12 exchanges/personality
+2026-03-31 16:35:13 [INFO] [kitakura] Requested memory clear.
+2026-03-31 16:35:15 [INFO] [kitakura] Memory wiped by user request.
+2026-03-31 16:35:28 [INFO] [kitakura] Starting Axis setup.
+2026-03-31 16:35:33 [INFO] [kitakura] Personality set to 'shy'.
+2026-03-31 16:35:41 [INFO] [kitakura] Queued (depth=1)
+2026-03-31 16:35:41 [INFO] [kitakura] Sending prompt (706 chars) to Ollama ...
+2026-03-31 16:35:52 [INFO] [kitakura] Ollama replied in 10.6s (135 chars).
+2026-03-31 16:36:05 [INFO] [kitakura] Name set to 'mike'.
+2026-03-31 16:36:11 [INFO] [kitakura] Queued (depth=1)
+2026-03-31 16:36:11 [INFO] [kitakura] Sending prompt (914 chars) to Ollama ...
+2026-03-31 16:36:24 [INFO] [kitakura] Ollama replied in 12.9s (350 chars).
+2026-03-31 16:36:41 [INFO] [kitakura] Queued (depth=1)
+2026-03-31 16:36:41 [INFO] [kitakura] Sending prompt (1296 chars) to Ollama ...
+2026-03-31 16:36:54 [INFO] [kitakura] Ollama replied in 13.0s (418 chars).
+2026-03-31 16:37:24 [INFO] [kitakura] Queued (depth=1)
+2026-03-31 16:37:24 [INFO] [kitakura] Sending prompt (1818 chars) to Ollama ...
+2026-03-31 16:37:41 [INFO] [kitakura] Ollama replied in 17.0s (530 chars).
+2026-03-31 16:38:11 [INFO] [kitakura] Requested memory clear.
+2026-03-31 16:38:13 [INFO] [kitakura] Memory wiped by user request.
+2026-03-31 16:38:33 [INFO] [kitakura] Starting Axis setup.
+2026-03-31 16:38:35 [INFO] [kitakura] Personality set to 'dominant'.
+2026-03-31 16:38:48 [INFO] [kitakura] Queued (depth=1)
+2026-03-31 16:38:48 [INFO] [kitakura] Sending prompt (574 chars) to Ollama ...
+2026-03-31 16:38:53 [INFO] [kitakura] Ollama replied in 4.8s (123 chars).
+2026-03-31 16:41:04 [INFO] [kitakura] Queued (depth=1)
+2026-03-31 16:41:04 [INFO] [kitakura] Sending prompt (751 chars) to Ollama ...
+2026-03-31 16:41:11 [INFO] [kitakura] Ollama replied in 7.5s (262 chars).
+2026-03-31 16:45:07 [INFO] [kitakura] Queued (depth=1)
+2026-03-31 16:45:07 [INFO] [kitakura] Sending prompt (1099 chars) to Ollama ...
+2026-03-31 16:45:18 [INFO] [kitakura] Ollama replied in 10.9s (392 chars).
+2026-03-31 16:45:59 [INFO] [kitakura] Queued (depth=1)
+2026-03-31 16:45:59 [INFO] [kitakura] Sending prompt (1556 chars) to Ollama ...
+2026-03-31 16:46:10 [INFO] [kitakura] Ollama replied in 11.2s (361 chars).
+2026-03-31 16:46:32 [INFO] [kitakura] Queued (depth=1)
+2026-03-31 16:46:32 [INFO] [kitakura] Sending prompt (1943 chars) to Ollama ...
+2026-03-31 16:46:40 [INFO] [kitakura] Ollama replied in 7.3s (214 chars).
+2026-03-31 16:48:32 [INFO] [kitakura] Name set to 'mike'.
+2026-03-31 16:49:36 [INFO] [kitakura] Queued (depth=1)
+2026-03-31 16:49:36 [INFO] [kitakura] Sending prompt (2209 chars) to Ollama ...
+2026-03-31 16:49:43 [INFO] [kitakura] Ollama replied in 6.9s (193 chars).
+2026-03-31 16:50:08 [INFO] [kitakura] Queued (depth=1)
+2026-03-31 16:50:09 [INFO] [kitakura] Sending prompt (2444 chars) to Ollama ...
+2026-03-31 16:50:19 [INFO] [kitakura] Ollama replied in 10.8s (330 chars).
+2026-03-31 16:50:57 [INFO] [kitakura] Queued (depth=1)
+2026-03-31 16:50:57 [INFO] [kitakura] Sending prompt (2813 chars) to Ollama ...
+2026-03-31 16:51:06 [INFO] [kitakura] Ollama replied in 9.3s (314 chars).
+2026-03-31 16:58:26 [INFO] [kitakura] Queued (depth=1)
+2026-03-31 16:58:26 [INFO] [kitakura] Sending prompt (3159 chars) to Ollama ...
+2026-03-31 16:58:39 [INFO] [kitakura] Ollama replied in 13.5s (236 chars).
+2026-03-31 16:59:15 [INFO] [kitakura] History viewed (9 exchanges, dominant).
+2026-03-31 17:00:51 [INFO] [kitakura] Queued (depth=1)
+2026-03-31 17:00:51 [INFO] [kitakura] Sending prompt (3514 chars) to Ollama ...
+2026-03-31 17:01:01 [INFO] [kitakura] Ollama replied in 9.8s (293 chars).
+2026-03-31 17:03:01 [INFO] [kitakura] Queued (depth=1)
+2026-03-31 17:03:01 [INFO] [kitakura] Sending prompt (3850 chars) to Ollama ...
+2026-03-31 17:03:08 [INFO] [kitakura] Ollama replied in 7.7s (220 chars).
+2026-03-31 17:03:24 [INFO] [kitakura] History viewed (11 exchanges, dominant).
+2026-03-31 17:03:51 [INFO] [kitakura] Queued (depth=1)
+2026-03-31 17:03:51 [INFO] [kitakura] Sending prompt (4126 chars) to Ollama ...
+2026-03-31 17:03:56 [INFO] [kitakura] Ollama replied in 5.1s (144 chars).
+2026-03-31 17:04:24 [INFO] [kitakura] Queued (depth=1)
+2026-03-31 17:04:24 [INFO] [kitakura] Sending prompt (4299 chars) to Ollama ...
+2026-03-31 17:04:31 [INFO] [kitakura] Ollama replied in 7.7s (237 chars).
+2026-03-31 17:04:47 [INFO] [kitakura] Queued (depth=1)
+2026-03-31 17:04:47 [INFO] [kitakura] Sending prompt (4399 chars) to Ollama ...
+2026-03-31 17:04:56 [INFO] [kitakura] Ollama replied in 9.5s (246 chars).
+2026-03-31 17:06:19 [INFO] [kitakura] Queued (depth=1)
+2026-03-31 17:06:19 [INFO] [kitakura] Sending prompt (4442 chars) to Ollama ...
+2026-03-31 17:06:31 [INFO] [kitakura] Ollama replied in 12.3s (379 chars).
+2026-03-31 17:07:12 [INFO] [kitakura] Queued (depth=1)
+2026-03-31 17:07:12 [INFO] [kitakura] Sending prompt (4403 chars) to Ollama ...
+2026-03-31 17:07:25 [INFO] [kitakura] Ollama replied in 12.7s (355 chars).
+2026-03-31 17:08:13 [INFO] [kitakura] Queued (depth=1)
+2026-03-31 17:08:13 [INFO] [kitakura] Sending prompt (4418 chars) to Ollama ...
+2026-03-31 17:08:23 [INFO] [kitakura] Ollama replied in 10.0s (305 chars).
+2026-03-31 17:08:55 [INFO] [kitakura] Queued (depth=1)
+2026-03-31 17:08:55 [INFO] [kitakura] Sending prompt (4557 chars) to Ollama ...
+2026-03-31 17:09:08 [INFO] [kitakura] Ollama replied in 13.1s (343 chars).
+2026-03-31 17:10:59 [INFO] Shard ID None has successfully RESUMED session d29c74ee1d05168bd02cd92f37cf911f.
+2026-03-31 17:11:44 [INFO] [kitakura] Queued (depth=1)
+2026-03-31 17:11:44 [INFO] [kitakura] Sending prompt (4732 chars) to Ollama ...
+2026-03-31 17:11:56 [INFO] [kitakura] Ollama replied in 12.0s (339 chars).
+2026-03-31 17:13:13 [INFO] [kitakura] Queued (depth=1)
+2026-03-31 17:13:13 [INFO] [kitakura] Sending prompt (4781 chars) to Ollama ...
+2026-03-31 17:13:24 [INFO] [kitakura] Ollama replied in 10.8s (298 chars).
+2026-03-31 17:20:43 [INFO] logging in using static token
+2026-03-31 17:20:44 [INFO] Shard ID None has connected to Gateway (Session ID: b5479c05c02e08094ac1230d7fd817a5).
+2026-03-31 17:20:46 [INFO] Database initialised.
+2026-03-31 17:20:46 [INFO] Axis is online as Axis#7942  |  concurrency=2  |  timeout=120s  |  memory_limit=12 exchanges/personality
+2026-03-31 17:20:59 [INFO] [ani6565] Queued (depth=1)
+2026-03-31 17:20:59 [INFO] [ani6565] Sending prompt (750 chars) to Ollama ...
+2026-03-31 17:21:07 [INFO] [ani6565] Ollama replied in 8.3s (84 chars).
+2026-03-31 17:21:41 [INFO] [ani6565] Queued (depth=1)
+2026-03-31 17:21:41 [INFO] [ani6565] Sending prompt (877 chars) to Ollama ...
+2026-03-31 17:22:19 [INFO] [ani6565] Ollama replied in 38.1s (1296 chars).
