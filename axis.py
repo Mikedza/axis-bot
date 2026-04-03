@@ -6,8 +6,15 @@ import asyncio
 import json
 import logging
 import os
+import tempfile
+import uuid
 import yt_dlp
 from collections import defaultdict
+
+try:
+    import pyttsx3
+except Exception:
+    pyttsx3 = None
 
 # =============================================
 #  GENERAL
@@ -230,6 +237,74 @@ async def ask_ai(prompt: str, user_tag: str) -> str:
     except Exception as exc:
         log.error(f"[{user_tag}] Unexpected Ollama error: {exc}")
         return f"System Error: Unexpected failure ({type(exc).__name__})."
+
+
+async def generate_ai_reply_for_user(user_id: str, user_tag: str, prompt: str) -> tuple[str | None, str | None]:
+    global _queue_depth
+
+    user = await get_user(user_id)
+    if not user:
+        return None, "Please use `/start-axis` first!"
+
+    personality = user[1]
+    memories = parse_memories(user[2])
+    traits = user[3] or ""
+    mood = user[4] or "Neutral"
+    user_name = user[5] or ""
+    prompt_count = (user[6] or 0) + 1
+    history = memories.get(personality, "")
+
+    full_prompt = build_prompt(personality, traits, mood, history, prompt, user_name)
+
+    _queue_depth += 1
+    log.info(f"[{user_tag}] Queued (depth={_queue_depth})")
+
+    try:
+        async with ai_semaphore:
+            response = await ask_ai(full_prompt, user_tag)
+    finally:
+        _queue_depth -= 1
+
+    new_history = history + f"\nUser: {prompt}\nAssistant: {response}"
+    memories[personality] = trim_history(new_history, MEMORY_LIMIT)
+    await save_user(user_id, personality, memories, traits, mood, user_name, prompt_count)
+    return response, None
+
+
+def _synthesize_tts_sync(text: str, out_file: str) -> None:
+    if pyttsx3 is None:
+        raise RuntimeError("pyttsx3 is not installed.")
+
+    engine = pyttsx3.init()
+    engine.setProperty("rate", 175)
+    engine.save_to_file(text, out_file)
+    engine.runAndWait()
+    engine.stop()
+
+
+async def synthesize_tts_file(text: str) -> tuple[str | None, str | None]:
+    if pyttsx3 is None:
+        return None, "TTS is unavailable because `pyttsx3` is not installed. Run: `pip install pyttsx3`"
+
+    safe_text = " ".join(text.split()).strip()
+    if not safe_text:
+        return None, "I generated an empty reply, so there is nothing to speak."
+
+    if len(safe_text) > 600:
+        safe_text = safe_text[:600]
+
+    out_file = os.path.join(tempfile.gettempdir(), f"axis_tts_{uuid.uuid4().hex}.wav")
+    loop = asyncio.get_running_loop()
+    try:
+        await loop.run_in_executor(None, _synthesize_tts_sync, safe_text, out_file)
+    except Exception as exc:
+        log.error(f"TTS synthesis failed: {exc}")
+        return None, f"TTS failed: {type(exc).__name__}"
+
+    if not os.path.exists(out_file) or os.path.getsize(out_file) == 0:
+        return None, "TTS failed to produce audio output."
+
+    return out_file, None
 
 # ---------------------------------------------
 #  UI Views
@@ -465,42 +540,18 @@ async def history(interaction: discord.Interaction) -> None:
 async def handle_chat(
     interaction: discord.Interaction, prompt: str, private: bool = False
 ) -> None:
-    global _queue_depth
     user_tag = str(interaction.user)
 
     try:
         await interaction.response.defer(ephemeral=private)
 
-        user = await get_user(str(interaction.user.id))
-        if not user:
-            await interaction.followup.send("Please use `/start-axis` first!", ephemeral=True)
+        response, error = await generate_ai_reply_for_user(str(interaction.user.id), user_tag, prompt)
+        if error:
+            await interaction.followup.send(error, ephemeral=True)
             return
 
-        personality = user[1]
-        memories = parse_memories(user[2])
-        traits = user[3] or ""
-        mood = user[4] or "Neutral"
-        user_name = user[5] or ""
-        prompt_count = (user[6] or 0) + 1
-        history = memories.get(personality, "")
-
-        full_prompt = build_prompt(personality, traits, mood, history, prompt, user_name)
-
-        _queue_depth += 1
-        log.info(f"[{user_tag}] Queued (depth={_queue_depth})")
-
-        try:
-            async with ai_semaphore:
-                response = await ask_ai(full_prompt, user_tag)
-        finally:
-            _queue_depth -= 1
-
-        new_history = history + f"\nUser: {prompt}\nAssistant: {response}"
-        memories[personality] = trim_history(new_history, MEMORY_LIMIT)
-        await save_user(str(interaction.user.id), personality, memories, traits, mood, user_name, prompt_count)
-
         safe_response = (
-            response[:DISCORD_MAX_LEN] + "…" if len(response) > DISCORD_MAX_LEN else response
+            response[:DISCORD_MAX_LEN] + "..." if len(response) > DISCORD_MAX_LEN else response
         )
 
         if private:
@@ -523,8 +574,7 @@ async def handle_chat(
         except Exception:
             pass
 
-# =============================================
-#  MUSIC
+# =============================================#  MUSIC
 # =============================================
 # ---------------------------------------------
 #  Queue & State
@@ -623,8 +673,62 @@ def format_duration(seconds: int) -> str:
 # ---------------------------------------------
 #  Slash Commands (Music)
 # ---------------------------------------------
-@tree.command(name="play", description="Play a song in your voice channel (search or URL)")
-async def play(interaction: discord.Interaction, query: str) -> None:
+@tree.command(name="play", description="Generate an AI reply and speak it in your voice channel")
+async def play(interaction: discord.Interaction, prompt: str) -> None:
+    if not interaction.guild:
+        await interaction.response.send_message("This command only works in a server.", ephemeral=True)
+        return
+
+    voice_state = interaction.user.voice  # type: ignore[union-attr]
+    if not voice_state or not voice_state.channel:
+        await interaction.response.send_message("You need to be in a voice channel first.", ephemeral=True)
+        return
+
+    await interaction.response.defer()
+
+    guild_id = interaction.guild.id
+    channel = voice_state.channel
+    vc = voice_clients.get(guild_id)
+
+    if not vc or not vc.is_connected():
+        vc = await channel.connect()
+        voice_clients[guild_id] = vc
+    elif vc.channel != channel:
+        await vc.move_to(channel)
+
+    response, error = await generate_ai_reply_for_user(str(interaction.user.id), str(interaction.user), prompt)
+    if error:
+        await interaction.followup.send(error)
+        return
+
+    tts_file, tts_error = await synthesize_tts_file(response)
+    if tts_error or not tts_file:
+        await interaction.followup.send(f"{response}\n\n(TTS unavailable: {tts_error})")
+        return
+
+    if vc.is_playing():
+        vc.stop()
+
+    source = discord.FFmpegPCMAudio(tts_file, options="-vn")
+
+    def after_tts(error: Exception | None) -> None:
+        if error:
+            log.error(f"[Guild {guild_id}] TTS playback error: {error}")
+        try:
+            if os.path.exists(tts_file):
+                os.remove(tts_file)
+        except Exception as exc:
+            log.warning(f"Failed to delete temp TTS file {tts_file}: {exc}")
+        asyncio.run_coroutine_threadsafe(play_next(guild_id), client.loop)
+
+    vc.play(source, after=after_tts)
+    safe_response = response[:DISCORD_MAX_LEN] + "..." if len(response) > DISCORD_MAX_LEN else response
+    await interaction.followup.send(safe_response)
+    log.info(f"[{interaction.user}] Played AI TTS in guild {guild_id}.")
+
+
+@tree.command(name="play-music", description="Play a song in your voice channel (search or URL)")
+async def play_music(interaction: discord.Interaction, query: str) -> None:
     if not interaction.guild:
         await interaction.response.send_message("This command only works in a server.", ephemeral=True)
         return
@@ -679,7 +783,7 @@ async def play_queue(interaction: discord.Interaction) -> None:
 
     queue = music_queues[interaction.guild.id]
     if not queue:
-        await interaction.response.send_message("The queue is empty. Use `/play` to add songs.", ephemeral=True)
+        await interaction.response.send_message("The queue is empty. Use `/play-music` to add songs.", ephemeral=True)
         return
 
     embed = discord.Embed(title="Music Queue 🎵", color=discord.Color.blurple())
@@ -793,7 +897,8 @@ async def help_command(interaction: discord.Interaction) -> None:
     embed.add_field(name="`/history`", value="View your full conversation history with your current personality.", inline=False)
 
     embed.add_field(name="🎵  Music", value="\u200b", inline=False)
-    embed.add_field(name="`/play <query or URL>`", value="Play a song by name or YouTube link. Queues automatically if something is already playing.", inline=False)
+    embed.add_field(name="`/play <prompt>`", value="Generate an AI reply and speak it in your current voice channel.", inline=False)
+    embed.add_field(name="`/play-music <query or URL>`", value="Play a song by name or YouTube link. Queues automatically if something is already playing.", inline=False)
     embed.add_field(name="`/play-queue`", value="Show all songs coming up in the queue.", inline=False)
     embed.add_field(name="`/skip`", value="Skip the current song.", inline=False)
     embed.add_field(name="`/leave-call`", value="Make Axis leave the voice channel and clear the queue.", inline=False)
