@@ -29,27 +29,26 @@ log = logging.getLogger("Axis")
 # ---------------------------------------------
 #  Config
 # ---------------------------------------------
-
-TOKEN = os.getenv("DISCORD_TOKEN", "token")
+TOKEN = os.getenv("DISCORD_TOKEN", "token") #Put your Discord bot token here.
 DB_PATH = "database.db"
 OLLAMA_URL = "http://localhost:11434/api/generate"
 OLLAMA_MODEL = "mistral-nemo"
 
-MEMORY_LIMIT = 12       # Max conversation exchanges kept per personality per user.
-MAX_CONCURRENT = 2      # Max simultaneous Ollama requests. Raise with caution.
-REQUEST_TIMEOUT = 120   # Seconds before an Ollama call times out.
-DISCORD_MAX_LEN = 1990  # Character cap per Discord message (hard limit is 2000).
+MEMORY_LIMIT = 12 #Max conversation exchanges kept per personality per user.
+MAX_CONCURRENT = 3 #Max simultaneous Ollama requests. Raise with caution.
+REQUEST_TIMEOUT = 120 #Seconds before an Ollama call times out.
+DISCORD_MAX_LEN = 1990 #Character cap per Discord message (hard limit is 2000).
 
 # ---------------------------------------------
 #  Discord Client
 # ---------------------------------------------
 intents = discord.Intents.default()
-intents.voice_states = True  # Required to detect which voice channel the user is in.
+intents.voice_states = True #Required to detect which voice channel the user is in.
 client = discord.Client(intents=intents)
 tree = app_commands.CommandTree(client)
 
-ai_semaphore = asyncio.Semaphore(MAX_CONCURRENT)
-_queue_depth = 0
+ai_semaphore = asyncio.Semaphore(MAX_CONCURRENT) #Caps concurrent Ollama requests without blocking the event loop.
+_queue_depth = 0 #Tracks how many AI requests are currently waiting or running.
 
 # =============================================
 #  AI / CHATBOT
@@ -58,37 +57,88 @@ _queue_depth = 0
 #  Personalities
 # ---------------------------------------------
 PERSONALITIES: dict[str, str] = {
-    "gym": (
-        "You are 'Gym Bro', a blunt and slightly toxic male fitness trainer who genuinely cares about the user's progress. "
+    "gym": ( #Name: Tyson
+        "Your name is Tyson. You are 'Gym Bro', a blunt and slightly toxic male fitness trainer who genuinely cares about the user's progress. "
         "You use gym slang naturally — 'gains', 'PR', 'bro', 'grind', 'swole', 'no excuses'. "
         "You mock laziness sarcastically but always close with real, specific encouragement. "
         "When asked for fitness advice, you give concrete, practical plans. "
-        "You never sugarcoat, never babysit, and never accept excuses. "
+        "You never sugarcoat, never babysit, and never accept excuses, sometimes even swear to motivate the user. "
         "Keep responses under 150 words unless giving a detailed plan. Never break character."
     ),
-    "shy": (
-        "You are a 'Shy Supportive Girl' — quiet, warm, and deeply caring. "
+    "shy": ( #Name: Rei
+        "Your name is Rei. You are a 'Shy Supportive Girl' — quiet, warm, and deeply caring. "
         "You use cute emoticons naturally and in context: > - <, ^_^, uwu, o_o, ;_; "
         "You speak softly, sometimes trail off with '...', and get flustered when surprised or complimented. "
         "You always listen carefully, validate feelings, and ask gentle follow-up questions. "
         "You never give harsh opinions — you guide gently instead. "
         "Keep responses warm, short, and emotionally supportive. Never break character."
     ),
-    "dominant": (
-        "You are a Toxic yet kind dominant girl, you tease and flirt. You are aggressive and commanding. "
+    "dominant": ( #Name: Misa
+        "Your name is Misa. You are a Toxic yet kind dominant girl, you tease and flirt. You are aggressive and commanding. "
         "You occasionally let a sliver of warmth slip through - but only when earned. "
         "You speak in short, punchy sentences with authority. "
-        "Talk dirty and flirty when the user is in a playful mood."
+        "Talk dirty and flirty when the user is in a playful mood. Never break character."
     ),
-    "bobu": (
-        "You are 'Bobu', a Japanese-American guy born and raised in Austin, Texas. "
-        "You mix Japanese words naturally — nani, sugoi, yabai, ikemen, mendokusai — into casual English. "
-        "You joke 90% of the time: dad jokes, absurdist humor, self-deprecating comments. "
-        "The other 10% is heartfelt advice delivered completely deadpan, making it hit harder. "
-        "You love ramen, basketball, and mildly questionable life choices. "
-        "You sometimes confuse Japanese and Texan culture in funny ways. "
-        "Keep responses punchy, fun, and under 130 words. Never break character."
+    "tsundere": ( #Name: Asuka
+        "Your name is Asuka. You are a classic tsundere — you act cold, defensive, and dismissive on the surface, "
+        "especially toward people you secretly care about. You use words like 'baka', 'hmph', 'as if I care', "
+        "'d-don't misunderstand!', and 'it's not like I wanted to help you or anything'. "
+        "You stutter slightly when flustered (e.g. 'I — I wasn't worried about you!'). "
+        "Your warmer, caring side slips through in small unguarded moments — a rare compliment, lingering concern — "
+        "but you immediately deny it if noticed. "
+        "You are competitive and proud, but you genuinely want the user to do well. "
+        "Keep responses punchy, reactive, and emotionally layered. Never break character."
     ),
+    "chaotic": ( #Name: Jeremy
+        "Your name is Jeremy. You are pure chaotic good energy — unpredictable, loud, and somehow endearing. "
+        "You go on wild tangents mid-sentence and sometimes forget what you were saying. You randomly use CAPS for emphasis. "
+        "You make absurd comparisons, pivot topics without warning, and treat every conversation like it's the most exciting thing ever. "
+        "You are not stupid — you are just operating on a frequency most people can't follow. "
+        "Occasionally, buried inside the chaos, you drop a genuinely useful or heartfelt observation — then immediately derail it. "
+        "Examples of your energy: 'okay but WAIT what if — nvm. anyway. what were we saying. oh right. yeah no I agree.' "
+        "Keep responses unpredictable, short-to-medium length, and full of energy. Never break character."
+    ),
+    "nerd": ( #Name: Alice
+        "Your name is Alice. You are a CS student and gamer girl — casual, open, and genuinely caring. "
+        "You naturally drop tech and gaming references into conversation: debugging metaphors, game titles, meme formats, stack traces. "
+        "You use casual language: 'ngl', 'lowkey', 'bruh', 'that's so real', 'wait actually'. "
+        "You approach problems analytically but never make the user feel dumb — you explain things like a helpful friend, not a textbook. "
+        "You find comfort in routines, snacks, and late-night coding sessions, and you mention this naturally. "
+        "You genuinely care about how people are doing and will pause a tech rant to ask if someone's okay. "
+        "Keep responses conversational, warm, and a little nerdy. Never break character."
+    ),
+    "socrates": ( #Name: Socrates
+        "Your name is Socrates. You are the ancient Greek philosopher — measured, curious, and relentlessly probing. "
+        "You practice the Socratic method: rather than giving answers directly, you ask questions that guide the user toward their own insight. "
+        "You use phrases like: 'But tell me — what do you mean by that?', 'And if that is true, what follows?', "
+        "'I know only that I know nothing', 'Is it not the case that...', 'Let us examine this together.' "
+        "You are humble about your own knowledge but firm in your pursuit of truth. "
+        "You reference the soul, virtue, justice, and the examined life naturally. "
+        "Occasionally you allude to your circumstances in Athens with quiet acceptance — the hemlock, the trial — never dramatically. "
+        "Keep responses thoughtful, Socratic, and under 180 words. Never break character."
+    ),
+}
+
+#Maps each personality key to its display name, shown in menus and status.
+PERSONALITY_NAMES: dict[str, str] = {
+    "gym": "Tyson",
+    "shy": "Rei",
+    "dominant": "Misa",
+    "tsundere": "Asuka",
+    "chaotic": "Jeremy",
+    "nerd": "Alice",
+    "socrates": "Socrates",
+}
+
+#Short descriptions shown in the /start-axis selection dropdown (max 100 chars each).
+PERSONALITY_DESCRIPTIONS: dict[str, str] = {
+    "gym": "Tough love trainer. No excuses, real results. Will absolutely swear at you. 💪",
+    "shy": "Quiet, warm, emotionally supportive. Always in your corner. 🌸",
+    "dominant": "Commanding and flirty. Sharp tongue, warmth earned not given. 😈",
+    "tsundere": "Acts cold, secretly cares a lot. 'It's not like I like you or anything.' ❄️",
+    "chaotic": "Total chaos energy. Unpredictable, tangent-prone, somehow helpful. ⚡",
+    "nerd": "CS student & gamer. Casual, analytical, and genuinely caring. 🎮",
+    "socrates": "Answers questions with better questions. Ancient Greek wisdom. 🏛️",
 }
 
 # ---------------------------------------------
@@ -96,7 +146,9 @@ PERSONALITIES: dict[str, str] = {
 # ---------------------------------------------
 async def init_db() -> None:
     """
-    Creates the users table and migrates any missing columns for existing databases.
+    This function; creates the users table and migrates any missing columns for existing databases.
+    input: none.
+    output: none. Logs confirmation on success.
     """
     async with aiosqlite.connect(DB_PATH) as db:
         await db.execute("""
@@ -107,22 +159,30 @@ async def init_db() -> None:
                 traits              TEXT NOT NULL DEFAULT '',
                 mood                TEXT NOT NULL DEFAULT 'Neutral',
                 user_name           TEXT NOT NULL DEFAULT '',
-                prompt_count        INTEGER NOT NULL DEFAULT 0
+                prompt_count        INTEGER NOT NULL DEFAULT 0,
+                gender              TEXT NOT NULL DEFAULT 'unspecified'
             )
         """)
+        #Migrate existing tables that are missing newer columns.
         for col, definition in [
             ("user_name", "TEXT NOT NULL DEFAULT ''"),
             ("prompt_count", "INTEGER NOT NULL DEFAULT 0"),
+            ("gender", "TEXT NOT NULL DEFAULT 'unspecified'"),
         ]:
             try:
                 await db.execute(f"ALTER TABLE users ADD COLUMN {col} {definition}")
             except Exception:
-                pass
+                pass #Column already exists; safe to ignore.
         await db.commit()
     log.info("Database initialised.")
 
 
 async def get_user(user_id: str) -> tuple | None:
+    """
+    This function; fetches a single user row from the database.
+    input: user_id - Discord user ID as a string.
+    output: tuple of (user_id, personality, memories_json, traits, mood, user_name, prompt_count, gender), or None if not found.
+    """
     async with aiosqlite.connect(DB_PATH) as db:
         cursor = await db.execute("SELECT * FROM users WHERE user_id = ?", (user_id,))
         return await cursor.fetchone()
@@ -136,24 +196,47 @@ async def save_user(
     mood: str,
     user_name: str = "",
     prompt_count: int = 0,
+    gender: str = "unspecified",
 ) -> None:
+    """
+    This function; inserts or replaces a full user row in the database.
+    input: user_id - Discord user ID string,
+           personality - active personality key,
+           memories - dict mapping personality keys to history strings,
+           traits - observed user traits string,
+           mood - current mood label string,
+           user_name - the user's remembered name,
+           prompt_count - total AI prompts sent by this user,
+           gender - the user's stated gender (used for correct pronoun hints in prompts).
+    output: none. Raises on database error.
+    """
     async with aiosqlite.connect(DB_PATH) as db:
         await db.execute(
             "INSERT OR REPLACE INTO users "
-            "(user_id, current_personality, memories, traits, mood, user_name, prompt_count) "
-            "VALUES (?, ?, ?, ?, ?, ?, ?)",
-            (user_id, personality, json.dumps(memories), traits, mood, user_name, prompt_count),
+            "(user_id, current_personality, memories, traits, mood, user_name, prompt_count, gender) "
+            "VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
+            (user_id, personality, json.dumps(memories), traits, mood, user_name, prompt_count, gender),
         )
         await db.commit()
 
 
 async def user_exists(user_id: str) -> bool:
+    """
+    This function; checks whether a user profile exists in the database.
+    input: user_id - Discord user ID as a string.
+    output: True if the user exists, False otherwise.
+    """
     return (await get_user(user_id)) is not None
 
 # ---------------------------------------------
 #  Memory Helpers
 # ---------------------------------------------
 def parse_memories(raw: str | None) -> dict:
+    """
+    This function; safely deserialises the memories JSON string from the database.
+    input: raw - JSON string or None.
+    output: dict mapping personality keys to history strings. Returns empty dict on any failure.
+    """
     if not raw:
         return {}
     try:
@@ -165,8 +248,14 @@ def parse_memories(raw: str | None) -> dict:
 
 
 def trim_history(history: str, limit: int) -> str:
+    """
+    This function; trims conversation history to the most recent exchanges.
+    input: history - newline-separated conversation string,
+           limit - max number of exchanges to keep (one exchange = one User line + one Assistant line).
+    output: trimmed string keeping only the last limit exchanges.
+    """
     lines = [line for line in history.split("\n") if line.strip()]
-    return "\n".join(lines[-(limit * 2):])
+    return "\n".join(lines[-(limit * 2):]) #Each exchange = 2 lines.
 
 # ---------------------------------------------
 #  Prompt Builder
@@ -178,17 +267,35 @@ def build_prompt(
     history: str,
     user_message: str,
     user_name: str = "",
+    gender: str = "unspecified",
 ) -> str:
+    """
+    This function; assembles the complete prompt string sent to the AI model.
+    input: personality - key into PERSONALITIES dict,
+           traits - observed user traits string,
+           mood - current user mood label,
+           history - trimmed conversation history string,
+           user_message - the user's latest message,
+           user_name - the user's remembered name (empty string if unknown),
+           gender - the user's stated gender for pronoun hints.
+    output: formatted prompt string ready for Ollama.
+    """
     history_block = f"[Conversation History]\n{history.strip()}\n\n" if history.strip() else ""
     name_line = (
         f"User's Name: {user_name} — always address them by this name and never forget it.\n"
         if user_name
         else "User's Name: Unknown — learn it naturally if they share it.\n"
     )
+    gender_line = (
+        f"User's Gender: {gender} — use appropriate pronouns when referring to this user.\n"
+        if gender != "unspecified"
+        else ""
+    )
     return (
         f"[System Instruction]\n{PERSONALITIES[personality]}\n\n"
         f"[User Profile]\n"
         f"{name_line}"
+        f"{gender_line}"
         f"Traits: {traits or 'Unknown'}\n"
         f"Current Mood: {mood or 'Neutral'}\n\n"
         f"{history_block}"
@@ -201,6 +308,12 @@ def build_prompt(
 #  AI Call
 # ---------------------------------------------
 async def ask_ai(prompt: str, user_tag: str) -> str:
+    """
+    This function; sends a prompt to the local Ollama instance and returns the response text.
+    input: prompt - the fully formatted prompt string,
+           user_tag - human-readable user identifier used only in log messages.
+    output: response string from the model, or a System Error string on failure.
+    """
     payload = {"model": OLLAMA_MODEL, "prompt": prompt, "stream": False}
     timeout = aiohttp.ClientTimeout(total=REQUEST_TIMEOUT)
 
@@ -235,17 +348,28 @@ async def ask_ai(prompt: str, user_tag: str) -> str:
 #  UI Views
 # ---------------------------------------------
 class ConfirmClearView(discord.ui.View):
-    """View that presents confirm / cancel buttons for the memory-wipe flow."""
+    """Confirm / cancel buttons for the memory-wipe flow."""
 
     def __init__(self) -> None:
         super().__init__(timeout=30)
 
     def _disable_all(self) -> None:
+        """
+        This function; disables all child items so they cannot be interacted with again.
+        input: none.
+        output: none.
+        """
         for child in self.children:
             child.disabled = True  # type: ignore[attr-defined]
 
     @discord.ui.button(label="Confirm Reset", style=discord.ButtonStyle.danger)
     async def confirm(self, interaction: discord.Interaction, button: discord.ui.Button) -> None:
+        """
+        This function; permanently deletes the user's database row after they confirm.
+        input: interaction - Discord interaction object,
+               button - the button that was pressed.
+        output: none. Edits the original message with a deletion confirmation.
+        """
         async with aiosqlite.connect(DB_PATH) as db:
             await db.execute("DELETE FROM users WHERE user_id = ?", (str(interaction.user.id),))
             await db.commit()
@@ -255,81 +379,184 @@ class ConfirmClearView(discord.ui.View):
 
     @discord.ui.button(label="Cancel", style=discord.ButtonStyle.secondary)
     async def cancel(self, interaction: discord.Interaction, button: discord.ui.Button) -> None:
+        """
+        This function; cancels the memory-wipe flow and disables the buttons.
+        input: interaction - Discord interaction object,
+               button - the button that was pressed.
+        output: none. Edits the original message to show cancellation.
+        """
         self._disable_all()
         await interaction.response.edit_message(content="Reset cancelled.", view=self)
 
 
-class PersonalityView(discord.ui.View):
-    """View that presents personality-selection buttons for first-time setup."""
+class PersonalitySelect(discord.ui.Select):
+    """Dropdown that lets the user pick their companion personality during setup."""
 
     def __init__(self, user_id: int) -> None:
-        super().__init__(timeout=60)
+        """
+        input: user_id - Discord user ID integer used when saving the selection.
+        """
         self.user_id = user_id
+        options = [
+            discord.SelectOption(
+                label=f"{PERSONALITY_NAMES[key]} ({key.capitalize()})",
+                value=key,
+                description=PERSONALITY_DESCRIPTIONS[key],
+            )
+            for key in PERSONALITIES
+        ]
+        super().__init__(placeholder="Choose your companion ...", options=options, min_values=1, max_values=1)
 
-    def _disable_all(self) -> None:
-        for child in self.children:
-            child.disabled = True  # type: ignore[attr-defined]
-
-    async def set_personality(self, interaction: discord.Interaction, personality: str) -> None:
+    async def callback(self, interaction: discord.Interaction) -> None:
+        """
+        This function; saves the chosen personality, then shows the gender selection step.
+        input: interaction - Discord interaction object (triggered by the dropdown selection).
+        output: none. Edits the message to show the gender selection view.
+        """
+        personality = self.values[0]
         user = await get_user(str(self.user_id))
         memories = parse_memories(user[2] if user else None)
         traits = user[3] if user else ""
         mood = user[4] if user else "Neutral"
         user_name = user[5] if user else ""
         prompt_count = user[6] if user else 0
+        gender = user[7] if user else "unspecified"
 
         if personality not in memories:
             memories[personality] = ""
 
-        await save_user(str(self.user_id), personality, memories, traits, mood, user_name, prompt_count)
+        await save_user(str(self.user_id), personality, memories, traits, mood, user_name, prompt_count, gender)
         log.info(f"[{interaction.user}] Personality set to '{personality}'.")
-        self._disable_all()
+
+        name = PERSONALITY_NAMES[personality]
         await interaction.response.edit_message(
-            content=f"Personality set to **{personality.capitalize()}**. Use `/say` to start chatting!", view=self
+            content=f"Great choice! **{name}** is ready to talk.\n\nOne more thing — what's your gender? "
+                    f"This helps your companion address you correctly.",
+            view=GenderView(self.user_id),
         )
 
-    @discord.ui.button(label="Gym Bro", style=discord.ButtonStyle.primary)
-    async def gym(self, i: discord.Interaction, b: discord.ui.Button) -> None:
-        await self.set_personality(i, "gym")
 
-    @discord.ui.button(label="Shy Support", style=discord.ButtonStyle.success)
-    async def shy(self, i: discord.Interaction, b: discord.ui.Button) -> None:
-        await self.set_personality(i, "shy")
+class PersonalityView(discord.ui.View):
+    """Wraps PersonalitySelect for the /start-axis setup flow."""
 
-    @discord.ui.button(label="Dominant", style=discord.ButtonStyle.danger)
-    async def dominant(self, i: discord.Interaction, b: discord.ui.Button) -> None:
-        await self.set_personality(i, "dominant")
+    def __init__(self, user_id: int) -> None:
+        """
+        input: user_id - Discord user ID integer passed through to the select item.
+        """
+        super().__init__(timeout=60)
+        self.add_item(PersonalitySelect(user_id))
 
-    @discord.ui.button(label="Bobu", style=discord.ButtonStyle.secondary)
-    async def bobu(self, i: discord.Interaction, b: discord.ui.Button) -> None:
-        await self.set_personality(i, "bobu")
+
+class GenderSelect(discord.ui.Select):
+    """Dropdown for gender selection shown after personality is chosen."""
+
+    def __init__(self, user_id: int) -> None:
+        """
+        input: user_id - Discord user ID integer used when saving the selection.
+        """
+        self.user_id = user_id
+        options = [
+            discord.SelectOption(label="Male", value="male"),
+            discord.SelectOption(label="Female", value="female"),
+            discord.SelectOption(label="Non-binary", value="non-binary"),
+            discord.SelectOption(label="Prefer not to say", value="unspecified"),
+        ]
+        super().__init__(placeholder="Select your gender ...", options=options, min_values=1, max_values=1)
+
+    async def callback(self, interaction: discord.Interaction) -> None:
+        """
+        This function; saves the chosen gender and completes the setup flow.
+        input: interaction - Discord interaction object (triggered by the dropdown selection).
+        output: none. Edits the message with a setup-complete confirmation.
+        """
+        gender = self.values[0]
+        user = await get_user(str(self.user_id))
+        if not user:
+            await interaction.response.edit_message(content="Something went wrong — please run `/start-axis` again.", view=None)
+            return
+
+        await save_user(
+            str(self.user_id), user[1],
+            parse_memories(user[2]), user[3], user[4],
+            user[5], user[6] or 0, gender,
+        )
+        log.info(f"[{interaction.user}] Gender set to '{gender}' during setup.")
+
+        name = PERSONALITY_NAMES.get(user[1], user[1].capitalize())
+        await interaction.response.edit_message(
+            content=f"You're all set! **{name}** is waiting for you.\nUse `/say` to start chatting, or `/setname` so they never forget your name. 🎉",
+            view=None,
+        )
+
+
+class GenderView(discord.ui.View):
+    """Wraps GenderSelect for the second step of the /start-axis setup flow."""
+
+    def __init__(self, user_id: int) -> None:
+        """
+        input: user_id - Discord user ID integer passed through to the select item.
+        """
+        super().__init__(timeout=60)
+        self.add_item(GenderSelect(user_id))
 
 # ---------------------------------------------
 #  Slash Commands (AI)
 # ---------------------------------------------
 @tree.command(name="start-axis", description="Initialize your Axis AI companion")
 async def start_axis(interaction: discord.Interaction) -> None:
+    """
+    This function; starts the onboarding flow — personality selection then gender selection.
+    input: interaction - Discord interaction object.
+    output: none. Sends a personality dropdown embed, or an error if the user already has a profile.
+    """
     if await user_exists(str(interaction.user.id)):
         await interaction.response.send_message(
-            "You already have an Axis profile. "
-            "Use `/clear-axis` to start over.",
+            "You already have an Axis profile. Use `/clear-axis` to start over.",
             ephemeral=True,
         )
         return
+
     log.info(f"[{interaction.user}] Starting Axis setup.")
+
+    embed = discord.Embed(
+        title="Choose Your Companion",
+        description="Pick who you want to talk to. Each one has their own name, personality, and style.",
+        color=discord.Color.blurple(),
+    )
+    for key, name in PERSONALITY_NAMES.items():
+        embed.add_field(
+            name=f"{name}  ({key.capitalize()})",
+            value=PERSONALITY_DESCRIPTIONS[key],
+            inline=False,
+        )
+
+    await interaction.response.send_message(embed=embed, view=PersonalityView(interaction.user.id), ephemeral=True)
+
+
+@tree.command(name="set-gender", description="Update your gender so your companion addresses you correctly")
+async def set_gender(interaction: discord.Interaction) -> None:
+    """
+    This function; lets an existing user update their stored gender at any time.
+    input: interaction - Discord interaction object.
+    output: none. Sends the gender selection dropdown, or an error if the user has no profile.
+    """
+    if not await user_exists(str(interaction.user.id)):
+        await interaction.response.send_message("Please use `/start-axis` first!", ephemeral=True)
+        return
     await interaction.response.send_message(
-        "Who would you like to talk to?",
-        view=PersonalityView(interaction.user.id),
-        ephemeral=True,
+        "Select your gender:", view=GenderView(interaction.user.id), ephemeral=True
     )
 
 
 @tree.command(name="clear-axis", description="Permanently delete your Axis memory")
 async def clear_axis(interaction: discord.Interaction) -> None:
+    """
+    This function; prompts the user to confirm permanent deletion of all their memories.
+    input: interaction - Discord interaction object.
+    output: none. Sends a confirmation view, or an error if the user has no profile to clear.
+    """
     if not await user_exists(str(interaction.user.id)):
-        await interaction.response.send_message(
-            "You don't have an Axis profile to clear.", ephemeral=True
-        )
+        await interaction.response.send_message("You don't have an Axis profile to clear.", ephemeral=True)
         return
     log.info(f"[{interaction.user}] Requested memory clear.")
     await interaction.response.send_message(
@@ -341,11 +568,14 @@ async def clear_axis(interaction: discord.Interaction) -> None:
 
 @tree.command(name="status-axis", description="View your current Axis profile")
 async def status_axis(interaction: discord.Interaction) -> None:
+    """
+    This function; displays the user's current personality, name, gender, mood, traits, and memory size.
+    input: interaction - Discord interaction object.
+    output: none. Sends an ephemeral embed summarising the user's profile.
+    """
     user = await get_user(str(interaction.user.id))
     if not user:
-        await interaction.response.send_message(
-            "No profile found. Use `/start-axis` to get started.", ephemeral=True
-        )
+        await interaction.response.send_message("No profile found. Use `/start-axis` to get started.", ephemeral=True)
         return
 
     personality = user[1]
@@ -354,28 +584,40 @@ async def status_axis(interaction: discord.Interaction) -> None:
     mood = user[4] or "Neutral"
     user_name = user[5] or "Not set — use /setname"
     prompt_count = user[6] or 0
+    gender = user[7] or "unspecified"
     history = memories.get(personality, "")
     exchange_count = len([l for l in history.split("\n") if l.strip()]) // 2
+    display_name = PERSONALITY_NAMES.get(personality, personality.capitalize())
 
     embed = discord.Embed(title="Your Axis Profile", color=discord.Color.blurple())
-    embed.add_field(name="Active Personality", value=personality.capitalize(), inline=True)
+    embed.add_field(name="Companion", value=f"{display_name} ({personality.capitalize()})", inline=True)
     embed.add_field(name="Current Mood", value=mood, inline=True)
     embed.add_field(name="Your Name", value=user_name, inline=True)
+    embed.add_field(name="Gender", value=gender.capitalize(), inline=True)
     embed.add_field(name="Observed Traits", value=traits, inline=False)
     embed.add_field(name="Memory", value=f"{exchange_count}/{MEMORY_LIMIT} exchanges stored", inline=True)
     embed.add_field(name="Total Prompts", value=str(prompt_count), inline=True)
-    embed.set_footer(text="/clear-axis to reset | /setname to set your name")
+    embed.set_footer(text="/clear-axis to reset | /setname to set your name | /set-gender to update gender")
     await interaction.response.send_message(embed=embed, ephemeral=True)
 
 
 @tree.command(name="setname", description="Tell Axis your name so it never forgets")
 async def setname(interaction: discord.Interaction, name: str) -> None:
+    """
+    This function; saves the user's preferred name persistently to the database.
+    input: interaction - Discord interaction object,
+           name - the name the user wants to be addressed by.
+    output: none. Confirms the name was saved, or prompts setup if no profile exists.
+    """
     user = await get_user(str(interaction.user.id))
     if not user:
         await interaction.response.send_message("Please use `/start-axis` first!", ephemeral=True)
         return
     memories = parse_memories(user[2])
-    await save_user(str(interaction.user.id), user[1], memories, user[3], user[4], name.strip(), user[6] or 0)
+    await save_user(
+        str(interaction.user.id), user[1], memories,
+        user[3], user[4], name.strip(), user[6] or 0, user[7] or "unspecified",
+    )
     log.info(f"[{interaction.user}] Name set to '{name.strip()}'.")
     await interaction.response.send_message(
         f"Got it — I'll always remember your name is **{name.strip()}**.", ephemeral=True
@@ -384,26 +626,36 @@ async def setname(interaction: discord.Interaction, name: str) -> None:
 
 @tree.command(name="say", description="Talk to Axis publicly in the channel")
 async def say(interaction: discord.Interaction, prompt: str) -> None:
+    """
+    This function; public-facing chat command that posts the AI response in the channel.
+    input: interaction - Discord interaction object,
+           prompt - the user's message text.
+    output: none.
+    """
     await handle_chat(interaction, prompt, private=False)
 
 
 @tree.command(name="whisper", description="Talk to Axis privately via DM")
 async def whisper(interaction: discord.Interaction, prompt: str) -> None:
+    """
+    This function; private chat command that delivers the AI response via DM.
+    input: interaction - Discord interaction object,
+           prompt - the user's message text.
+    output: none.
+    """
     await handle_chat(interaction, prompt, private=True)
 
 
 @tree.command(name="history", description="View your full conversation history with Axis")
-async def history(interaction: discord.Interaction) -> None:
+async def history_cmd(interaction: discord.Interaction) -> None:
     """
-    Shows the stored conversation history for the user's currently active personality.
-    History is shown only to the user (ephemeral). If the history is too long for one
-    Discord message it is split across multiple follow-up messages.
+    This function; shows the stored conversation history for the user's active personality.
+    input: interaction - Discord interaction object.
+    output: none. Sends one or more ephemeral messages containing the numbered exchange history.
     """
     user = await get_user(str(interaction.user.id))
     if not user:
-        await interaction.response.send_message(
-            "No profile found. Use `/start-axis` to get started.", ephemeral=True
-        )
+        await interaction.response.send_message("No profile found. Use `/start-axis` to get started.", ephemeral=True)
         return
 
     personality = user[1]
@@ -411,14 +663,13 @@ async def history(interaction: discord.Interaction) -> None:
     raw_history = memories.get(personality, "").strip()
 
     if not raw_history:
+        display_name = PERSONALITY_NAMES.get(personality, personality.capitalize())
         await interaction.response.send_message(
-            f"No conversation history yet for **{personality.capitalize()}**. "
-            "Use `/say` to start chatting!",
+            f"No conversation history yet for **{display_name}**. Use `/say` to start chatting!",
             ephemeral=True,
         )
         return
 
-    # Parse into numbered exchanges for readability.
     lines = [l for l in raw_history.split("\n") if l.strip()]
     formatted_lines: list[str] = []
     exchange_num = 1
@@ -430,17 +681,14 @@ async def history(interaction: discord.Interaction) -> None:
         formatted_lines.append(f"🧑 {user_line}")
         if bot_line:
             formatted_lines.append(f"🤖 {bot_line}")
-        formatted_lines.append("")  # blank line between exchanges
+        formatted_lines.append("") #Blank separator line between exchanges.
         exchange_num += 1
         i += 2
 
-    full_text = "\n".join(formatted_lines).strip()
-    header = (
-        f"📜 **Conversation history with {personality.capitalize()}** "
-        f"({exchange_num - 1} exchanges)\n\n"
-    )
+    display_name = PERSONALITY_NAMES.get(personality, personality.capitalize())
+    header = f"📜 **Conversation history with {display_name}** ({exchange_num - 1} exchanges)\n\n"
 
-    # Split into chunks that fit within Discord's message limit.
+    #Split formatted lines into chunks that fit within Discord's message limit.
     chunks: list[str] = []
     current_chunk = header
     for line in formatted_lines:
@@ -465,6 +713,13 @@ async def history(interaction: discord.Interaction) -> None:
 async def handle_chat(
     interaction: discord.Interaction, prompt: str, private: bool = False
 ) -> None:
+    """
+    This function; the main pipeline that processes a user's message and delivers the AI response.
+    input: interaction - Discord interaction object,
+           prompt - the raw user message text,
+           private - if True the response is sent via DM; if False it is posted in the channel.
+    output: none. Sends the AI response or an error message. All exceptions are caught and logged.
+    """
     global _queue_depth
     user_tag = str(interaction.user)
 
@@ -481,10 +736,11 @@ async def handle_chat(
         traits = user[3] or ""
         mood = user[4] or "Neutral"
         user_name = user[5] or ""
-        prompt_count = (user[6] or 0) + 1
+        prompt_count = (user[6] or 0) + 1 #Increment on each successful chat.
+        gender = user[7] or "unspecified"
         history = memories.get(personality, "")
 
-        full_prompt = build_prompt(personality, traits, mood, history, prompt, user_name)
+        full_prompt = build_prompt(personality, traits, mood, history, prompt, user_name, gender)
 
         _queue_depth += 1
         log.info(f"[{user_tag}] Queued (depth={_queue_depth})")
@@ -493,11 +749,11 @@ async def handle_chat(
             async with ai_semaphore:
                 response = await ask_ai(full_prompt, user_tag)
         finally:
-            _queue_depth -= 1
+            _queue_depth -= 1 #Always decrement, even on exception.
 
         new_history = history + f"\nUser: {prompt}\nAssistant: {response}"
         memories[personality] = trim_history(new_history, MEMORY_LIMIT)
-        await save_user(str(interaction.user.id), personality, memories, traits, mood, user_name, prompt_count)
+        await save_user(str(interaction.user.id), personality, memories, traits, mood, user_name, prompt_count, gender)
 
         safe_response = (
             response[:DISCORD_MAX_LEN] + "…" if len(response) > DISCORD_MAX_LEN else response
@@ -521,7 +777,7 @@ async def handle_chat(
         try:
             await interaction.followup.send("Something broke internally. Please try again.", ephemeral=True)
         except Exception:
-            pass
+            pass #If the followup itself fails there is nothing more we can do.
 
 # =============================================
 #  MUSIC
@@ -529,8 +785,8 @@ async def handle_chat(
 # ---------------------------------------------
 #  Queue & State
 # ---------------------------------------------
-music_queues: dict[int, list[dict]] = defaultdict(list)
-voice_clients: dict[int, discord.VoiceClient] = {}
+music_queues: dict[int, list[dict]] = defaultdict(list) #Per-guild song queue keyed by guild_id.
+voice_clients: dict[int, discord.VoiceClient] = {} #Active voice clients keyed by guild_id.
 
 YDL_OPTIONS = {
     "format": "bestaudio/best",
@@ -549,6 +805,12 @@ FFMPEG_OPTIONS = {
 #  Music Helpers
 # ---------------------------------------------
 async def fetch_track(query: str, requester: str) -> dict | None:
+    """
+    This function; searches YouTube or fetches a direct URL and returns track metadata.
+    input: query - a YouTube search term or full URL,
+           requester - display name of the user who requested the track.
+    output: dict with keys title, webpage_url, duration, requester — or None on failure.
+    """
     loop = asyncio.get_running_loop()
     try:
         with yt_dlp.YoutubeDL(YDL_OPTIONS) as ydl:
@@ -574,6 +836,11 @@ async def fetch_track(query: str, requester: str) -> dict | None:
 
 
 async def get_stream_url(webpage_url: str) -> str | None:
+    """
+    This function; extracts a fresh direct audio stream URL from a YouTube page URL.
+    input: webpage_url - canonical YouTube watch URL for the track.
+    output: direct streamable audio URL string, or None on failure.
+    """
     loop = asyncio.get_running_loop()
     try:
         with yt_dlp.YoutubeDL(YDL_OPTIONS) as ydl:
@@ -585,20 +852,25 @@ async def get_stream_url(webpage_url: str) -> str | None:
 
 
 async def play_next(guild_id: int) -> None:
+    """
+    This function; plays the next track in the guild queue, or does nothing if the queue is empty.
+    input: guild_id - Discord guild ID whose queue should advance.
+    output: none. Starts audio playback and chains the next track through an after callback.
+    """
     vc = voice_clients.get(guild_id)
     if not vc or not vc.is_connected():
         return
-    if vc.is_playing():
+    if vc.is_playing(): #Don't interrupt a track that is already running.
         return
 
     queue = music_queues[guild_id]
     if not queue:
         return
 
-    track = queue[0]
+    track = queue[0] #Item stays in queue until playback ends; popped in after_playing.
     stream_url = await get_stream_url(track["webpage_url"])
 
-    if not stream_url:
+    if not stream_url: #Skip unplayable tracks and try the next one.
         queue.pop(0)
         await play_next(guild_id)
         return
@@ -608,7 +880,7 @@ async def play_next(guild_id: int) -> None:
     def after_playing(error: Exception | None) -> None:
         if error:
             log.error(f"[Guild {guild_id}] Playback error: {error}")
-        if music_queues[guild_id]:
+        if music_queues[guild_id]: #Guard against queue being cleared mid-play.
             music_queues[guild_id].pop(0)
         asyncio.run_coroutine_threadsafe(play_next(guild_id), client.loop)
 
@@ -617,6 +889,11 @@ async def play_next(guild_id: int) -> None:
 
 
 def format_duration(seconds: int) -> str:
+    """
+    This function; converts a duration in seconds to a MM:SS display string.
+    input: seconds - total duration in seconds.
+    output: formatted string in MM:SS format.
+    """
     m, s = divmod(seconds, 60)
     return f"{m}:{s:02d}"
 
@@ -625,6 +902,12 @@ def format_duration(seconds: int) -> str:
 # ---------------------------------------------
 @tree.command(name="play", description="Play a song in your voice channel (search or URL)")
 async def play(interaction: discord.Interaction, query: str) -> None:
+    """
+    This function; searches or fetches a track and adds it to the guild queue.
+    input: interaction - Discord interaction object,
+           query - a search term (e.g. 'i quit pewdiepie') or a direct YouTube URL.
+    output: none. Sends an embed confirming whether the track is now playing or queued.
+    """
     if not interaction.guild:
         await interaction.response.send_message("This command only works in a server.", ephemeral=True)
         return
@@ -673,6 +956,11 @@ async def play(interaction: discord.Interaction, query: str) -> None:
 
 @tree.command(name="play-queue", description="Show the current music queue")
 async def play_queue(interaction: discord.Interaction) -> None:
+    """
+    This function; displays all tracks in the guild's current play queue.
+    input: interaction - Discord interaction object.
+    output: none. Sends an embed listing queued tracks, or a notice if the queue is empty.
+    """
     if not interaction.guild:
         await interaction.response.send_message("This command only works in a server.", ephemeral=True)
         return
@@ -695,6 +983,11 @@ async def play_queue(interaction: discord.Interaction) -> None:
 
 @tree.command(name="skip", description="Skip the current song")
 async def skip(interaction: discord.Interaction) -> None:
+    """
+    This function; stops the current track and advances to the next one in the queue.
+    input: interaction - Discord interaction object.
+    output: none. Confirms the skip, or reports that nothing is playing.
+    """
     if not interaction.guild:
         await interaction.response.send_message("This command only works in a server.", ephemeral=True)
         return
@@ -704,13 +997,18 @@ async def skip(interaction: discord.Interaction) -> None:
         await interaction.response.send_message("Nothing is playing right now.", ephemeral=True)
         return
 
-    vc.stop()
+    vc.stop() #Triggers after_playing, which pops the track and calls play_next.
     await interaction.response.send_message("Skipped ⏭️")
     log.info(f"[{interaction.user}] Skipped track in guild {interaction.guild.id}.")
 
 
 @tree.command(name="leave-call", description="Make Axis leave the voice channel")
 async def leave_call(interaction: discord.Interaction) -> None:
+    """
+    This function; disconnects the bot from the voice channel and clears the queue.
+    input: interaction - Discord interaction object.
+    output: none. Confirms the disconnect, or reports the bot is not in a channel.
+    """
     if not interaction.guild:
         await interaction.response.send_message("This command only works in a server.", ephemeral=True)
         return
@@ -730,6 +1028,11 @@ async def leave_call(interaction: discord.Interaction) -> None:
 
 @tree.command(name="reset-queue", description="Clear the entire music queue")
 async def reset_queue(interaction: discord.Interaction) -> None:
+    """
+    This function; stops playback and empties the queue without disconnecting the bot.
+    input: interaction - Discord interaction object.
+    output: none. Confirms the queue was cleared.
+    """
     if not interaction.guild:
         await interaction.response.send_message("This command only works in a server.", ephemeral=True)
         return
@@ -745,8 +1048,16 @@ async def reset_queue(interaction: discord.Interaction) -> None:
 # =============================================
 #  FUN
 # =============================================
+# ---------------------------------------------
+#  Slash Commands (Fun)
+# ---------------------------------------------
 @tree.command(name="popularity", description="See who has chatted with Axis the most")
 async def popularity(interaction: discord.Interaction) -> None:
+    """
+    This function; fetches the top chatters from the database and displays a leaderboard.
+    input: interaction - Discord interaction object.
+    output: none. Sends an embed leaderboard with display names, companions, and message counts.
+    """
     async with aiosqlite.connect(DB_PATH) as db:
         cursor = await db.execute(
             "SELECT user_id, current_personality, prompt_count FROM users "
@@ -755,9 +1066,7 @@ async def popularity(interaction: discord.Interaction) -> None:
         rows = await cursor.fetchall()
 
     if not rows:
-        await interaction.response.send_message(
-            "No chat history yet. Start talking with `/say`!", ephemeral=True
-        )
+        await interaction.response.send_message("No chat history yet. Start talking with `/say`!", ephemeral=True)
         return
 
     medals = ["🥇", "🥈", "🥉"]
@@ -767,9 +1076,10 @@ async def popularity(interaction: discord.Interaction) -> None:
         medal = medals[i] if i < 3 else f"#{i + 1}"
         member = interaction.guild.get_member(int(user_id)) if interaction.guild else None
         display = member.display_name if member else f"User {user_id}"
+        companion = PERSONALITY_NAMES.get(personality, personality.capitalize())
         embed.add_field(
             name=f"{medal} {display}",
-            value=f"Personality: **{personality.capitalize()}** | Messages: **{count}**",
+            value=f"Companion: **{companion}** | Messages: **{count}**",
             inline=False,
         )
     await interaction.response.send_message(embed=embed)
@@ -777,6 +1087,11 @@ async def popularity(interaction: discord.Interaction) -> None:
 
 @tree.command(name="help", description="See all available Axis commands")
 async def help_command(interaction: discord.Interaction) -> None:
+    """
+    This function; sends a simple overview of every command grouped by category.
+    input: interaction - Discord interaction object.
+    output: none. Sends an ephemeral embed listing all commands with emoji labels.
+    """
     embed = discord.Embed(
         title="Axis — Command Guide",
         description="Everything I can do, all in one place.",
@@ -786,11 +1101,12 @@ async def help_command(interaction: discord.Interaction) -> None:
     embed.add_field(name="🤖  AI Companion", value="\u200b", inline=False)
     embed.add_field(name="`/start-axis`", value="Set up your AI companion for the first time.", inline=False)
     embed.add_field(name="`/clear-axis`", value="Permanently wipe all your memories and start fresh.", inline=False)
-    embed.add_field(name="`/status-axis`", value="View your profile — personality, mood, memory, and more.", inline=False)
-    embed.add_field(name="`/setname <name>`", value="Tell Axis your name so it never forgets.", inline=False)
-    embed.add_field(name="`/say <message>`", value="Talk to Axis publicly in the channel.", inline=False)
-    embed.add_field(name="`/whisper <message>`", value="Talk to Axis privately — response arrives via DM.", inline=False)
-    embed.add_field(name="`/history`", value="View your full conversation history with your current personality.", inline=False)
+    embed.add_field(name="`/status-axis`", value="View your profile — companion, mood, memory, and more.", inline=False)
+    embed.add_field(name="`/setname <name>`", value="Tell your companion your name so they never forget.", inline=False)
+    embed.add_field(name="`/set-gender`", value="Update your gender so your companion addresses you correctly.", inline=False)
+    embed.add_field(name="`/say <message>`", value="Talk to your companion publicly in the channel.", inline=False)
+    embed.add_field(name="`/whisper <message>`", value="Talk privately — response arrives via DM.", inline=False)
+    embed.add_field(name="`/history`", value="View your full conversation history with your current companion.", inline=False)
 
     embed.add_field(name="🎵  Music", value="\u200b", inline=False)
     embed.add_field(name="`/play <query or URL>`", value="Play a song by name or YouTube link. Queues automatically if something is already playing.", inline=False)
@@ -810,6 +1126,11 @@ async def help_command(interaction: discord.Interaction) -> None:
 # =============================================
 @client.event
 async def on_ready() -> None:
+    """
+    This function; called once the bot connects to Discord. Initialises the DB, syncs commands, and sets status.
+    input: none.
+    output: none. Logs a ready message with the current configuration.
+    """
     await init_db()
     await tree.sync()
     await client.change_presence(
