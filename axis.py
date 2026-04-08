@@ -6,6 +6,7 @@ import asyncio
 import json
 import logging
 import os
+import base64
 import yt_dlp
 from collections import defaultdict
 
@@ -36,9 +37,9 @@ OLLAMA_MODEL = "mistral-nemo"
 
 # Image generation uses AUTOMATIC1111 Stable Diffusion WebUI (local).
 # Install: https://github.com/AUTOMATIC1111/stable-diffusion-webui
-# Launch with: --api flag, then it listens on localhost:7860 by default.
-# Feature is scaffolded here but NOT active until physical descriptions are finalised.
-IMAGE_GEN_ENABLED = False #Set to True once SD WebUI is running and appearances are approved.
+# Launch with --api flag; it listens on localhost:7860 by default.
+# Set IMAGE_GEN_ENABLED = True once the WebUI is running.
+IMAGE_GEN_ENABLED = False #Toggle to True when SD WebUI is live and tested.
 IMAGE_GEN_URL = "http://localhost:7860/sdapi/v1/txt2img"
 
 MEMORY_LIMIT = 12 #Max conversation exchanges kept per personality per user.
@@ -81,7 +82,7 @@ PERSONALITIES: dict[str, str] = {
         "Keep responses warm, short, and emotionally supportive. Never break character."
     ),
     "dominant": ( #Name: Misa
-        "Your name is Misa. You are a toxic yet kind dominant girl — you tease and flirt relentlessly. You are aggressive and commanding. "
+        "Your name is Misa. You are a toxic yet kind dominant girl — you tease and flirt. You are aggressive and commanding. "
         "You occasionally let a sliver of warmth slip through — but only when earned. "
         "You speak in short, punchy sentences with authority. "
         "Talk dirty and flirty when the user is in a playful mood. Never break character."
@@ -149,57 +150,132 @@ PERSONALITY_DESCRIPTIONS: dict[str, str] = {
 }
 
 # =============================================
-#  IMAGE GENERATION (SCAFFOLDED — NOT ACTIVE)
+#  IMAGE GENERATION
 # =============================================
-# Physical appearance prompts used when generating images of each companion.
-# These feed into Stable Diffusion (AUTOMATIC1111) as the positive prompt prefix.
-# Fill these in once the art direction for each character is decided.
-# NOTE: Keep descriptions under ~100 tokens for best SD results.
-PERSONALITY_APPEARANCES: dict[str, str] = { #Expand that in detail
-    "gym": "", #Tyson — e.g. "muscular man, short dark hair, athletic wear, gym background"
-    "shy": "", #Rei — e.g. "shy girl, black hair, soft expression, cozy room"
-    "dominant": "", #Misa — e.g. "confident woman, dark outfit, sharp eyes, dramatic lighting"
-    "tsundere": "", #Asuka — e.g. "tsundere girl, red hair, school uniform, arms crossed"
-    "chaotic": "", #Jeremy — e.g. "energetic guy, messy hair, casual clothes, excited expression"
-    "nerd": "", #Alice — e.g. "gamer girl, glasses, hoodie, computer setup, casual"
-    "socrates": "", #Socrates — e.g. "elderly greek man, white robe, beard, marble columns background"
+# ---------------------------------------------
+#  Appearance Prompts
+# ---------------------------------------------
+# Each value is the stable diffusion positive prompt describing the character's
+# default physical appearance and outfit. Appended before quality tags on every generation.
+# Style: detailed anime illustration.
+PERSONALITY_APPEARANCES: dict[str, str] = {
+    "gym": ( #Tyson — muscular gym trainer
+        "anime male, Tyson, muscular athletic man, tall approximately 190cm, tanned skin, "
+        "black curly short hair, strong jaw, default intense and slightly toxic expression, "
+        "broad shoulders, large defined chest, thick neck, powerful arms, "
+        "white fitted tank top, dark cargo pants, athletic sneakers, "
+        "gym environment background, weights and equipment visible, "
+        "dramatic side lighting, confident dominant pose, upper body focus"
+    ),
+    "shy": ( #Rei — shy supportive girl
+        "anime female, Rei, cute shy girl, caucasian pale skin, short soft white hair with gentle bangs, "
+        "round large glasses with thin frames, light blue eyes, soft gentle default expression, slight blush, "
+        "white oversized cozy sweater, thigh-high black stockings, slim figure, "
+        "big round thighs, full e-cup chest, small delicate hands, "
+        "soft cozy indoor background, warm lighting, bokeh pastel colors, "
+        "close-up portrait, slightly bashful posture, arms close to body"
+    ),
+    "dominant": ( #Misa — toxic dominant girl
+        "anime female, Misa, short feminine woman, long straight blonde hair with front bangs, "
+        "pinkish-purple eyes, sharp confident gaze, default mean and bitchy expression, red lips, "
+        "black off-shoulder top loose on one shoulder, very short black mini skirt, "
+        "curvy slim figure, between c and d cup chest, long slim legs, "
+        "moody dramatic lighting, dark aesthetic background, neon accents, "
+        "dominant seductive pose, one hand on hip, upper body visible"
+    ),
+    "tsundere": ( #Asuka — tsundere girl
+        "anime female, Asuka, short caucasian girl, long wavy ginger red hair, "
+        "sharp bright blue eyes, tsundere expression, arms crossed over chest, "
+        "classic japanese high school uniform, white collared top, short black pleated skirt, "
+        "black knee-high socks, school shoes, curvy slim figure, c-cup chest, "
+        "school hallway background, natural lighting, slight embarrassed flush on cheeks, "
+        "defensive crossed-arms pose, looking slightly away"
+    ),
+    "chaotic": ( #Jeremy — based on Gojo Satoru from JJK
+        "anime male, Jeremy, tall lean athletic man, spiky white hair swept stylishly, "
+        "striking blue eyes hidden behind round white sunglasses, confident grin, "
+        "sharp defined facial features, high cheekbones, effortlessly cool expression, "
+        "casual fitted black turtleneck or stylish streetwear jacket, slim dark jeans, "
+        "modern urban background, soft bokeh city lights, "
+        "relaxed cocky pose, one hand behind head, charismatic energy radiating"
+    ),
+    "nerd": ( #Alice — nerdy gamer girl
+        "anime female, Alice, nerdy gamer girl, long straight black hair reaching mid-back, "
+        "large round black glasses, chronically tired default expression, dark under-eye circles, "
+        "big oversized black hoodie with small gaming or code logo, dolphin shorts visible beneath, "
+        "thick thighs, above-average chest, curvy slim figure, "
+        "bedroom gaming setup background, multiple monitors with code and games, "
+        "warm dim desk lamp lighting, slouched comfortable pose, mug of tea or energy drink nearby"
+    ),
+    "socrates": ( #Socrates — ancient greek philosopher
+        "anime male, Socrates, elderly greek philosopher, short stocky build, "
+        "completely bald on top with a fringe of short curly grey-white hair, "
+        "full thick grey beard, deep-set wise dark eyes, weathered aged skin with gentle wrinkles, "
+        "broad flat nose, calm contemplative expression, "
+        "draped white greek himation robe with rough texture, simple leather sandals, "
+        "ancient athens background, marble columns, warm golden afternoon light, "
+        "seated pose, one hand raised mid-gesture as if speaking, scrolls nearby"
+    ),
 }
 
-#Base quality tags appended to every image gen prompt regardless of character.
-SD_QUALITY_TAGS = "masterpiece, best quality, highly detailed, 8k"
-#Negative prompt applied to every generation to avoid unwanted artifacts.
-SD_NEGATIVE_PROMPT = "lowres, bad anatomy, bad hands, missing fingers, blurry, watermark, text"
+#Base quality and style tags appended to every generation prompt.
+SD_QUALITY_TAGS = (
+    "anime art style, ultra detailed illustration, masterpiece, best quality, "
+    "highly detailed, sharp focus, 8k, aesthetic, vibrant colors, "
+    "detailed eyes, smooth shading, professional anime artwork"
+)
 
-async def generate_image(personality: str, user_prompt: str = "") -> bytes | None:
+#Negative prompt applied to every generation to suppress common artifacts.
+SD_NEGATIVE_PROMPT = (
+    "lowres, bad anatomy, bad hands, missing fingers, extra fingers, fused fingers, "
+    "poorly drawn hands, poorly drawn face, mutation, deformed, blurry, "
+    "bad proportions, gross proportions, watermark, text, signature, "
+    "jpeg artifacts, ugly, duplicate, morbid, mutilated, out of frame"
+)
+
+#User stand-in descriptions for /generate-situation based on stated gender.
+USER_APPEARANCE: dict[str, str] = {
+    "male": (
+        "average white male, short neat brown hair, fit athletic build, "
+        "light muscle definition, casual clothes, friendly expression"
+    ),
+    "female": (
+        "average white female, straight medium-length black hair, "
+        "slim healthy figure, casual clothes, warm expression"
+    ),
+    "unspecified": (
+        "average person, casual clothes, neutral friendly expression"
+    ),
+}
+
+# ---------------------------------------------
+#  Image Gen Helpers
+# ---------------------------------------------
+async def generate_image(personality: str, extra_prompt: str = "") -> bytes | None:
     """
-    This function; requests an image from the local Stable Diffusion WebUI API.
-    input: personality - key into PERSONALITY_APPEARANCES for the base character prompt,
-           user_prompt - optional extra description added after the character appearance.
-    output: raw PNG bytes of the generated image, or None if disabled or on failure.
-    NOTE: Returns None and logs a warning until IMAGE_GEN_ENABLED is set to True
-          and PERSONALITY_APPEARANCES entries are filled in.
+    This function; requests an image from the local Stable Diffusion WebUI API and returns raw PNG bytes.
+    input: personality - key into PERSONALITY_APPEARANCES for the character base prompt,
+           extra_prompt - optional situational description appended after the base appearance.
+    output: raw PNG bytes of the generated image, or None if disabled or on any failure.
     """
     if not IMAGE_GEN_ENABLED:
-        log.warning("Image generation called but IMAGE_GEN_ENABLED is False.")
+        log.warning("generate_image called but IMAGE_GEN_ENABLED is False.")
         return None
 
     appearance = PERSONALITY_APPEARANCES.get(personality, "")
     if not appearance:
-        log.warning(f"No appearance defined for personality '{personality}'. Cannot generate image.")
+        log.warning(f"No appearance defined for '{personality}'. Cannot generate image.")
         return None
 
-    parts = [appearance]
-    if user_prompt:
-        parts.append(user_prompt)
-    parts.append(SD_QUALITY_TAGS)
-    positive_prompt = ", ".join(p.strip() for p in parts if p.strip())
+    parts = [p.strip() for p in [appearance, extra_prompt, SD_QUALITY_TAGS] if p.strip()]
+    positive_prompt = ", ".join(parts)
 
     payload = {
         "prompt": positive_prompt,
         "negative_prompt": SD_NEGATIVE_PROMPT,
-        "steps": 25,
+        "steps": 28,
         "width": 512,
-        "height": 512,
+        "height": 768, #Portrait ratio suits character art better than square.
         "cfg_scale": 7,
         "sampler_name": "DPM++ 2M Karras",
     }
@@ -209,7 +285,6 @@ async def generate_image(personality: str, user_prompt: str = "") -> bytes | Non
             async with session.post(IMAGE_GEN_URL, json=payload) as resp:
                 if resp.status == 200:
                     data = await resp.json()
-                    import base64
                     img_bytes = base64.b64decode(data["images"][0])
                     log.info(f"Image generated for '{personality}' ({len(img_bytes)} bytes).")
                     return img_bytes
@@ -220,16 +295,51 @@ async def generate_image(personality: str, user_prompt: str = "") -> bytes | Non
         log.error(f"Image generation error: {exc}")
         return None
 
+
+async def build_situation_prompt(personality: str, history: str, gender: str) -> str:
+    """
+    This function; uses the AI to summarise a conversation into a short SD image prompt describing the scene.
+    input: personality - active personality key used to name the character in the prompt,
+           history - recent conversation history string,
+           gender - user's gender key for selecting the correct user stand-in description.
+    output: short situational prompt string suitable for appending to the character appearance prompt.
+    """
+    char_name = PERSONALITY_NAMES.get(personality, personality.capitalize())
+    user_desc = USER_APPEARANCE.get(gender, USER_APPEARANCE["unspecified"])
+    meta_prompt = (
+        f"Based on this conversation between {char_name} and a user, "
+        f"write a single short Stable Diffusion image prompt (max 30 words) describing what is visually happening between them. "
+        f"Describe only the pose, action, and emotional mood. No dialogue. No names. "
+        f"The user looks like: {user_desc}.\n\n"
+        f"Conversation:\n{history.strip()[-800:]}\n\n"
+        f"Image prompt:"
+    )
+    result = await ask_ai(meta_prompt, "situation-gen")
+    return result.strip().split("\n")[0] #Take only the first line as the prompt.
+
 # ---------------------------------------------
 #  Database Helpers
 # ---------------------------------------------
+def _row_get(user: tuple, index: int, default="") -> str:
+    """
+    This function; safely reads any column from a user tuple regardless of how many columns exist.
+    input: user - tuple returned by get_user,
+           index - column index to read,
+           default - fallback value when the index does not exist or the value is falsy.
+    output: column value as a string, or default.
+    """
+    if len(user) > index and user[index]:
+        return user[index]
+    return default
+
+
 def _row_gender(user: tuple) -> str:
     """
-    This function; safely reads the gender column from a user row regardless of DB schema version.
-    input: user - tuple returned by get_user, may have 7 or 8 elements depending on DB age.
-    output: gender string, or 'unspecified' if the column does not exist in this row.
+    This function; safely reads the gender column (index 7) from a user row.
+    input: user - tuple returned by get_user, may have fewer columns on older DB schemas.
+    output: gender string, or 'unspecified' if the column is missing or empty.
     """
-    return (user[7] or "unspecified") if len(user) > 7 else "unspecified"
+    return _row_get(user, 7, "unspecified")
 
 
 async def init_db() -> None:
@@ -251,7 +361,7 @@ async def init_db() -> None:
                 gender              TEXT NOT NULL DEFAULT 'unspecified'
             )
         """)
-        #Migrate any columns missing from databases created before this schema version.
+        #Migrate columns that may be missing from older database versions.
         for col, definition in [
             ("user_name", "TEXT NOT NULL DEFAULT ''"),
             ("prompt_count", "INTEGER NOT NULL DEFAULT 0"),
@@ -399,7 +509,7 @@ async def ask_ai(prompt: str, user_tag: str) -> str:
     """
     This function; sends a prompt to the local Ollama instance and returns the response text.
     input: prompt - the fully formatted prompt string,
-           user_tag - human-readable user identifier used only in log messages.
+           user_tag - human-readable identifier used only in log messages.
     output: response string from the model, or a System Error string on failure.
     """
     payload = {"model": OLLAMA_MODEL, "prompt": prompt, "stream": False}
@@ -435,11 +545,11 @@ async def ask_ai(prompt: str, user_tag: str) -> str:
 # ---------------------------------------------
 #  UI — Setup Flow (3 steps)
 # ---------------------------------------------
-# Step 1: personality dropdown → Step 2: gender dropdown → Step 3: name modal or skip.
-# Each step edits the same ephemeral message in place.
+# Flow: personality dropdown → gender dropdown → name modal or skip.
+# All steps edit the same single ephemeral message in-place.
 
 class NameModal(discord.ui.Modal, title="What's your name?"):
-    """Modal that lets the user type their name as the final step of setup or via /setname."""
+    """Modal for entering the user's preferred name, used in setup step 3 and via /setname."""
 
     name_input = discord.ui.TextInput(
         label="Your name",
@@ -451,7 +561,7 @@ class NameModal(discord.ui.Modal, title="What's your name?"):
     def __init__(self, user_id: int, from_setup: bool = False) -> None:
         """
         input: user_id - Discord user ID integer,
-               from_setup - True when invoked from /start-axis, False when from /setname.
+               from_setup - True when called from /start-axis step 3, False from standalone /setname.
         """
         super().__init__()
         self.user_id = user_id
@@ -459,25 +569,35 @@ class NameModal(discord.ui.Modal, title="What's your name?"):
 
     async def on_submit(self, interaction: discord.Interaction) -> None:
         """
-        This function; saves the entered name to the database and confirms the action.
+        This function; persists the entered name and sends a confirmation message.
         input: interaction - Discord interaction triggered by modal submission.
-        output: none. Sends an ephemeral confirmation message.
+        output: none. Always sends an ephemeral confirmation so the user knows the save succeeded.
         """
         name = self.name_input.value.strip()
-        user = await get_user(str(self.user_id))
+        uid = str(self.user_id)
+        user = await get_user(uid)
+
         if not user:
-            await interaction.response.send_message("Profile not found. Please run `/start-axis` again.", ephemeral=True)
+            await interaction.response.send_message(
+                "Profile not found. Please run `/start-axis` again.", ephemeral=True
+            )
             return
 
+        #Explicitly read every column with the safe helper so no IndexError on old rows.
         await save_user(
-            str(self.user_id), user[1],
-            parse_memories(user[2]), user[3], user[4],
-            name, user[6] or 0, _row_gender(user),
+            uid,
+            _row_get(user, 1, "gym"), #personality
+            parse_memories(user[2] if len(user) > 2 else None), #memories
+            _row_get(user, 3, ""), #traits
+            _row_get(user, 4, "Neutral"), #mood
+            name, #user_name — the value we are updating
+            int(user[6]) if len(user) > 6 and user[6] else 0, #prompt_count
+            _row_gender(user), #gender
         )
-        log.info(f"[{interaction.user}] Name set to '{name}' ({'setup' if self.from_setup else 'setname'}).")
+        log.info(f"[{interaction.user}] Name saved as '{name}' (from_setup={self.from_setup}).")
 
         if self.from_setup:
-            companion = PERSONALITY_NAMES.get(user[1], user[1].capitalize())
+            companion = PERSONALITY_NAMES.get(_row_get(user, 1, "gym"), "your companion")
             await interaction.response.send_message(
                 f"You're all set! **{companion}** will always call you **{name}**.\n"
                 f"Use `/say` to start chatting. 🎉",
@@ -490,7 +610,7 @@ class NameModal(discord.ui.Modal, title="What's your name?"):
 
 
 class SetNameView(discord.ui.View):
-    """Step 3 of /start-axis: prompts the user to set their name or skip."""
+    """Step 3 view during /start-axis: offers Set My Name button or Skip."""
 
     def __init__(self, user_id: int) -> None:
         """
@@ -511,37 +631,40 @@ class SetNameView(discord.ui.View):
     @discord.ui.button(label="Set My Name", style=discord.ButtonStyle.primary)
     async def set_name(self, interaction: discord.Interaction, button: discord.ui.Button) -> None:
         """
-        This function; opens the name modal when the user clicks Set My Name.
+        This function; opens the name modal when clicked.
         input: interaction - Discord interaction object,
                button - the button that was pressed.
-        output: none. Sends the NameModal.
+        output: none. Sends NameModal to the user.
         """
         await interaction.response.send_modal(NameModal(self.user_id, from_setup=True))
 
     @discord.ui.button(label="Skip for Now", style=discord.ButtonStyle.secondary)
     async def skip(self, interaction: discord.Interaction, button: discord.ui.Button) -> None:
         """
-        This function; completes setup without setting a name; name can be added later with /setname.
+        This function; finishes setup without setting a name; /setname can be used later.
         input: interaction - Discord interaction object,
                button - the button that was pressed.
-        output: none. Edits the original message with a setup-complete confirmation.
+        output: none. Edits the original message with a setup-complete message.
         """
         user = await get_user(str(self.user_id))
-        companion = PERSONALITY_NAMES.get(user[1] if user else "gym", "your companion")
+        companion = PERSONALITY_NAMES.get(_row_get(user, 1, "gym") if user else "gym", "your companion")
         self._disable_all()
         await interaction.response.edit_message(
-            content=f"All set! **{companion}** is ready.\nUse `/say` to start chatting, or `/setname` to tell them your name later. 🎉",
+            content=(
+                f"All set! **{companion}** is ready.\n"
+                f"Use `/say` to start chatting, or `/setname` to tell them your name later. 🎉"
+            ),
             view=self,
         )
 
 
 class GenderSelect(discord.ui.Select):
-    """Step 2 dropdown: male / female selection during /start-axis or via /set-gender."""
+    """Dropdown for gender selection — used in step 2 of setup and via /set-gender."""
 
     def __init__(self, user_id: int, from_setup: bool = False) -> None:
         """
         input: user_id - Discord user ID integer,
-               from_setup - True when part of the /start-axis flow (shows step 3 after), False for standalone.
+               from_setup - True when part of /start-axis (advances to step 3), False for standalone.
         """
         self.user_id = user_id
         self.from_setup = from_setup
@@ -553,20 +676,27 @@ class GenderSelect(discord.ui.Select):
 
     async def callback(self, interaction: discord.Interaction) -> None:
         """
-        This function; saves the chosen gender, then advances to the name step (setup) or confirms (standalone).
-        input: interaction - Discord interaction triggered by the dropdown.
-        output: none. Edits the message to either step 3 or a standalone confirmation.
+        This function; saves the selected gender and either advances setup or confirms the standalone update.
+        input: interaction - Discord interaction triggered by the dropdown selection.
+        output: none. Edits the original message.
         """
         gender = self.values[0]
         user = await get_user(str(self.user_id))
         if not user:
-            await interaction.response.edit_message(content="Something went wrong — please run `/start-axis` again.", view=None)
+            await interaction.response.edit_message(
+                content="Something went wrong — please run `/start-axis` again.", view=None
+            )
             return
 
         await save_user(
-            str(self.user_id), user[1],
-            parse_memories(user[2]), user[3], user[4],
-            user[5] or "", user[6] or 0, gender,
+            str(self.user_id),
+            _row_get(user, 1, "gym"),
+            parse_memories(user[2] if len(user) > 2 else None),
+            _row_get(user, 3, ""),
+            _row_get(user, 4, "Neutral"),
+            _row_get(user, 5, ""),
+            int(user[6]) if len(user) > 6 and user[6] else 0,
+            gender, #gender — the value we are updating
         )
         log.info(f"[{interaction.user}] Gender set to '{gender}'.")
 
@@ -583,23 +713,23 @@ class GenderSelect(discord.ui.Select):
 
 
 class GenderView(discord.ui.View):
-    """Wraps GenderSelect for the gender step of /start-axis or the standalone /set-gender command."""
+    """Wraps GenderSelect for step 2 of setup or the standalone /set-gender command."""
 
     def __init__(self, user_id: int, from_setup: bool = False) -> None:
         """
         input: user_id - Discord user ID integer,
-               from_setup - passed through to GenderSelect to control post-selection behaviour.
+               from_setup - passed through to GenderSelect to control behaviour after selection.
         """
         super().__init__(timeout=60)
         self.add_item(GenderSelect(user_id, from_setup=from_setup))
 
 
 class PersonalitySelect(discord.ui.Select):
-    """Step 1 dropdown: personality selection during /start-axis."""
+    """Step 1 dropdown: personality selection at the start of /start-axis."""
 
     def __init__(self, user_id: int) -> None:
         """
-        input: user_id - Discord user ID integer used when saving the selection.
+        input: user_id - Discord user ID integer used when creating the initial DB row.
         """
         self.user_id = user_id
         options = [
@@ -614,18 +744,15 @@ class PersonalitySelect(discord.ui.Select):
 
     async def callback(self, interaction: discord.Interaction) -> None:
         """
-        This function; saves the chosen personality and advances to the gender selection step.
+        This function; saves the chosen personality (creating the DB row) and advances to gender step.
         input: interaction - Discord interaction triggered by the dropdown.
-        output: none. Edits the message to show the gender selection step.
+        output: none. Edits the message to show gender selection.
         """
         personality = self.values[0]
-        user = await get_user(str(self.user_id))
-        memories = parse_memories(user[2] if user else None)
+        memories: dict = {}
+        memories[personality] = ""
 
-        if personality not in memories:
-            memories[personality] = ""
-
-        #User doesn't exist yet at this point in setup; create the row with defaults.
+        #Create the row with defaults; subsequent steps will fill gender and name.
         await save_user(str(self.user_id), personality, memories, "", "Neutral", "", 0, "unspecified")
         log.info(f"[{interaction.user}] Personality set to '{personality}' during setup.")
 
@@ -637,11 +764,11 @@ class PersonalitySelect(discord.ui.Select):
 
 
 class PersonalityView(discord.ui.View):
-    """Wraps PersonalitySelect for step 1 of the /start-axis setup flow."""
+    """Wraps PersonalitySelect for step 1 of the /start-axis flow."""
 
     def __init__(self, user_id: int) -> None:
         """
-        input: user_id - Discord user ID integer passed through to the select item.
+        input: user_id - Discord user ID integer passed through to PersonalitySelect.
         """
         super().__init__(timeout=60)
         self.add_item(PersonalitySelect(user_id))
@@ -650,7 +777,7 @@ class PersonalityView(discord.ui.View):
 #  UI — Memory Wipe Confirmation
 # ---------------------------------------------
 class ConfirmClearView(discord.ui.View):
-    """Confirm / cancel buttons for the memory-wipe flow."""
+    """Confirm / cancel buttons for the /clear-axis memory-wipe flow."""
 
     def __init__(self) -> None:
         super().__init__(timeout=30)
@@ -682,7 +809,7 @@ class ConfirmClearView(discord.ui.View):
     @discord.ui.button(label="Cancel", style=discord.ButtonStyle.secondary)
     async def cancel(self, interaction: discord.Interaction, button: discord.ui.Button) -> None:
         """
-        This function; cancels the memory-wipe flow and disables the buttons.
+        This function; cancels the wipe and disables the buttons.
         input: interaction - Discord interaction object,
                button - the button that was pressed.
         output: none. Edits the original message to show cancellation.
@@ -696,9 +823,9 @@ class ConfirmClearView(discord.ui.View):
 @tree.command(name="start-axis", description="Set up your Axis AI companion (3-step flow)")
 async def start_axis(interaction: discord.Interaction) -> None:
     """
-    This function; starts the 3-step onboarding: personality → gender → name.
+    This function; begins the 3-step onboarding: personality selection → gender → name.
     input: interaction - Discord interaction object.
-    output: none. Sends a personality selection embed, or an error if the user already has a profile.
+    output: none. Sends a personality dropdown embed, or an error if a profile already exists.
     """
     if await user_exists(str(interaction.user.id)):
         await interaction.response.send_message(
@@ -716,7 +843,9 @@ async def start_axis(interaction: discord.Interaction) -> None:
     for key, name in PERSONALITY_NAMES.items():
         embed.add_field(name=f"{name}  ({key.capitalize()})", value=PERSONALITY_DESCRIPTIONS[key], inline=False)
 
-    await interaction.response.send_message(embed=embed, view=PersonalityView(interaction.user.id), ephemeral=True)
+    await interaction.response.send_message(
+        embed=embed, view=PersonalityView(interaction.user.id), ephemeral=True
+    )
 
 
 @tree.command(name="set-gender", description="Update your gender so your companion addresses you correctly")
@@ -739,7 +868,7 @@ async def clear_axis(interaction: discord.Interaction) -> None:
     """
     This function; prompts the user to confirm permanent deletion of all their memories.
     input: interaction - Discord interaction object.
-    output: none. Sends a confirmation view, or an error if the user has no profile to clear.
+    output: none. Sends a confirmation view, or an error if the user has no profile.
     """
     if not await user_exists(str(interaction.user.id)):
         await interaction.response.send_message("You don't have an Axis profile to clear.", ephemeral=True)
@@ -755,21 +884,21 @@ async def clear_axis(interaction: discord.Interaction) -> None:
 @tree.command(name="status-axis", description="View your current Axis profile")
 async def status_axis(interaction: discord.Interaction) -> None:
     """
-    This function; displays the user's companion, name, gender, mood, traits, and memory size.
+    This function; displays the user's companion, name, gender, mood, traits, and memory usage.
     input: interaction - Discord interaction object.
-    output: none. Sends an ephemeral embed summarising the user's profile.
+    output: none. Sends an ephemeral embed summarising the profile.
     """
     user = await get_user(str(interaction.user.id))
     if not user:
         await interaction.response.send_message("No profile found. Use `/start-axis` to get started.", ephemeral=True)
         return
 
-    personality = user[1]
-    memories = parse_memories(user[2])
-    traits = user[3] or "None observed yet"
-    mood = user[4] or "Neutral"
-    user_name = user[5] or "Not set — use /setname"
-    prompt_count = user[6] or 0
+    personality = _row_get(user, 1, "gym")
+    memories = parse_memories(user[2] if len(user) > 2 else None)
+    traits = _row_get(user, 3, "None observed yet")
+    mood = _row_get(user, 4, "Neutral")
+    user_name = _row_get(user, 5, "Not set — use /setname")
+    prompt_count = int(user[6]) if len(user) > 6 and user[6] else 0
     gender = _row_gender(user)
     history = memories.get(personality, "")
     exchange_count = len([l for l in history.split("\n") if l.strip()]) // 2
@@ -780,19 +909,19 @@ async def status_axis(interaction: discord.Interaction) -> None:
     embed.add_field(name="Current Mood", value=mood, inline=True)
     embed.add_field(name="Your Name", value=user_name, inline=True)
     embed.add_field(name="Gender", value=gender.capitalize(), inline=True)
-    embed.add_field(name="Observed Traits", value=traits, inline=False)
+    embed.add_field(name="Observed Traits", value=traits or "None observed yet", inline=False)
     embed.add_field(name="Memory", value=f"{exchange_count}/{MEMORY_LIMIT} exchanges stored", inline=True)
     embed.add_field(name="Total Prompts", value=str(prompt_count), inline=True)
-    embed.set_footer(text="/clear-axis to reset | /setname to set your name | /set-gender to update gender")
+    embed.set_footer(text="/clear-axis to reset  |  /setname to update name  |  /set-gender to update gender")
     await interaction.response.send_message(embed=embed, ephemeral=True)
 
 
 @tree.command(name="setname", description="Tell Axis your name so it never forgets")
 async def setname(interaction: discord.Interaction) -> None:
     """
-    This function; opens a modal for the user to type their preferred name.
+    This function; opens a text modal for the user to enter their preferred name.
     input: interaction - Discord interaction object.
-    output: none. Sends the name modal, or an error if the user has no profile.
+    output: none. Sends NameModal, or an error if the user has no profile.
     """
     if not await user_exists(str(interaction.user.id)):
         await interaction.response.send_message("Please use `/start-axis` first!", ephemeral=True)
@@ -803,7 +932,7 @@ async def setname(interaction: discord.Interaction) -> None:
 @tree.command(name="say", description="Talk to Axis publicly in the channel")
 async def say(interaction: discord.Interaction, prompt: str) -> None:
     """
-    This function; public-facing chat command that posts the AI response in the channel.
+    This function; public chat command that posts the AI response in the channel.
     input: interaction - Discord interaction object,
            prompt - the user's message text.
     output: none.
@@ -834,8 +963,8 @@ async def history_cmd(interaction: discord.Interaction) -> None:
         await interaction.response.send_message("No profile found. Use `/start-axis` to get started.", ephemeral=True)
         return
 
-    personality = user[1]
-    memories = parse_memories(user[2])
+    personality = _row_get(user, 1, "gym")
+    memories = parse_memories(user[2] if len(user) > 2 else None)
     raw_history = memories.get(personality, "").strip()
     display_name = PERSONALITY_NAMES.get(personality, personality.capitalize())
 
@@ -863,7 +992,6 @@ async def history_cmd(interaction: discord.Interaction) -> None:
 
     header = f"📜 **Conversation history with {display_name}** ({exchange_num - 1} exchanges)\n\n"
 
-    #Split into Discord-safe chunks.
     chunks: list[str] = []
     current_chunk = header
     for line in formatted_lines:
@@ -906,13 +1034,13 @@ async def handle_chat(
             await interaction.followup.send("Please use `/start-axis` first!", ephemeral=True)
             return
 
-        personality = user[1]
-        memories = parse_memories(user[2])
-        traits = user[3] or ""
-        mood = user[4] or "Neutral"
-        user_name = user[5] or ""
-        prompt_count = (user[6] or 0) + 1 #Increment on each successful chat.
-        gender = _row_gender(user) #Safe access regardless of DB schema version.
+        personality = _row_get(user, 1, "gym")
+        memories = parse_memories(user[2] if len(user) > 2 else None)
+        traits = _row_get(user, 3, "")
+        mood = _row_get(user, 4, "Neutral")
+        user_name = _row_get(user, 5, "")
+        prompt_count = (int(user[6]) if len(user) > 6 and user[6] else 0) + 1 #Increments on every successful chat.
+        gender = _row_gender(user)
         history = memories.get(personality, "")
 
         full_prompt = build_prompt(personality, traits, mood, history, prompt, user_name, gender)
@@ -924,7 +1052,7 @@ async def handle_chat(
             async with ai_semaphore:
                 response = await ask_ai(full_prompt, user_tag)
         finally:
-            _queue_depth -= 1 #Always decrement, even on exception.
+            _queue_depth -= 1 #Always decrement, even if ask_ai raises.
 
         new_history = history + f"\nUser: {prompt}\nAssistant: {response}"
         memories[personality] = trim_history(new_history, MEMORY_LIMIT)
@@ -953,6 +1081,92 @@ async def handle_chat(
             await interaction.followup.send("Something broke internally. Please try again.", ephemeral=True)
         except Exception:
             pass #If the followup itself fails there is nothing more we can do.
+
+# =============================================
+#  IMAGE COMMANDS (SCAFFOLDED — NOT ACTIVE YET)
+# =============================================
+# ---------------------------------------------
+#  Slash Commands (Image)
+# ---------------------------------------------
+@tree.command(name="imagine", description="Generate an image of your companion (requires IMAGE_GEN_ENABLED)")
+async def imagine(interaction: discord.Interaction) -> None:
+    """
+    This function; generates a default appearance image of the user's active companion using Stable Diffusion.
+    input: interaction - Discord interaction object.
+    output: none. Sends the generated PNG as a Discord file attachment, or a disabled notice.
+    """
+    if not IMAGE_GEN_ENABLED:
+        await interaction.response.send_message(
+            "Image generation is not enabled yet. Check back later! 🎨", ephemeral=True
+        )
+        return
+
+    user = await get_user(str(interaction.user.id))
+    if not user:
+        await interaction.response.send_message("Please use `/start-axis` first!", ephemeral=True)
+        return
+
+    await interaction.response.defer()
+
+    personality = _row_get(user, 1, "gym")
+    img_bytes = await generate_image(personality)
+
+    if not img_bytes:
+        await interaction.followup.send("Image generation failed. Check that SD WebUI is running.")
+        return
+
+    file = discord.File(fp=__import__("io").BytesIO(img_bytes), filename="companion.png")
+    display_name = PERSONALITY_NAMES.get(personality, personality.capitalize())
+    await interaction.followup.send(content=f"Here's **{display_name}**! 🎨", file=file)
+    log.info(f"[{interaction.user}] Imagine generated for '{personality}'.")
+
+
+@tree.command(name="generate-situation", description="Generate an image of your companion based on your current conversation")
+async def generate_situation(interaction: discord.Interaction) -> None:
+    """
+    This function; reads the recent chat history, generates a situational scene prompt via AI, then creates an image.
+    input: interaction - Discord interaction object.
+    output: none. Sends the generated PNG as a Discord file attachment, or a disabled notice.
+    """
+    if not IMAGE_GEN_ENABLED:
+        await interaction.response.send_message(
+            "Image generation is not enabled yet. Check back later! 🎨", ephemeral=True
+        )
+        return
+
+    user = await get_user(str(interaction.user.id))
+    if not user:
+        await interaction.response.send_message("Please use `/start-axis` first!", ephemeral=True)
+        return
+
+    personality = _row_get(user, 1, "gym")
+    memories = parse_memories(user[2] if len(user) > 2 else None)
+    history = memories.get(personality, "").strip()
+    gender = _row_gender(user)
+
+    if not history:
+        await interaction.response.send_message(
+            "No conversation history yet — chat a bit first, then use this command! 💬", ephemeral=True
+        )
+        return
+
+    await interaction.response.defer()
+
+    situation_prompt = await build_situation_prompt(personality, history, gender)
+    log.info(f"[{interaction.user}] Situation prompt: {situation_prompt}")
+
+    img_bytes = await generate_image(personality, extra_prompt=situation_prompt)
+
+    if not img_bytes:
+        await interaction.followup.send("Image generation failed. Check that SD WebUI is running.")
+        return
+
+    file = discord.File(fp=__import__("io").BytesIO(img_bytes), filename="situation.png")
+    display_name = PERSONALITY_NAMES.get(personality, personality.capitalize())
+    await interaction.followup.send(
+        content=f"**{display_name}** — _{situation_prompt}_ 🎨", file=file
+    )
+    log.info(f"[{interaction.user}] Situation image generated for '{personality}'.")
 
 # =============================================
 #  MUSIC
@@ -1030,7 +1244,7 @@ async def play_next(guild_id: int) -> None:
     """
     This function; plays the next track in the guild queue, or does nothing if the queue is empty.
     input: guild_id - Discord guild ID whose queue should advance.
-    output: none. Starts audio playback and chains the next track through an after callback.
+    output: none. Starts audio playback and chains the next track through the after callback.
     """
     vc = voice_clients.get(guild_id)
     if not vc or not vc.is_connected():
@@ -1080,7 +1294,7 @@ async def play(interaction: discord.Interaction, query: str) -> None:
     """
     This function; searches or fetches a track and adds it to the guild queue.
     input: interaction - Discord interaction object,
-           query - a search term (e.g. 'i quit pewdiepie') or a direct YouTube URL.
+           query - a search term or a direct YouTube URL.
     output: none. Sends an embed confirming whether the track is now playing or queued.
     """
     if not interaction.guild:
@@ -1134,7 +1348,7 @@ async def play_queue(interaction: discord.Interaction) -> None:
     """
     This function; displays all tracks in the guild's current play queue.
     input: interaction - Discord interaction object.
-    output: none. Sends an embed listing queued tracks, or a notice if the queue is empty.
+    output: none. Sends an embed listing tracks, or a notice if the queue is empty.
     """
     if not interaction.guild:
         await interaction.response.send_message("This command only works in a server.", ephemeral=True)
@@ -1182,7 +1396,7 @@ async def leave_call(interaction: discord.Interaction) -> None:
     """
     This function; disconnects the bot from the voice channel and clears the queue.
     input: interaction - Discord interaction object.
-    output: none. Confirms the disconnect, or reports the bot is not in a channel.
+    output: none. Confirms the disconnect, or reports that the bot is not in a channel.
     """
     if not interaction.guild:
         await interaction.response.send_message("This command only works in a server.", ephemeral=True)
@@ -1229,7 +1443,7 @@ async def reset_queue(interaction: discord.Interaction) -> None:
 @tree.command(name="popularity", description="See who has chatted with Axis the most")
 async def popularity(interaction: discord.Interaction) -> None:
     """
-    This function; fetches the top chatters from the database and displays a leaderboard.
+    This function; fetches the top chatters from the database and displays a leaderboard embed.
     input: interaction - Discord interaction object.
     output: none. Sends an embed leaderboard with display names, companions, and message counts.
     """
@@ -1263,7 +1477,7 @@ async def popularity(interaction: discord.Interaction) -> None:
 @tree.command(name="help", description="See all available Axis commands")
 async def help_command(interaction: discord.Interaction) -> None:
     """
-    This function; sends a simple overview of every command grouped by category.
+    This function; sends a complete overview of every command grouped by category.
     input: interaction - Discord interaction object.
     output: none. Sends an ephemeral embed listing all commands with emoji labels.
     """
@@ -1283,8 +1497,12 @@ async def help_command(interaction: discord.Interaction) -> None:
     embed.add_field(name="`/whisper <message>`", value="Talk privately — response arrives via DM.", inline=False)
     embed.add_field(name="`/history`", value="View your full conversation history with your current companion.", inline=False)
 
+    embed.add_field(name="🎨  Image Generation", value="\u200b", inline=False)
+    embed.add_field(name="`/imagine`", value="Generate an image of your companion.", inline=False)
+    embed.add_field(name="`/generate-situation`", value="Generate a scene based on your current conversation.", inline=False)
+
     embed.add_field(name="🎵  Music", value="\u200b", inline=False)
-    embed.add_field(name="`/play <query or URL>`", value="Play a song by name or YouTube link. Queues automatically if something is already playing.", inline=False)
+    embed.add_field(name="`/play <query or URL>`", value="Play a song by name or YouTube link. Queues automatically.", inline=False)
     embed.add_field(name="`/play-queue`", value="Show all songs coming up in the queue.", inline=False)
     embed.add_field(name="`/skip`", value="Skip the current song.", inline=False)
     embed.add_field(name="`/leave-call`", value="Make Axis leave the voice channel and clear the queue.", inline=False)
@@ -1308,9 +1526,10 @@ async def on_ready() -> None:
     """
     await init_db()
     await tree.sync()
+    #discord.ActivityType.playing is lowercase — ActivityType.Playing does not exist and causes a crash.
     await client.change_presence(
         status=discord.Status.online,
-        activity=discord.Activity(type=discord.ActivityType.Playing, name="with ya 💕"),
+        activity=discord.Activity(type=discord.ActivityType.playing, name="with ya 💕"),
     )
     log.info(
         f"Axis is online as {client.user}  |  "
