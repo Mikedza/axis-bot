@@ -46,3 +46,1432 @@ discord.app_commands.errors.CommandInvokeError: Command 'play' raised an excepti
 2026-04-15 23:10:43 [INFO] [pablikpablo] Skipped track in guild 1484235279547105583.
 2026-04-15 23:11:23 [INFO] [Guild 1484235279547105583] Now playing: Soft Mommy Dom Praises You Until You Blush [F4A][Baby Talk][Cuddles][Ear Cupping]
 2026-04-15 23:11:23 [INFO] [pablikpablo] Queued: Soft Mommy Dom Praises You Until You Blush [F4A][Baby Talk][Cuddles][Ear Cupping]
+2026-04-15 23:19:02 [WARNING] PyNaCl is not installed, voice will NOT be supported
+2026-04-15 23:19:02 [WARNING] davey is not installed, voice will NOT be supported
+2026-04-15 23:19:02 [INFO] logging in using static token
+2026-04-15 23:19:03 [INFO] Shard ID None has connected to Gateway (Session ID: 37f5e70fbecd21c973610c41b67270a1).
+2026-04-15 23:19:05 [INFO] Database initialised.
+2026-04-15 23:19:06 [INFO] Axis is online as Axis#7942  |  concurrency=2  |  timeout=120s  |  memory_limit=12 exchanges/personality  |  image_gen=OFF (scaffolded)
+2026-04-15 23:19:50 [INFO] [ani6565] Starting Axis setup.
+2026-04-15 23:20:02 [INFO] [someone2238452] Starting Axis setup.
+2026-04-15 23:20:21 [ERROR] Ignoring exception in command 'play'
+Traceback (most recent call last):
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\app_commands\commands.py", line 859, in _do_call
+    return await self._callback(interaction, **params)  # type: ignore
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\Sagia\OneDrive\שולחן העבודה\hackaton_nitzanim\axis-bot\prev\axis.py", line 1316, in play
+    vc = await channel.connect()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\abc.py", line 2144, in connect
+    voice: T = cls(client, self)
+               ^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\voice_client.py", line 220, in __init__
+    raise RuntimeError('PyNaCl library needed in order to use voice')
+RuntimeError: PyNaCl library needed in order to use voice
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\app_commands\tree.py", line 1302, in _call
+    await command._invoke_with_namespace(interaction, namespace)
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\app_commands\commands.py", line 884, in _invoke_with_namespace
+    return await self._do_call(interaction, transformed_values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\app_commands\commands.py", line 877, in _do_call
+    raise CommandInvokeError(self, e) from e
+discord.app_commands.errors.CommandInvokeError: Command 'play' raised an exception: RuntimeError: PyNaCl library needed in order to use voice
+2026-04-15 23:21:16 [WARNING] PyNaCl is not installed, voice will NOT be supported
+2026-04-15 23:21:16 [WARNING] davey is not installed, voice will NOT be supported
+2026-04-15 23:21:16 [INFO] logging in using static token
+2026-04-15 23:21:17 [INFO] Shard ID None has connected to Gateway (Session ID: 56a8afa296246af712f67ed0f9135f0d).
+2026-04-15 23:21:19 [INFO] Database initialised.
+2026-04-15 23:21:19 [INFO] Axis is online as Axis#7942  |  concurrency=2  |  timeout=120s  |  memory_limit=12 exchanges/personality  |  image_gen=OFF (scaffolded)
+2026-04-15 23:21:29 [ERROR] Ignoring exception in command 'play'
+Traceback (most recent call last):
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\app_commands\commands.py", line 859, in _do_call
+    return await self._callback(interaction, **params)  # type: ignore
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\Sagia\OneDrive\שולחן העבודה\hackaton_nitzanim\axis-bot\prev\axis.py", line 1316, in play
+    vc = await channel.connect()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\abc.py", line 2144, in connect
+    voice: T = cls(client, self)
+               ^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\voice_client.py", line 220, in __init__
+    raise RuntimeError('PyNaCl library needed in order to use voice')
+RuntimeError: PyNaCl library needed in order to use voice
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\app_commands\tree.py", line 1302, in _call
+    await command._invoke_with_namespace(interaction, namespace)
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\app_commands\commands.py", line 884, in _invoke_with_namespace
+    return await self._do_call(interaction, transformed_values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\app_commands\commands.py", line 877, in _do_call
+    raise CommandInvokeError(self, e) from e
+discord.app_commands.errors.CommandInvokeError: Command 'play' raised an exception: RuntimeError: PyNaCl library needed in order to use voice
+2026-04-15 23:22:30 [ERROR] Ignoring exception in command 'play'
+Traceback (most recent call last):
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\app_commands\commands.py", line 859, in _do_call
+    return await self._callback(interaction, **params)  # type: ignore
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\Sagia\OneDrive\שולחן העבודה\hackaton_nitzanim\axis-bot\prev\axis.py", line 1316, in play
+    vc = await channel.connect()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\abc.py", line 2144, in connect
+    voice: T = cls(client, self)
+               ^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\voice_client.py", line 220, in __init__
+    raise RuntimeError('PyNaCl library needed in order to use voice')
+RuntimeError: PyNaCl library needed in order to use voice
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\app_commands\tree.py", line 1302, in _call
+    await command._invoke_with_namespace(interaction, namespace)
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\app_commands\commands.py", line 884, in _invoke_with_namespace
+    return await self._do_call(interaction, transformed_values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\app_commands\commands.py", line 877, in _do_call
+    raise CommandInvokeError(self, e) from e
+discord.app_commands.errors.CommandInvokeError: Command 'play' raised an exception: RuntimeError: PyNaCl library needed in order to use voice
+2026-04-15 23:22:41 [WARNING] davey is not installed, voice will NOT be supported
+2026-04-15 23:22:41 [INFO] logging in using static token
+2026-04-15 23:22:42 [INFO] Shard ID None has connected to Gateway (Session ID: 47fa6a52aa26fa8dd14cfbc76a28e187).
+2026-04-15 23:22:44 [INFO] Database initialised.
+2026-04-15 23:22:45 [INFO] Axis is online as Axis#7942  |  concurrency=2  |  timeout=120s  |  memory_limit=12 exchanges/personality  |  image_gen=OFF (scaffolded)
+2026-04-15 23:23:07 [ERROR] Ignoring exception in command 'play'
+Traceback (most recent call last):
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\app_commands\commands.py", line 859, in _do_call
+    return await self._callback(interaction, **params)  # type: ignore
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\Sagia\OneDrive\שולחן העבודה\hackaton_nitzanim\axis-bot\prev\axis.py", line 1316, in play
+    vc = await channel.connect()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\abc.py", line 2144, in connect
+    voice: T = cls(client, self)
+               ^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\voice_client.py", line 222, in __init__
+    raise RuntimeError('davey library needed in order to use voice')
+RuntimeError: davey library needed in order to use voice
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\app_commands\tree.py", line 1302, in _call
+    await command._invoke_with_namespace(interaction, namespace)
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\app_commands\commands.py", line 884, in _invoke_with_namespace
+    return await self._do_call(interaction, transformed_values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\app_commands\commands.py", line 877, in _do_call
+    raise CommandInvokeError(self, e) from e
+discord.app_commands.errors.CommandInvokeError: Command 'play' raised an exception: RuntimeError: davey library needed in order to use voice
+2026-04-15 23:23:55 [INFO] logging in using static token
+2026-04-15 23:23:57 [INFO] Shard ID None has connected to Gateway (Session ID: fdf46578838f26c356da6ef28c45c174).
+2026-04-15 23:23:59 [INFO] Database initialised.
+2026-04-15 23:23:59 [INFO] Axis is online as Axis#7942  |  concurrency=2  |  timeout=120s  |  memory_limit=12 exchanges/personality  |  image_gen=OFF (scaffolded)
+2026-04-15 23:24:06 [INFO] Connecting to voice...
+2026-04-15 23:24:06 [INFO] Starting voice handshake... (connection attempt 1)
+2026-04-15 23:24:07 [INFO] Voice handshake complete. Endpoint found: c-tlv01-08f7bc3b.discord.media:2083
+2026-04-15 23:24:08 [INFO] Voice connection complete.
+2026-04-15 23:24:10 [ERROR] Ignoring exception in command 'play'
+Traceback (most recent call last):
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\app_commands\commands.py", line 859, in _do_call
+    return await self._callback(interaction, **params)  # type: ignore
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\Sagia\OneDrive\שולחן העבודה\hackaton_nitzanim\axis-bot\prev\axis.py", line 1340, in play
+    await play_next(guild_id)
+  File "c:\Users\Sagia\OneDrive\שולחן העבודה\hackaton_nitzanim\axis-bot\prev\axis.py", line 1267, in play_next
+    source = discord.FFmpegPCMAudio(stream_url, **FFMPEG_OPTIONS)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\player.py", line 396, in __init__
+    super().__init__(source, executable=executable, args=args, **subprocess_kwargs)
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\player.py", line 183, in __init__
+    self._process = self._spawn_process(args, **kwargs)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\player.py", line 211, in _spawn_process
+    raise ClientException(executable + ' was not found.') from None
+discord.errors.ClientException: ffmpeg was not found.
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\app_commands\tree.py", line 1302, in _call
+    await command._invoke_with_namespace(interaction, namespace)
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\app_commands\commands.py", line 884, in _invoke_with_namespace
+    return await self._do_call(interaction, transformed_values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\app_commands\commands.py", line 877, in _do_call
+    raise CommandInvokeError(self, e) from e
+discord.app_commands.errors.CommandInvokeError: Command 'play' raised an exception: ClientException: ffmpeg was not found.
+2026-04-15 23:24:33 [INFO] [someone2238452] Starting Axis setup.
+2026-04-15 23:24:33 [INFO] The voice handshake is being terminated for Channel ID 1484235281438871586 (Guild ID 1484235279547105583)
+2026-04-15 23:24:37 [INFO] [someone2238452] Personality set to 'shy' during setup.
+2026-04-15 23:24:42 [INFO] [someone2238452] Gender set to 'male'.
+2026-04-15 23:24:53 [INFO] [someone2238452] Name saved as 'michael' (from_setup=True).
+2026-04-15 23:25:08 [INFO] [someone2238452] Queued (depth=1)
+2026-04-15 23:25:08 [INFO] [someone2238452] Sending prompt (862 chars) to Ollama ...
+2026-04-15 23:25:20 [INFO] [someone2238452] Ollama replied in 12.5s (97 chars).
+2026-04-15 23:25:52 [INFO] [someone2238452] Queued (depth=1)
+2026-04-15 23:25:52 [INFO] [someone2238452] Sending prompt (1019 chars) to Ollama ...
+2026-04-15 23:25:58 [INFO] [someone2238452] Ollama replied in 5.2s (188 chars).
+2026-04-15 23:45:29 [INFO] Shard ID None session has been invalidated.
+2026-04-15 23:58:20 [INFO] logging in using static token
+2026-04-15 23:59:00 [INFO] logging in using static token
+2026-04-15 23:59:01 [INFO] Shard ID None has connected to Gateway (Session ID: 12214915f80b16f295c842ea6f7609e1).
+2026-04-15 23:59:03 [INFO] Database initialised.
+2026-04-15 23:59:03 [INFO] Axis is online as Axis#7942  |  concurrency=2  |  timeout=120s  |  memory_limit=12 exchanges/personality  |  image_gen=OFF (scaffolded)
+2026-04-16 00:00:10 [INFO] Connecting to voice...
+2026-04-16 00:00:10 [INFO] Starting voice handshake... (connection attempt 1)
+2026-04-16 00:00:10 [INFO] Voice handshake complete. Endpoint found: c-tlv01-bd77bbb3.discord.media:8443
+2026-04-16 00:00:10 [INFO] Voice connection complete.
+2026-04-16 00:00:11 [ERROR] yt_dlp fetch error for 'https://www.youtube.com/watch?v=wFa0RCMyiU': [0;31mERROR:[0m [youtube:truncated_id] wFa0RCMyiU: Incomplete YouTube ID wFa0RCMyiU. URL https://www.youtube.com/watch?v=wFa0RCMyiU looks truncated.
+2026-04-16 00:00:56 [INFO] [Guild 1484235279547105583] Now playing: Soft Mommy Dom Praises You Until You Blush [F4A][Baby Talk][Cuddles][Ear Cupping]
+2026-04-16 00:00:57 [INFO] [ani6565] Queued: Soft Mommy Dom Praises You Until You Blush [F4A][Baby Talk][Cuddles][Ear Cupping]
+2026-04-16 00:01:15 [INFO] ffmpeg process 12112 has not terminated. Waiting to terminate...
+2026-04-16 00:01:15 [INFO] ffmpeg process 12112 should have terminated with a return code of 1.
+2026-04-16 00:01:16 [INFO] [ani6565] Skipped track in guild 1484235279547105583.
+2026-04-16 00:01:19 [INFO] The voice handshake is being terminated for Channel ID 1484235281438871586 (Guild ID 1484235279547105583)
+2026-04-16 00:10:55 [WARNING] Privileged message content intent is missing, commands may not work as expected.
+2026-04-16 00:10:55 [INFO] logging in using static token
+2026-04-16 00:11:26 [WARNING] Privileged message content intent is missing, commands may not work as expected.
+2026-04-16 00:11:26 [INFO] logging in using static token
+2026-04-16 00:11:27 [INFO] Database initialised.
+2026-04-16 00:11:28 [INFO] Slash commands synced.
+2026-04-16 00:11:29 [INFO] Shard ID None has connected to Gateway (Session ID: 24995513094a91ddb1da36e1c37bfd2c).
+2026-04-16 00:11:31 [INFO] Axis is online as Axis#7942  |  concurrency=2  |  timeout=120s  |  memory_limit=12 exchanges/personality  |  image_gen=ON
+2026-04-16 00:13:37 [INFO] Shard ID None session has been invalidated.
+2026-04-16 00:14:08 [WARNING] Privileged message content intent is missing, commands may not work as expected.
+2026-04-16 00:14:08 [INFO] logging in using static token
+2026-04-16 00:14:09 [INFO] Database initialised.
+2026-04-16 00:14:10 [INFO] Slash commands synced.
+2026-04-16 00:14:11 [INFO] Shard ID None has connected to Gateway (Session ID: 49a0a1744db3a261e484dbd12f3aafeb).
+2026-04-16 00:14:13 [INFO] Axis is online as Axis#7942  |  concurrency=2  |  timeout=120s  |  memory_limit=12 exchanges/personality  |  image_gen=ON
+2026-04-16 00:14:30 [INFO] Connecting to voice...
+2026-04-16 00:14:30 [INFO] Starting voice handshake... (connection attempt 1)
+2026-04-16 00:14:31 [INFO] Voice handshake complete. Endpoint found: tel-aviv12015.discord.media:443
+2026-04-16 00:14:31 [INFO] Voice connection complete.
+2026-04-16 00:14:33 [INFO] [Guild 1484235279547105583] Now playing: Soft Mommy Dom Praises You Until You Blush [F4A][Baby Talk][Cuddles][Ear Cupping]
+2026-04-16 00:14:55 [INFO] ffmpeg process 21412 has not terminated. Waiting to terminate...
+2026-04-16 00:14:55 [INFO] ffmpeg process 21412 should have terminated with a return code of 1.
+2026-04-16 00:15:04 [INFO] The voice handshake is being terminated for Channel ID 1484235281438871586 (Guild ID 1484235279547105583)
+2026-04-16 00:17:19 [WARNING] Privileged message content intent is missing, commands may not work as expected.
+2026-04-16 00:17:19 [INFO] logging in using static token
+2026-04-16 00:17:20 [INFO] Database initialised.
+2026-04-16 00:17:20 [INFO] Slash commands synced.
+2026-04-16 00:17:21 [INFO] Shard ID None has connected to Gateway (Session ID: 2182b7b14417e7ba1281e4936c9b4d01).
+2026-04-16 00:17:23 [INFO] Axis is online as Axis#7942  |  concurrency=2  |  timeout=120s  |  memory_limit=12 exchanges/personality  |  image_gen=ON
+2026-04-16 00:17:37 [INFO] Connecting to voice...
+2026-04-16 00:17:37 [INFO] Starting voice handshake... (connection attempt 1)
+2026-04-16 00:17:37 [INFO] Voice handshake complete. Endpoint found: tel-aviv12015.discord.media:443
+2026-04-16 00:17:37 [INFO] Voice connection complete.
+2026-04-16 00:17:40 [INFO] [Guild 1484235279547105583] Now playing: Soft Mommy Dom Praises You Until You Blush [F4A][Baby Talk][Cuddles][Ear Cupping]
+2026-04-16 00:18:16 [INFO] The voice handshake is being terminated for Channel ID 1484235281438871586 (Guild ID 1484235279547105583)
+2026-04-16 00:18:16 [INFO] ffmpeg process 11152 has not terminated. Waiting to terminate...
+2026-04-16 00:18:16 [INFO] ffmpeg process 11152 should have terminated with a return code of 1.
+2026-04-16 00:18:30 [INFO] Shard ID None session has been invalidated.
+2026-04-16 00:18:53 [WARNING] Privileged message content intent is missing, commands may not work as expected.
+2026-04-16 00:18:53 [INFO] logging in using static token
+2026-04-16 00:18:54 [INFO] Database initialised.
+2026-04-16 00:18:54 [INFO] Slash commands synced.
+2026-04-16 00:18:56 [INFO] Shard ID None has connected to Gateway (Session ID: 5b8ff1945686496db6d2876a4f975ea5).
+2026-04-16 00:18:58 [INFO] Axis is online as Axis#7942  |  concurrency=2  |  timeout=120s  |  memory_limit=12 exchanges/personality  |  image_gen=ON
+2026-04-16 00:19:10 [INFO] Connecting to voice...
+2026-04-16 00:19:10 [INFO] Starting voice handshake... (connection attempt 1)
+2026-04-16 00:19:11 [INFO] Voice handshake complete. Endpoint found: tel-aviv12015.discord.media:443
+2026-04-16 00:19:11 [INFO] Voice connection complete.
+2026-04-16 00:19:13 [INFO] [Guild 1484235279547105583] Now playing: Soft Mommy Dom Praises You Until You Blush [F4A][Baby Talk][Cuddles][Ear Cupping]
+2026-04-16 00:19:25 [INFO] The voice handshake is being terminated for Channel ID 1484235281438871586 (Guild ID 1484235279547105583)
+2026-04-16 00:19:25 [INFO] ffmpeg process 5732 has not terminated. Waiting to terminate...
+2026-04-16 00:19:25 [INFO] ffmpeg process 5732 should have terminated with a return code of 1.
+2026-04-16 00:23:59 [WARNING] Privileged message content intent is missing, commands may not work as expected.
+2026-04-16 00:23:59 [INFO] logging in using static token
+2026-04-16 00:23:59 [INFO] Database initialised.
+2026-04-16 00:24:00 [INFO] Slash commands synced.
+2026-04-16 00:24:03 [INFO] Shard ID None has connected to Gateway (Session ID: 1b1591a45d5462e18a9976ff1505f514).
+2026-04-16 00:24:05 [INFO] Axis is online as Axis#7942  |  concurrency=2  |  timeout=120s  |  memory_limit=12 exchanges/personality  |  image_gen=ON
+2026-04-16 00:24:35 [INFO] Connecting to voice...
+2026-04-16 00:24:35 [INFO] Starting voice handshake... (connection attempt 1)
+2026-04-16 00:24:35 [INFO] Voice handshake complete. Endpoint found: tel-aviv12015.discord.media:443
+2026-04-16 00:24:36 [INFO] Voice connection complete.
+2026-04-16 00:24:38 [INFO] [Guild 1484235279547105583] Now playing: Soft Mommy Dom Praises You Until You Blush [F4A][Baby Talk][Cuddles][Ear Cupping]
+2026-04-16 00:24:53 [INFO] [ani6565] Paused playback in guild 1484235279547105583.
+2026-04-16 00:24:58 [INFO] [ani6565] Resumed playback in guild 1484235279547105583.
+2026-04-16 00:25:04 [INFO] ffmpeg process 13908 has not terminated. Waiting to terminate...
+2026-04-16 00:25:04 [INFO] ffmpeg process 13908 should have terminated with a return code of 1.
+2026-04-16 00:25:13 [INFO] The voice handshake is being terminated for Channel ID 1484235281438871586 (Guild ID 1484235279547105583)
+2026-04-16 00:25:50 [WARNING] Privileged message content intent is missing, commands may not work as expected.
+2026-04-16 00:25:50 [INFO] logging in using static token
+2026-04-16 00:25:51 [INFO] Database initialised.
+2026-04-16 00:25:51 [INFO] Slash commands synced.
+2026-04-16 00:25:52 [INFO] Shard ID None has connected to Gateway (Session ID: 816215336eb08b4dc2e345f9d80893cb).
+2026-04-16 00:25:54 [INFO] Axis is online as Axis#7942  |  concurrency=2  |  timeout=120s  |  memory_limit=12 exchanges/personality  |  image_gen=ON
+2026-04-16 00:26:44 [WARNING] Privileged message content intent is missing, commands may not work as expected.
+2026-04-16 00:26:44 [INFO] logging in using static token
+2026-04-16 00:26:45 [INFO] Database initialised.
+2026-04-16 00:26:45 [INFO] Slash commands synced.
+2026-04-16 00:26:46 [INFO] Shard ID None has connected to Gateway (Session ID: c28c5088d3313d33b81f314089e463bd).
+2026-04-16 00:26:48 [INFO] Axis is online as Axis#7942  |  concurrency=2  |  timeout=120s  |  memory_limit=12 exchanges/personality  |  image_gen=ON
+2026-04-16 00:28:54 [WARNING] Privileged message content intent is missing, commands may not work as expected.
+2026-04-16 00:28:54 [INFO] logging in using static token
+2026-04-16 00:28:56 [INFO] Database initialised.
+2026-04-16 00:28:56 [INFO] Slash commands synced.
+2026-04-16 00:28:57 [INFO] Shard ID None has connected to Gateway (Session ID: 4724f25d43eec68486b40396bfd02308).
+2026-04-16 00:28:59 [INFO] Axis is online as Axis#7942  |  concurrency=2  |  timeout=120s  |  memory_limit=12 exchanges/personality  |  image_gen=ON
+2026-04-16 00:29:52 [WARNING] Privileged message content intent is missing, commands may not work as expected.
+2026-04-16 00:29:52 [INFO] logging in using static token
+2026-04-16 00:29:56 [INFO] Database initialised.
+2026-04-16 00:29:56 [INFO] Slash commands synced.
+2026-04-16 00:29:57 [INFO] Shard ID None has connected to Gateway (Session ID: 84653b169ee658ff144a682212fda915).
+2026-04-16 00:29:59 [INFO] Axis is online as Axis#7942  |  concurrency=2  |  timeout=120s  |  memory_limit=12 exchanges/personality  |  image_gen=ON
+2026-04-16 00:30:57 [WARNING] Privileged message content intent is missing, commands may not work as expected.
+2026-04-16 00:30:57 [INFO] logging in using static token
+2026-04-16 00:30:58 [INFO] Database initialised.
+2026-04-16 00:32:05 [WARNING] Privileged message content intent is missing, commands may not work as expected.
+2026-04-16 00:32:05 [INFO] logging in using static token
+2026-04-16 00:32:06 [INFO] Database initialised.
+2026-04-16 00:32:06 [INFO] Slash commands synced.
+2026-04-16 00:32:07 [INFO] Shard ID None has connected to Gateway (Session ID: 74af457e9ff0b6adc6eec0f7d146b541).
+2026-04-16 00:32:09 [INFO] Axis is online as Axis#7942  |  concurrency=2  |  timeout=120s  |  memory_limit=12 exchanges/personality  |  image_gen=ON
+2026-04-16 00:39:21 [ERROR] Attempting a reconnect in 0.52s
+Traceback (most recent call last):
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\connector.py", line 1574, in _create_direct_connection
+    hosts = await self._resolve_host(host, port, traces=traces)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\connector.py", line 1190, in _resolve_host
+    return await asyncio.shield(resolved_host_task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\connector.py", line 1221, in _resolve_host_with_throttle
+    addrs = await self._resolver.resolve(host, port, family=self._family)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\resolver.py", line 40, in resolve
+    infos = await self._loop.getaddrinfo(
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\asyncio\base_events.py", line 905, in getaddrinfo
+    return await self.run_in_executor(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\concurrent\futures\thread.py", line 59, in run
+    result = self.fn(*self.args, **self.kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\socket.py", line 978, in getaddrinfo
+    for res in _socket.getaddrinfo(host, port, family, type, proto, flags):
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+socket.gaierror: [Errno 11001] getaddrinfo failed
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\client.py", line 728, in connect
+    self.ws = await asyncio.wait_for(coro, timeout=60.0)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\asyncio\tasks.py", line 520, in wait_for
+    return await fut
+           ^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\gateway.py", line 392, in from_client
+    socket = await client.http.ws_connect(str(url))
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\http.py", line 571, in ws_connect
+    return await self.__session.ws_connect(url, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\client.py", line 1087, in _ws_connect
+    resp = await self.request(
+           ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\client.py", line 788, in _request
+    resp = await handler(req)
+           ^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\client.py", line 742, in _connect_and_send_request
+    conn = await self._connector.connect(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\connector.py", line 672, in connect
+    proto = await self._create_connection(req, traces, timeout)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\connector.py", line 1251, in _create_connection
+    _, proto = await self._create_direct_connection(req, traces, timeout)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\connector.py", line 1580, in _create_direct_connection
+    raise ClientConnectorDNSError(req.connection_key, exc) from exc
+aiohttp.client_exceptions.ClientConnectorDNSError: Cannot connect to host gateway-us-east1-d.discord.gg:443 ssl:default [getaddrinfo failed]
+2026-04-16 00:39:22 [ERROR] Attempting a reconnect in 3.90s
+Traceback (most recent call last):
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\connector.py", line 1574, in _create_direct_connection
+    hosts = await self._resolve_host(host, port, traces=traces)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\connector.py", line 1190, in _resolve_host
+    return await asyncio.shield(resolved_host_task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\connector.py", line 1221, in _resolve_host_with_throttle
+    addrs = await self._resolver.resolve(host, port, family=self._family)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\resolver.py", line 40, in resolve
+    infos = await self._loop.getaddrinfo(
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\asyncio\base_events.py", line 905, in getaddrinfo
+    return await self.run_in_executor(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\concurrent\futures\thread.py", line 59, in run
+    result = self.fn(*self.args, **self.kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\socket.py", line 978, in getaddrinfo
+    for res in _socket.getaddrinfo(host, port, family, type, proto, flags):
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+socket.gaierror: [Errno 11004] getaddrinfo failed
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\client.py", line 728, in connect
+    self.ws = await asyncio.wait_for(coro, timeout=60.0)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\asyncio\tasks.py", line 520, in wait_for
+    return await fut
+           ^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\gateway.py", line 392, in from_client
+    socket = await client.http.ws_connect(str(url))
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\http.py", line 571, in ws_connect
+    return await self.__session.ws_connect(url, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\client.py", line 1087, in _ws_connect
+    resp = await self.request(
+           ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\client.py", line 788, in _request
+    resp = await handler(req)
+           ^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\client.py", line 742, in _connect_and_send_request
+    conn = await self._connector.connect(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\connector.py", line 672, in connect
+    proto = await self._create_connection(req, traces, timeout)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\connector.py", line 1251, in _create_connection
+    _, proto = await self._create_direct_connection(req, traces, timeout)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\connector.py", line 1580, in _create_direct_connection
+    raise ClientConnectorDNSError(req.connection_key, exc) from exc
+aiohttp.client_exceptions.ClientConnectorDNSError: Cannot connect to host gateway-us-east1-d.discord.gg:443 ssl:default [getaddrinfo failed]
+2026-04-16 00:39:26 [ERROR] Attempting a reconnect in 2.79s
+Traceback (most recent call last):
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\connector.py", line 1574, in _create_direct_connection
+    hosts = await self._resolve_host(host, port, traces=traces)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\connector.py", line 1190, in _resolve_host
+    return await asyncio.shield(resolved_host_task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\connector.py", line 1221, in _resolve_host_with_throttle
+    addrs = await self._resolver.resolve(host, port, family=self._family)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\resolver.py", line 40, in resolve
+    infos = await self._loop.getaddrinfo(
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\asyncio\base_events.py", line 905, in getaddrinfo
+    return await self.run_in_executor(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\concurrent\futures\thread.py", line 59, in run
+    result = self.fn(*self.args, **self.kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\socket.py", line 978, in getaddrinfo
+    for res in _socket.getaddrinfo(host, port, family, type, proto, flags):
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+socket.gaierror: [Errno 11004] getaddrinfo failed
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\client.py", line 728, in connect
+    self.ws = await asyncio.wait_for(coro, timeout=60.0)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\asyncio\tasks.py", line 520, in wait_for
+    return await fut
+           ^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\gateway.py", line 392, in from_client
+    socket = await client.http.ws_connect(str(url))
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\http.py", line 571, in ws_connect
+    return await self.__session.ws_connect(url, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\client.py", line 1087, in _ws_connect
+    resp = await self.request(
+           ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\client.py", line 788, in _request
+    resp = await handler(req)
+           ^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\client.py", line 742, in _connect_and_send_request
+    conn = await self._connector.connect(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\connector.py", line 672, in connect
+    proto = await self._create_connection(req, traces, timeout)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\connector.py", line 1251, in _create_connection
+    _, proto = await self._create_direct_connection(req, traces, timeout)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\connector.py", line 1580, in _create_direct_connection
+    raise ClientConnectorDNSError(req.connection_key, exc) from exc
+aiohttp.client_exceptions.ClientConnectorDNSError: Cannot connect to host gateway-us-east1-d.discord.gg:443 ssl:default [getaddrinfo failed]
+2026-04-16 00:39:29 [ERROR] Attempting a reconnect in 14.07s
+Traceback (most recent call last):
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\connector.py", line 1574, in _create_direct_connection
+    hosts = await self._resolve_host(host, port, traces=traces)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\connector.py", line 1190, in _resolve_host
+    return await asyncio.shield(resolved_host_task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\connector.py", line 1221, in _resolve_host_with_throttle
+    addrs = await self._resolver.resolve(host, port, family=self._family)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\resolver.py", line 40, in resolve
+    infos = await self._loop.getaddrinfo(
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\asyncio\base_events.py", line 905, in getaddrinfo
+    return await self.run_in_executor(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\concurrent\futures\thread.py", line 59, in run
+    result = self.fn(*self.args, **self.kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\socket.py", line 978, in getaddrinfo
+    for res in _socket.getaddrinfo(host, port, family, type, proto, flags):
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+socket.gaierror: [Errno 11004] getaddrinfo failed
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\client.py", line 728, in connect
+    self.ws = await asyncio.wait_for(coro, timeout=60.0)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\asyncio\tasks.py", line 520, in wait_for
+    return await fut
+           ^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\gateway.py", line 392, in from_client
+    socket = await client.http.ws_connect(str(url))
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\http.py", line 571, in ws_connect
+    return await self.__session.ws_connect(url, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\client.py", line 1087, in _ws_connect
+    resp = await self.request(
+           ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\client.py", line 788, in _request
+    resp = await handler(req)
+           ^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\client.py", line 742, in _connect_and_send_request
+    conn = await self._connector.connect(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\connector.py", line 672, in connect
+    proto = await self._create_connection(req, traces, timeout)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\connector.py", line 1251, in _create_connection
+    _, proto = await self._create_direct_connection(req, traces, timeout)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\connector.py", line 1580, in _create_direct_connection
+    raise ClientConnectorDNSError(req.connection_key, exc) from exc
+aiohttp.client_exceptions.ClientConnectorDNSError: Cannot connect to host gateway-us-east1-d.discord.gg:443 ssl:default [getaddrinfo failed]
+2026-04-16 00:39:54 [ERROR] Attempting a reconnect in 24.82s
+Traceback (most recent call last):
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\connector.py", line 1574, in _create_direct_connection
+    hosts = await self._resolve_host(host, port, traces=traces)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\connector.py", line 1190, in _resolve_host
+    return await asyncio.shield(resolved_host_task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\connector.py", line 1221, in _resolve_host_with_throttle
+    addrs = await self._resolver.resolve(host, port, family=self._family)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\resolver.py", line 40, in resolve
+    infos = await self._loop.getaddrinfo(
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\asyncio\base_events.py", line 905, in getaddrinfo
+    return await self.run_in_executor(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\concurrent\futures\thread.py", line 59, in run
+    result = self.fn(*self.args, **self.kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\socket.py", line 978, in getaddrinfo
+    for res in _socket.getaddrinfo(host, port, family, type, proto, flags):
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+socket.gaierror: [Errno 11001] getaddrinfo failed
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\client.py", line 728, in connect
+    self.ws = await asyncio.wait_for(coro, timeout=60.0)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\asyncio\tasks.py", line 520, in wait_for
+    return await fut
+           ^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\gateway.py", line 392, in from_client
+    socket = await client.http.ws_connect(str(url))
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\http.py", line 571, in ws_connect
+    return await self.__session.ws_connect(url, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\client.py", line 1087, in _ws_connect
+    resp = await self.request(
+           ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\client.py", line 788, in _request
+    resp = await handler(req)
+           ^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\client.py", line 742, in _connect_and_send_request
+    conn = await self._connector.connect(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\connector.py", line 672, in connect
+    proto = await self._create_connection(req, traces, timeout)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\connector.py", line 1251, in _create_connection
+    _, proto = await self._create_direct_connection(req, traces, timeout)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\connector.py", line 1580, in _create_direct_connection
+    raise ClientConnectorDNSError(req.connection_key, exc) from exc
+aiohttp.client_exceptions.ClientConnectorDNSError: Cannot connect to host gateway-us-east1-d.discord.gg:443 ssl:default [getaddrinfo failed]
+2026-04-16 00:40:30 [ERROR] Attempting a reconnect in 57.30s
+Traceback (most recent call last):
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\connector.py", line 1574, in _create_direct_connection
+    hosts = await self._resolve_host(host, port, traces=traces)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\connector.py", line 1190, in _resolve_host
+    return await asyncio.shield(resolved_host_task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\connector.py", line 1221, in _resolve_host_with_throttle
+    addrs = await self._resolver.resolve(host, port, family=self._family)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\resolver.py", line 40, in resolve
+    infos = await self._loop.getaddrinfo(
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\asyncio\base_events.py", line 905, in getaddrinfo
+    return await self.run_in_executor(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\concurrent\futures\thread.py", line 59, in run
+    result = self.fn(*self.args, **self.kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\socket.py", line 978, in getaddrinfo
+    for res in _socket.getaddrinfo(host, port, family, type, proto, flags):
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+socket.gaierror: [Errno 11001] getaddrinfo failed
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\client.py", line 728, in connect
+    self.ws = await asyncio.wait_for(coro, timeout=60.0)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\asyncio\tasks.py", line 520, in wait_for
+    return await fut
+           ^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\gateway.py", line 392, in from_client
+    socket = await client.http.ws_connect(str(url))
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\http.py", line 571, in ws_connect
+    return await self.__session.ws_connect(url, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\client.py", line 1087, in _ws_connect
+    resp = await self.request(
+           ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\client.py", line 788, in _request
+    resp = await handler(req)
+           ^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\client.py", line 742, in _connect_and_send_request
+    conn = await self._connector.connect(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\connector.py", line 672, in connect
+    proto = await self._create_connection(req, traces, timeout)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\connector.py", line 1251, in _create_connection
+    _, proto = await self._create_direct_connection(req, traces, timeout)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\connector.py", line 1580, in _create_direct_connection
+    raise ClientConnectorDNSError(req.connection_key, exc) from exc
+aiohttp.client_exceptions.ClientConnectorDNSError: Cannot connect to host gateway-us-east1-d.discord.gg:443 ssl:default [getaddrinfo failed]
+2026-04-16 00:41:38 [ERROR] Attempting a reconnect in 105.12s
+Traceback (most recent call last):
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\connector.py", line 1574, in _create_direct_connection
+    hosts = await self._resolve_host(host, port, traces=traces)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\connector.py", line 1190, in _resolve_host
+    return await asyncio.shield(resolved_host_task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\connector.py", line 1221, in _resolve_host_with_throttle
+    addrs = await self._resolver.resolve(host, port, family=self._family)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\resolver.py", line 40, in resolve
+    infos = await self._loop.getaddrinfo(
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\asyncio\base_events.py", line 905, in getaddrinfo
+    return await self.run_in_executor(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\concurrent\futures\thread.py", line 59, in run
+    result = self.fn(*self.args, **self.kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\socket.py", line 978, in getaddrinfo
+    for res in _socket.getaddrinfo(host, port, family, type, proto, flags):
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+socket.gaierror: [Errno 11001] getaddrinfo failed
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\client.py", line 728, in connect
+    self.ws = await asyncio.wait_for(coro, timeout=60.0)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\asyncio\tasks.py", line 520, in wait_for
+    return await fut
+           ^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\gateway.py", line 392, in from_client
+    socket = await client.http.ws_connect(str(url))
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\http.py", line 571, in ws_connect
+    return await self.__session.ws_connect(url, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\client.py", line 1087, in _ws_connect
+    resp = await self.request(
+           ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\client.py", line 788, in _request
+    resp = await handler(req)
+           ^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\client.py", line 742, in _connect_and_send_request
+    conn = await self._connector.connect(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\connector.py", line 672, in connect
+    proto = await self._create_connection(req, traces, timeout)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\connector.py", line 1251, in _create_connection
+    _, proto = await self._create_direct_connection(req, traces, timeout)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\connector.py", line 1580, in _create_direct_connection
+    raise ClientConnectorDNSError(req.connection_key, exc) from exc
+aiohttp.client_exceptions.ClientConnectorDNSError: Cannot connect to host gateway-us-east1-d.discord.gg:443 ssl:default [getaddrinfo failed]
+2026-04-16 00:43:23 [ERROR] Attempting a reconnect in 4.79s
+Traceback (most recent call last):
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\connector.py", line 1574, in _create_direct_connection
+    hosts = await self._resolve_host(host, port, traces=traces)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\connector.py", line 1190, in _resolve_host
+    return await asyncio.shield(resolved_host_task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\connector.py", line 1221, in _resolve_host_with_throttle
+    addrs = await self._resolver.resolve(host, port, family=self._family)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\resolver.py", line 40, in resolve
+    infos = await self._loop.getaddrinfo(
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\asyncio\base_events.py", line 905, in getaddrinfo
+    return await self.run_in_executor(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\concurrent\futures\thread.py", line 59, in run
+    result = self.fn(*self.args, **self.kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\socket.py", line 978, in getaddrinfo
+    for res in _socket.getaddrinfo(host, port, family, type, proto, flags):
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+socket.gaierror: [Errno 11001] getaddrinfo failed
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\client.py", line 728, in connect
+    self.ws = await asyncio.wait_for(coro, timeout=60.0)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\asyncio\tasks.py", line 520, in wait_for
+    return await fut
+           ^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\gateway.py", line 392, in from_client
+    socket = await client.http.ws_connect(str(url))
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\http.py", line 571, in ws_connect
+    return await self.__session.ws_connect(url, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\client.py", line 1087, in _ws_connect
+    resp = await self.request(
+           ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\client.py", line 788, in _request
+    resp = await handler(req)
+           ^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\client.py", line 742, in _connect_and_send_request
+    conn = await self._connector.connect(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\connector.py", line 672, in connect
+    proto = await self._create_connection(req, traces, timeout)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\connector.py", line 1251, in _create_connection
+    _, proto = await self._create_direct_connection(req, traces, timeout)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\connector.py", line 1580, in _create_direct_connection
+    raise ClientConnectorDNSError(req.connection_key, exc) from exc
+aiohttp.client_exceptions.ClientConnectorDNSError: Cannot connect to host gateway-us-east1-d.discord.gg:443 ssl:default [getaddrinfo failed]
+2026-04-16 00:43:28 [ERROR] Attempting a reconnect in 267.46s
+Traceback (most recent call last):
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\connector.py", line 1574, in _create_direct_connection
+    hosts = await self._resolve_host(host, port, traces=traces)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\connector.py", line 1190, in _resolve_host
+    return await asyncio.shield(resolved_host_task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\connector.py", line 1221, in _resolve_host_with_throttle
+    addrs = await self._resolver.resolve(host, port, family=self._family)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\resolver.py", line 40, in resolve
+    infos = await self._loop.getaddrinfo(
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\asyncio\base_events.py", line 905, in getaddrinfo
+    return await self.run_in_executor(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\concurrent\futures\thread.py", line 59, in run
+    result = self.fn(*self.args, **self.kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\socket.py", line 978, in getaddrinfo
+    for res in _socket.getaddrinfo(host, port, family, type, proto, flags):
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+socket.gaierror: [Errno 11001] getaddrinfo failed
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\client.py", line 728, in connect
+    self.ws = await asyncio.wait_for(coro, timeout=60.0)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\asyncio\tasks.py", line 520, in wait_for
+    return await fut
+           ^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\gateway.py", line 392, in from_client
+    socket = await client.http.ws_connect(str(url))
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\http.py", line 571, in ws_connect
+    return await self.__session.ws_connect(url, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\client.py", line 1087, in _ws_connect
+    resp = await self.request(
+           ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\client.py", line 788, in _request
+    resp = await handler(req)
+           ^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\client.py", line 742, in _connect_and_send_request
+    conn = await self._connector.connect(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\connector.py", line 672, in connect
+    proto = await self._create_connection(req, traces, timeout)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\connector.py", line 1251, in _create_connection
+    _, proto = await self._create_direct_connection(req, traces, timeout)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\connector.py", line 1580, in _create_direct_connection
+    raise ClientConnectorDNSError(req.connection_key, exc) from exc
+aiohttp.client_exceptions.ClientConnectorDNSError: Cannot connect to host gateway-us-east1-d.discord.gg:443 ssl:default [getaddrinfo failed]
+2026-04-16 00:47:57 [INFO] Shard ID None session has been invalidated.
+2026-04-16 00:48:04 [INFO] Shard ID None has connected to Gateway (Session ID: af9c9d41d3c459de4054bb1734c98e8e).
+2026-04-16 00:48:06 [INFO] Axis is online as Axis#7942  |  concurrency=2  |  timeout=120s  |  memory_limit=12 exchanges/personality  |  image_gen=ON
+2026-04-16 01:16:30 [INFO] Shard ID None has successfully RESUMED session af9c9d41d3c459de4054bb1734c98e8e.
+2026-04-16 01:19:36 [ERROR] Attempting a reconnect in 1.25s
+Traceback (most recent call last):
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\connector.py", line 1574, in _create_direct_connection
+    hosts = await self._resolve_host(host, port, traces=traces)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\connector.py", line 1190, in _resolve_host
+    return await asyncio.shield(resolved_host_task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\connector.py", line 1221, in _resolve_host_with_throttle
+    addrs = await self._resolver.resolve(host, port, family=self._family)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\resolver.py", line 40, in resolve
+    infos = await self._loop.getaddrinfo(
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\asyncio\base_events.py", line 905, in getaddrinfo
+    return await self.run_in_executor(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\concurrent\futures\thread.py", line 59, in run
+    result = self.fn(*self.args, **self.kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\socket.py", line 978, in getaddrinfo
+    for res in _socket.getaddrinfo(host, port, family, type, proto, flags):
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+socket.gaierror: [Errno 11004] getaddrinfo failed
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\client.py", line 728, in connect
+    self.ws = await asyncio.wait_for(coro, timeout=60.0)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\asyncio\tasks.py", line 520, in wait_for
+    return await fut
+           ^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\gateway.py", line 392, in from_client
+    socket = await client.http.ws_connect(str(url))
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\http.py", line 571, in ws_connect
+    return await self.__session.ws_connect(url, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\client.py", line 1087, in _ws_connect
+    resp = await self.request(
+           ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\client.py", line 788, in _request
+    resp = await handler(req)
+           ^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\client.py", line 742, in _connect_and_send_request
+    conn = await self._connector.connect(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\connector.py", line 672, in connect
+    proto = await self._create_connection(req, traces, timeout)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\connector.py", line 1251, in _create_connection
+    _, proto = await self._create_direct_connection(req, traces, timeout)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\connector.py", line 1580, in _create_direct_connection
+    raise ClientConnectorDNSError(req.connection_key, exc) from exc
+aiohttp.client_exceptions.ClientConnectorDNSError: Cannot connect to host gateway-us-east1-d.discord.gg:443 ssl:default [getaddrinfo failed]
+2026-04-16 01:19:37 [ERROR] Attempting a reconnect in 2.95s
+Traceback (most recent call last):
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\connector.py", line 1574, in _create_direct_connection
+    hosts = await self._resolve_host(host, port, traces=traces)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\connector.py", line 1190, in _resolve_host
+    return await asyncio.shield(resolved_host_task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\connector.py", line 1221, in _resolve_host_with_throttle
+    addrs = await self._resolver.resolve(host, port, family=self._family)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\resolver.py", line 40, in resolve
+    infos = await self._loop.getaddrinfo(
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\asyncio\base_events.py", line 905, in getaddrinfo
+    return await self.run_in_executor(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\concurrent\futures\thread.py", line 59, in run
+    result = self.fn(*self.args, **self.kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\socket.py", line 978, in getaddrinfo
+    for res in _socket.getaddrinfo(host, port, family, type, proto, flags):
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+socket.gaierror: [Errno 11004] getaddrinfo failed
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\client.py", line 728, in connect
+    self.ws = await asyncio.wait_for(coro, timeout=60.0)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\asyncio\tasks.py", line 520, in wait_for
+    return await fut
+           ^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\gateway.py", line 392, in from_client
+    socket = await client.http.ws_connect(str(url))
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\http.py", line 571, in ws_connect
+    return await self.__session.ws_connect(url, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\client.py", line 1087, in _ws_connect
+    resp = await self.request(
+           ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\client.py", line 788, in _request
+    resp = await handler(req)
+           ^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\client.py", line 742, in _connect_and_send_request
+    conn = await self._connector.connect(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\connector.py", line 672, in connect
+    proto = await self._create_connection(req, traces, timeout)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\connector.py", line 1251, in _create_connection
+    _, proto = await self._create_direct_connection(req, traces, timeout)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\connector.py", line 1580, in _create_direct_connection
+    raise ClientConnectorDNSError(req.connection_key, exc) from exc
+aiohttp.client_exceptions.ClientConnectorDNSError: Cannot connect to host gateway-us-east1-d.discord.gg:443 ssl:default [getaddrinfo failed]
+2026-04-16 01:19:40 [ERROR] Attempting a reconnect in 3.83s
+Traceback (most recent call last):
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\connector.py", line 1574, in _create_direct_connection
+    hosts = await self._resolve_host(host, port, traces=traces)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\connector.py", line 1190, in _resolve_host
+    return await asyncio.shield(resolved_host_task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\connector.py", line 1221, in _resolve_host_with_throttle
+    addrs = await self._resolver.resolve(host, port, family=self._family)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\resolver.py", line 40, in resolve
+    infos = await self._loop.getaddrinfo(
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\asyncio\base_events.py", line 905, in getaddrinfo
+    return await self.run_in_executor(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\concurrent\futures\thread.py", line 59, in run
+    result = self.fn(*self.args, **self.kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\socket.py", line 978, in getaddrinfo
+    for res in _socket.getaddrinfo(host, port, family, type, proto, flags):
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+socket.gaierror: [Errno 11004] getaddrinfo failed
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\client.py", line 728, in connect
+    self.ws = await asyncio.wait_for(coro, timeout=60.0)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\asyncio\tasks.py", line 520, in wait_for
+    return await fut
+           ^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\gateway.py", line 392, in from_client
+    socket = await client.http.ws_connect(str(url))
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\http.py", line 571, in ws_connect
+    return await self.__session.ws_connect(url, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\client.py", line 1087, in _ws_connect
+    resp = await self.request(
+           ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\client.py", line 788, in _request
+    resp = await handler(req)
+           ^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\client.py", line 742, in _connect_and_send_request
+    conn = await self._connector.connect(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\connector.py", line 672, in connect
+    proto = await self._create_connection(req, traces, timeout)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\connector.py", line 1251, in _create_connection
+    _, proto = await self._create_direct_connection(req, traces, timeout)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\connector.py", line 1580, in _create_direct_connection
+    raise ClientConnectorDNSError(req.connection_key, exc) from exc
+aiohttp.client_exceptions.ClientConnectorDNSError: Cannot connect to host gateway-us-east1-d.discord.gg:443 ssl:default [getaddrinfo failed]
+2026-04-16 01:19:44 [ERROR] Attempting a reconnect in 8.37s
+Traceback (most recent call last):
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\connector.py", line 1574, in _create_direct_connection
+    hosts = await self._resolve_host(host, port, traces=traces)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\connector.py", line 1190, in _resolve_host
+    return await asyncio.shield(resolved_host_task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\connector.py", line 1221, in _resolve_host_with_throttle
+    addrs = await self._resolver.resolve(host, port, family=self._family)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\resolver.py", line 40, in resolve
+    infos = await self._loop.getaddrinfo(
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\asyncio\base_events.py", line 905, in getaddrinfo
+    return await self.run_in_executor(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\concurrent\futures\thread.py", line 59, in run
+    result = self.fn(*self.args, **self.kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\socket.py", line 978, in getaddrinfo
+    for res in _socket.getaddrinfo(host, port, family, type, proto, flags):
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+socket.gaierror: [Errno 11004] getaddrinfo failed
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\client.py", line 728, in connect
+    self.ws = await asyncio.wait_for(coro, timeout=60.0)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\asyncio\tasks.py", line 520, in wait_for
+    return await fut
+           ^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\gateway.py", line 392, in from_client
+    socket = await client.http.ws_connect(str(url))
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\http.py", line 571, in ws_connect
+    return await self.__session.ws_connect(url, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\client.py", line 1087, in _ws_connect
+    resp = await self.request(
+           ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\client.py", line 788, in _request
+    resp = await handler(req)
+           ^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\client.py", line 742, in _connect_and_send_request
+    conn = await self._connector.connect(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\connector.py", line 672, in connect
+    proto = await self._create_connection(req, traces, timeout)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\connector.py", line 1251, in _create_connection
+    _, proto = await self._create_direct_connection(req, traces, timeout)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\connector.py", line 1580, in _create_direct_connection
+    raise ClientConnectorDNSError(req.connection_key, exc) from exc
+aiohttp.client_exceptions.ClientConnectorDNSError: Cannot connect to host gateway-us-east1-d.discord.gg:443 ssl:default [getaddrinfo failed]
+2026-04-16 01:19:53 [ERROR] Attempting a reconnect in 6.02s
+Traceback (most recent call last):
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\connector.py", line 1574, in _create_direct_connection
+    hosts = await self._resolve_host(host, port, traces=traces)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\connector.py", line 1190, in _resolve_host
+    return await asyncio.shield(resolved_host_task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\connector.py", line 1221, in _resolve_host_with_throttle
+    addrs = await self._resolver.resolve(host, port, family=self._family)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\resolver.py", line 40, in resolve
+    infos = await self._loop.getaddrinfo(
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\asyncio\base_events.py", line 905, in getaddrinfo
+    return await self.run_in_executor(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\concurrent\futures\thread.py", line 59, in run
+    result = self.fn(*self.args, **self.kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\socket.py", line 978, in getaddrinfo
+    for res in _socket.getaddrinfo(host, port, family, type, proto, flags):
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+socket.gaierror: [Errno 11004] getaddrinfo failed
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\client.py", line 728, in connect
+    self.ws = await asyncio.wait_for(coro, timeout=60.0)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\asyncio\tasks.py", line 520, in wait_for
+    return await fut
+           ^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\gateway.py", line 392, in from_client
+    socket = await client.http.ws_connect(str(url))
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\http.py", line 571, in ws_connect
+    return await self.__session.ws_connect(url, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\client.py", line 1087, in _ws_connect
+    resp = await self.request(
+           ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\client.py", line 788, in _request
+    resp = await handler(req)
+           ^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\client.py", line 742, in _connect_and_send_request
+    conn = await self._connector.connect(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\connector.py", line 672, in connect
+    proto = await self._create_connection(req, traces, timeout)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\connector.py", line 1251, in _create_connection
+    _, proto = await self._create_direct_connection(req, traces, timeout)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\connector.py", line 1580, in _create_direct_connection
+    raise ClientConnectorDNSError(req.connection_key, exc) from exc
+aiohttp.client_exceptions.ClientConnectorDNSError: Cannot connect to host gateway-us-east1-d.discord.gg:443 ssl:default [getaddrinfo failed]
+2026-04-16 01:19:59 [ERROR] Attempting a reconnect in 36.46s
+Traceback (most recent call last):
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\connector.py", line 1574, in _create_direct_connection
+    hosts = await self._resolve_host(host, port, traces=traces)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\connector.py", line 1190, in _resolve_host
+    return await asyncio.shield(resolved_host_task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\connector.py", line 1221, in _resolve_host_with_throttle
+    addrs = await self._resolver.resolve(host, port, family=self._family)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\resolver.py", line 40, in resolve
+    infos = await self._loop.getaddrinfo(
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\asyncio\base_events.py", line 905, in getaddrinfo
+    return await self.run_in_executor(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\concurrent\futures\thread.py", line 59, in run
+    result = self.fn(*self.args, **self.kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\socket.py", line 978, in getaddrinfo
+    for res in _socket.getaddrinfo(host, port, family, type, proto, flags):
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+socket.gaierror: [Errno 11004] getaddrinfo failed
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\client.py", line 728, in connect
+    self.ws = await asyncio.wait_for(coro, timeout=60.0)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\asyncio\tasks.py", line 520, in wait_for
+    return await fut
+           ^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\gateway.py", line 392, in from_client
+    socket = await client.http.ws_connect(str(url))
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\http.py", line 571, in ws_connect
+    return await self.__session.ws_connect(url, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\client.py", line 1087, in _ws_connect
+    resp = await self.request(
+           ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\client.py", line 788, in _request
+    resp = await handler(req)
+           ^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\client.py", line 742, in _connect_and_send_request
+    conn = await self._connector.connect(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\connector.py", line 672, in connect
+    proto = await self._create_connection(req, traces, timeout)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\connector.py", line 1251, in _create_connection
+    _, proto = await self._create_direct_connection(req, traces, timeout)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\connector.py", line 1580, in _create_direct_connection
+    raise ClientConnectorDNSError(req.connection_key, exc) from exc
+aiohttp.client_exceptions.ClientConnectorDNSError: Cannot connect to host gateway-us-east1-d.discord.gg:443 ssl:default [getaddrinfo failed]
+2026-04-16 01:20:35 [INFO] Shard ID None has successfully RESUMED session af9c9d41d3c459de4054bb1734c98e8e.
+2026-04-16 01:22:17 [ERROR] Attempting a reconnect in 46.09s
+Traceback (most recent call last):
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\connector.py", line 1574, in _create_direct_connection
+    hosts = await self._resolve_host(host, port, traces=traces)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\connector.py", line 1190, in _resolve_host
+    return await asyncio.shield(resolved_host_task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\connector.py", line 1221, in _resolve_host_with_throttle
+    addrs = await self._resolver.resolve(host, port, family=self._family)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\resolver.py", line 40, in resolve
+    infos = await self._loop.getaddrinfo(
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\asyncio\base_events.py", line 905, in getaddrinfo
+    return await self.run_in_executor(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\concurrent\futures\thread.py", line 59, in run
+    result = self.fn(*self.args, **self.kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\socket.py", line 978, in getaddrinfo
+    for res in _socket.getaddrinfo(host, port, family, type, proto, flags):
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+socket.gaierror: [Errno 11004] getaddrinfo failed
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\client.py", line 728, in connect
+    self.ws = await asyncio.wait_for(coro, timeout=60.0)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\asyncio\tasks.py", line 520, in wait_for
+    return await fut
+           ^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\gateway.py", line 392, in from_client
+    socket = await client.http.ws_connect(str(url))
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\http.py", line 571, in ws_connect
+    return await self.__session.ws_connect(url, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\client.py", line 1087, in _ws_connect
+    resp = await self.request(
+           ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\client.py", line 788, in _request
+    resp = await handler(req)
+           ^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\client.py", line 742, in _connect_and_send_request
+    conn = await self._connector.connect(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\connector.py", line 672, in connect
+    proto = await self._create_connection(req, traces, timeout)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\connector.py", line 1251, in _create_connection
+    _, proto = await self._create_direct_connection(req, traces, timeout)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\connector.py", line 1580, in _create_direct_connection
+    raise ClientConnectorDNSError(req.connection_key, exc) from exc
+aiohttp.client_exceptions.ClientConnectorDNSError: Cannot connect to host gateway-us-east1-d.discord.gg:443 ssl:default [getaddrinfo failed]
+2026-04-16 01:23:14 [ERROR] Attempting a reconnect in 38.03s
+Traceback (most recent call last):
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\connector.py", line 1574, in _create_direct_connection
+    hosts = await self._resolve_host(host, port, traces=traces)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\connector.py", line 1190, in _resolve_host
+    return await asyncio.shield(resolved_host_task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\connector.py", line 1221, in _resolve_host_with_throttle
+    addrs = await self._resolver.resolve(host, port, family=self._family)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\resolver.py", line 40, in resolve
+    infos = await self._loop.getaddrinfo(
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\asyncio\base_events.py", line 905, in getaddrinfo
+    return await self.run_in_executor(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\concurrent\futures\thread.py", line 59, in run
+    result = self.fn(*self.args, **self.kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\socket.py", line 978, in getaddrinfo
+    for res in _socket.getaddrinfo(host, port, family, type, proto, flags):
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+socket.gaierror: [Errno 11001] getaddrinfo failed
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\client.py", line 728, in connect
+    self.ws = await asyncio.wait_for(coro, timeout=60.0)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\asyncio\tasks.py", line 520, in wait_for
+    return await fut
+           ^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\gateway.py", line 392, in from_client
+    socket = await client.http.ws_connect(str(url))
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\http.py", line 571, in ws_connect
+    return await self.__session.ws_connect(url, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\client.py", line 1087, in _ws_connect
+    resp = await self.request(
+           ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\client.py", line 788, in _request
+    resp = await handler(req)
+           ^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\client.py", line 742, in _connect_and_send_request
+    conn = await self._connector.connect(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\connector.py", line 672, in connect
+    proto = await self._create_connection(req, traces, timeout)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\connector.py", line 1251, in _create_connection
+    _, proto = await self._create_direct_connection(req, traces, timeout)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\connector.py", line 1580, in _create_direct_connection
+    raise ClientConnectorDNSError(req.connection_key, exc) from exc
+aiohttp.client_exceptions.ClientConnectorDNSError: Cannot connect to host gateway-us-east1-d.discord.gg:443 ssl:default [getaddrinfo failed]
+2026-04-16 01:24:03 [ERROR] Attempting a reconnect in 1.18s
+Traceback (most recent call last):
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\connector.py", line 1574, in _create_direct_connection
+    hosts = await self._resolve_host(host, port, traces=traces)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\connector.py", line 1190, in _resolve_host
+    return await asyncio.shield(resolved_host_task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\connector.py", line 1221, in _resolve_host_with_throttle
+    addrs = await self._resolver.resolve(host, port, family=self._family)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\resolver.py", line 40, in resolve
+    infos = await self._loop.getaddrinfo(
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\asyncio\base_events.py", line 905, in getaddrinfo
+    return await self.run_in_executor(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\concurrent\futures\thread.py", line 59, in run
+    result = self.fn(*self.args, **self.kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\socket.py", line 978, in getaddrinfo
+    for res in _socket.getaddrinfo(host, port, family, type, proto, flags):
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+socket.gaierror: [Errno 11001] getaddrinfo failed
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\client.py", line 728, in connect
+    self.ws = await asyncio.wait_for(coro, timeout=60.0)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\asyncio\tasks.py", line 520, in wait_for
+    return await fut
+           ^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\gateway.py", line 392, in from_client
+    socket = await client.http.ws_connect(str(url))
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\http.py", line 571, in ws_connect
+    return await self.__session.ws_connect(url, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\client.py", line 1087, in _ws_connect
+    resp = await self.request(
+           ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\client.py", line 788, in _request
+    resp = await handler(req)
+           ^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\client.py", line 742, in _connect_and_send_request
+    conn = await self._connector.connect(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\connector.py", line 672, in connect
+    proto = await self._create_connection(req, traces, timeout)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\connector.py", line 1251, in _create_connection
+    _, proto = await self._create_direct_connection(req, traces, timeout)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\connector.py", line 1580, in _create_direct_connection
+    raise ClientConnectorDNSError(req.connection_key, exc) from exc
+aiohttp.client_exceptions.ClientConnectorDNSError: Cannot connect to host gateway-us-east1-d.discord.gg:443 ssl:default [getaddrinfo failed]
+2026-04-16 01:24:04 [ERROR] Attempting a reconnect in 794.01s
+Traceback (most recent call last):
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\connector.py", line 1574, in _create_direct_connection
+    hosts = await self._resolve_host(host, port, traces=traces)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\connector.py", line 1190, in _resolve_host
+    return await asyncio.shield(resolved_host_task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\connector.py", line 1221, in _resolve_host_with_throttle
+    addrs = await self._resolver.resolve(host, port, family=self._family)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\resolver.py", line 40, in resolve
+    infos = await self._loop.getaddrinfo(
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\asyncio\base_events.py", line 905, in getaddrinfo
+    return await self.run_in_executor(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\concurrent\futures\thread.py", line 59, in run
+    result = self.fn(*self.args, **self.kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\socket.py", line 978, in getaddrinfo
+    for res in _socket.getaddrinfo(host, port, family, type, proto, flags):
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+socket.gaierror: [Errno 11004] getaddrinfo failed
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\client.py", line 728, in connect
+    self.ws = await asyncio.wait_for(coro, timeout=60.0)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\asyncio\tasks.py", line 520, in wait_for
+    return await fut
+           ^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\gateway.py", line 392, in from_client
+    socket = await client.http.ws_connect(str(url))
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\http.py", line 571, in ws_connect
+    return await self.__session.ws_connect(url, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\client.py", line 1087, in _ws_connect
+    resp = await self.request(
+           ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\client.py", line 788, in _request
+    resp = await handler(req)
+           ^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\client.py", line 742, in _connect_and_send_request
+    conn = await self._connector.connect(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\connector.py", line 672, in connect
+    proto = await self._create_connection(req, traces, timeout)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\connector.py", line 1251, in _create_connection
+    _, proto = await self._create_direct_connection(req, traces, timeout)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\connector.py", line 1580, in _create_direct_connection
+    raise ClientConnectorDNSError(req.connection_key, exc) from exc
+aiohttp.client_exceptions.ClientConnectorDNSError: Cannot connect to host gateway-us-east1-d.discord.gg:443 ssl:default [getaddrinfo failed]
+2026-04-16 02:42:07 [WARNING] Privileged message content intent is missing, commands may not work as expected.
+2026-04-16 02:42:07 [INFO] logging in using static token
+2026-04-16 02:42:08 [INFO] Database initialised.
+2026-04-16 02:42:08 [INFO] Slash commands synced.
+2026-04-16 02:42:09 [INFO] Shard ID None has connected to Gateway (Session ID: 9783bef7943b42eaf8696311c7131ef4).
+2026-04-16 02:42:11 [INFO] Axis is online as Axis#7942  |  concurrency=2  |  timeout=120s  |  memory_limit=12 exchanges/personality  |  image_gen=ON
+2026-04-16 02:42:37 [INFO] [ani6565] Starting Axis setup.
+2026-04-16 02:42:42 [INFO] [ani6565] Personality set to 'tsundere' during setup.
+2026-04-16 02:42:44 [INFO] [ani6565] Gender set to 'male'.
+2026-04-16 02:42:51 [INFO] [ani6565] Name saved as 'hewse' (from_setup=True).
+2026-04-16 02:43:07 [INFO] [ani6565] Imagine generated for 'tsundere'.
+2026-04-16 02:43:26 [INFO] [ani6565] Queued (depth=1)
+2026-04-16 02:43:26 [INFO] [ani6565] Sending prompt (1038 chars) to Ollama …
+2026-04-16 02:43:41 [INFO] [ani6565] Ollama replied in 15.2s (54 chars).
+2026-04-16 02:44:05 [INFO] [ani6565] Queued (depth=1)
+2026-04-16 02:44:05 [INFO] [ani6565] Sending prompt (1160 chars) to Ollama …
+2026-04-16 02:44:20 [INFO] [ani6565] Ollama replied in 15.5s (213 chars).
+2026-04-16 02:44:35 [INFO] [situation-gen] Sending prompt (754 chars) to Ollama …
+2026-04-16 02:44:41 [INFO] [situation-gen] Ollama replied in 6.2s (81 chars).
+2026-04-16 02:44:41 [INFO] [ani6565] Situation prompt: Muscular man leans in, whispering; blushing Asuka freezes, cheeks pink, eyes wide
+2026-04-16 02:44:51 [INFO] [ani6565] Situation image generated for 'tsundere'.
+2026-04-16 02:48:18 [WARNING] Privileged message content intent is missing, commands may not work as expected.
+2026-04-16 02:48:18 [INFO] logging in using static token
+2026-04-16 02:48:18 [INFO] Database initialised.
+2026-04-16 02:48:18 [INFO] Slash commands synced.
+2026-04-16 02:48:19 [INFO] Shard ID None has connected to Gateway (Session ID: cd026886e9e23d1e3676a388a403c278).
+2026-04-16 02:48:21 [INFO] Axis is online as Axis#7942  |  concurrency=2  |  timeout=120s  |  memory_limit=12 exchanges/personality  |  image_gen=ON
+2026-04-16 02:48:57 [INFO] [ani6565] Starting Axis setup.
+2026-04-16 02:49:01 [INFO] [ani6565] Personality set to 'dominant' during setup.
+2026-04-16 02:49:03 [INFO] [ani6565] Gender set to 'male'.
+2026-04-16 02:49:09 [INFO] [ani6565] Name saved as 'hewse' (from_setup=True).
+2026-04-16 02:49:31 [INFO] [ani6565] Imagine generated for 'dominant'.

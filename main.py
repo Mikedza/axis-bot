@@ -70,6 +70,13 @@ class AxisBot(commands.Bot):
         await self.add_cog(MusicCog(self, self.music))
         await self.add_cog(FunCog(self, self.db))
 
+        # --- INSTANT SYNC FOR DEVELOPMENT ---
+        # Replace 1234567890 with your actual Server ID
+        # MY_GUILD = discord.Object(id=1484235279547105583)
+        # self.tree.clear_commands(guild=MY_GUILD)
+        # await self.tree.sync(guild=MY_GUILD)
+        # await self.tree.sync()
+
         await self.tree.sync()
         log.info("Slash commands synced.")
 

@@ -23,54 +23,45 @@ class ImageHandler:
         self._ai = ai
 
     # ─── Core generation ──────────────────────────────────────────────────────
-
-    async def generate_image(
-        self, personality: str, extra_prompt: str = ""
-    ) -> bytes | None:
-        """
-        Request an image from the local SD WebUI API.
-
-        Returns raw PNG bytes, or None if generation is disabled or fails.
-        """
+    async def generate_image(self, personality: str, extra_prompt: str = "") -> bytes | None:
         if not IMAGE_GEN_ENABLED:
-            log.warning("generate_image called but IMAGE_GEN_ENABLED is False.")
             return None
 
         appearance = PERSONALITY_APPEARANCES.get(personality, "")
         if not appearance:
-            log.warning(f"No appearance defined for '{personality}'. Cannot generate image.")
             return None
 
-        parts          = [p.strip() for p in [appearance, extra_prompt, SD_QUALITY_TAGS] if p.strip()]
+        # Combine tags: [Appearance] + [Situation] + [Quality Tags]
+        parts = [p.strip() for p in [appearance, extra_prompt, SD_QUALITY_TAGS] if p.strip()]
         positive_prompt = ", ".join(parts)
 
         payload = {
-            "prompt":          positive_prompt,
+            "prompt": positive_prompt,
             "negative_prompt": SD_NEGATIVE_PROMPT,
-            "steps":           28,
-            "width":           512,
-            "height":          768,  # Portrait ratio suits character art.
-            "cfg_scale":       7,
-            "sampler_name":    "DPM++ 2M Karras",
+            "steps": 25,
+            "width": 512,
+            "height": 768,
+            "cfg_scale": 7,
+            "sampler_name": "DPM++ 2M Karras",
         }
 
         try:
-            async with aiohttp.ClientSession() as session:
+            # Added a longer timeout because image generation is slow
+            timeout = aiohttp.ClientTimeout(total=120) 
+            async with aiohttp.ClientSession(timeout=timeout) as session:
                 async with session.post(IMAGE_GEN_URL, json=payload) as resp:
                     if resp.status == 200:
-                        data      = await resp.json()
+                        data = await resp.json()
+                        # SD returns a list of images in base64 format
                         img_bytes = base64.b64decode(data["images"][0])
-                        log.info(
-                            f"Image generated for '{personality}' ({len(img_bytes)} bytes)."
-                        )
                         return img_bytes
                     else:
-                        log.error(f"SD WebUI returned HTTP {resp.status}.")
+                        log.error(f"SD WebUI Error: {resp.status}")
                         return None
         except Exception as exc:
-            log.error(f"Image generation error: {exc}")
+            log.error(f"Connection to SD failed: {exc}")
             return None
-
+    
     # ─── Situation prompt ─────────────────────────────────────────────────────
 
     async def build_situation_prompt(

@@ -17,42 +17,30 @@ _YDL_OPTIONS: dict = {
 
 _FFMPEG_OPTIONS: dict = {
     "before_options": "-reconnect 1 -reconnect_streamed 1 -reconnect_delay_max 5",
-    "options":        "-vn",
+    "options":         "-vn",
 }
-
 
 class MusicHandler:
     """Manages per-guild music queues and voice client state."""
 
     def __init__(self) -> None:
-        self.queues:        dict[int, list[dict]]              = defaultdict(list)
-        self.voice_clients: dict[int, discord.VoiceClient]     = {}
-
-    # ─── yt-dlp helpers ───────────────────────────────────────────────────────
+        self.queues: dict[int, list[dict]] = defaultdict(list)
+        self.voice_clients: dict[int, discord.VoiceClient] = {}
 
     async def fetch_track(self, query: str, requester: str) -> dict | None:
-        """
-        Search YouTube (or fetch a direct URL) and return track metadata.
-
-        Returns a dict with keys: title, webpage_url, duration, requester.
-        Returns None on failure.
-        """
+        """Search YouTube and return track metadata."""
         loop = asyncio.get_running_loop()
         try:
             with yt_dlp.YoutubeDL(_YDL_OPTIONS) as ydl:
-                if query.startswith(("http://", "https://")):
-                    info = await loop.run_in_executor(
-                        None, lambda: ydl.extract_info(query, download=False)
-                    )
-                else:
-                    info = await loop.run_in_executor(
-                        None,
-                        lambda: ydl.extract_info(f"ytsearch1:{query}", download=False),
-                    )
-                    entries = info.get("entries", [])
-                    if not entries:
+                search_term = query if query.startswith(("http://", "https://")) else f"ytsearch1:{query}"
+                info = await loop.run_in_executor(
+                    None, lambda: ydl.extract_info(search_term, download=False)
+                )
+                
+                if "entries" in info:
+                    if not info["entries"]:
                         return None
-                    info = entries[0]
+                    info = info["entries"][0]
 
             return {
                 "title":       info.get("title", "Unknown"),
@@ -65,7 +53,7 @@ class MusicHandler:
             return None
 
     async def _get_stream_url(self, webpage_url: str) -> str | None:
-        """Extract a fresh direct audio stream URL from a YouTube watch URL."""
+        """Extract a fresh direct audio stream URL."""
         loop = asyncio.get_running_loop()
         try:
             with yt_dlp.YoutubeDL(_YDL_OPTIONS) as ydl:
@@ -77,13 +65,8 @@ class MusicHandler:
             log.error(f"yt_dlp stream error for '{webpage_url}': {exc}")
             return None
 
-    # ─── Playback ─────────────────────────────────────────────────────────────
-
     async def play_next(self, guild_id: int) -> None:
-        """
-        Start playing the next track in the guild queue.
-        Does nothing if already playing or the queue is empty.
-        """
+        """Start playing the next track in the queue."""
         vc = self.voice_clients.get(guild_id)
         if not vc or not vc.is_connected() or vc.is_playing():
             return
@@ -92,17 +75,15 @@ class MusicHandler:
         if not queue:
             return
 
-        track      = queue[0]  # Item stays until after_playing pops it.
+        track = queue[0]
         stream_url = await self._get_stream_url(track["webpage_url"])
 
-        if not stream_url:          # Skip unplayable tracks.
+        if not stream_url:
             queue.pop(0)
             await self.play_next(guild_id)
             return
 
         source = discord.FFmpegPCMAudio(stream_url, **_FFMPEG_OPTIONS)
-
-        # Capture the running loop now so the thread-safe call is reliable.
         loop = asyncio.get_running_loop()
 
         def after_playing(error: Exception | None) -> None:
@@ -114,8 +95,6 @@ class MusicHandler:
 
         vc.play(source, after=after_playing)
         log.info(f"[Guild {guild_id}] Now playing: {track['title']}")
-
-    # ─── Utilities ────────────────────────────────────────────────────────────
 
     @staticmethod
     def format_duration(seconds: int) -> str:

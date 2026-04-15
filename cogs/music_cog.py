@@ -1,168 +1,134 @@
 import logging
-
 import discord
 from discord import app_commands
 from discord.ext import commands
-
 from handlers.music_handler import MusicHandler
 
 log = logging.getLogger("Axis")
-
 
 class MusicCog(commands.Cog):
     """Slash commands for voice-channel music playback."""
 
     def __init__(self, bot: commands.Bot, music: MusicHandler) -> None:
-        self.bot   = bot
+        self.bot = bot
         self.music = music
 
-    # ─── /play ────────────────────────────────────────────────────────────────
-
-    @app_commands.command(
-        name="play",
-        description="Play a song in your voice channel (search term or URL)",
-    )
+    @app_commands.command(name="play", description="Play a song (search or URL)")
     async def play(self, interaction: discord.Interaction, query: str) -> None:
         if not interaction.guild:
-            await interaction.response.send_message(
-                "This command only works in a server.", ephemeral=True
-            )
-            return
+            return await interaction.response.send_message("Servers only.", ephemeral=True)
 
-        voice_state = interaction.user.voice  # type: ignore[union-attr]
+        voice_state = interaction.user.voice # type: ignore
         if not voice_state or not voice_state.channel:
-            await interaction.response.send_message(
-                "You need to be in a voice channel first.", ephemeral=True
-            )
-            return
+            return await interaction.response.send_message("Join a voice channel first.", ephemeral=True)
 
         await interaction.response.defer()
-
         guild_id = interaction.guild.id
-        channel  = voice_state.channel
-
+        
+        # Connection Logic
         vc = self.music.voice_clients.get(guild_id)
         if not vc or not vc.is_connected():
-            vc = await channel.connect()
+            vc = await voice_state.channel.connect()
             self.music.voice_clients[guild_id] = vc
-        elif vc.channel != channel:
-            await vc.move_to(channel)
+        elif vc.channel != voice_state.channel:
+            await vc.move_to(voice_state.channel)
 
         track = await self.music.fetch_track(query, str(interaction.user))
         if not track:
-            await interaction.followup.send(
-                "Could not find anything for that query. Try a different search or URL."
-            )
-            return
+            return await interaction.followup.send("Could not find that track.")
 
         already_playing = vc.is_playing() or vc.is_paused()
         self.music.queues[guild_id].append(track)
-        position = len(self.music.queues[guild_id])
-
-        embed             = discord.Embed(color=discord.Color.green())
-        embed.description = f"**{track['title']}**"
-        embed.add_field(name="Duration",     value=MusicHandler.format_duration(track["duration"]), inline=True)
-        embed.add_field(name="Requested by", value=track["requester"],                              inline=True)
+        
+        embed = discord.Embed(color=discord.Color.green(), description=f"**{track['title']}**")
+        embed.add_field(name="Duration", value=MusicHandler.format_duration(track["duration"]))
+        embed.add_field(name="Requested by", value=track["requester"])
 
         if already_playing:
             embed.title = "Added to Queue 🎶"
-            embed.add_field(name="Position", value=f"#{position}", inline=True)
+            embed.add_field(name="Position", value=f"#{len(self.music.queues[guild_id])}")
         else:
             embed.title = "Now Playing 🎵"
             await self.music.play_next(guild_id)
 
         await interaction.followup.send(embed=embed)
-        log.info(f"[{interaction.user}] Queued: {track['title']}")
 
-    # ─── /play-queue ──────────────────────────────────────────────────────────
-
-    @app_commands.command(name="play-queue", description="Show the current music queue")
+    @app_commands.command(name="play-queue", description="Show the music queue")
     async def play_queue(self, interaction: discord.Interaction) -> None:
-        if not interaction.guild:
-            await interaction.response.send_message(
-                "This command only works in a server.", ephemeral=True
-            )
-            return
-
-        queue = self.music.queues[interaction.guild.id]
+        queue = self.music.queues.get(interaction.guild_id, []) # type: ignore
         if not queue:
-            await interaction.response.send_message(
-                "The queue is empty. Use `/play` to add songs.", ephemeral=True
-            )
-            return
+            return await interaction.response.send_message("Queue is empty.", ephemeral=True)
 
         embed = discord.Embed(title="Music Queue 🎵", color=discord.Color.blurple())
-        for i, track in enumerate(queue, start=1):
-            label = "Now Playing 🎵" if i == 1 else f"#{i}"
+        for i, track in enumerate(queue[:10], start=1):
+            label = "Now Playing" if i == 1 else f"#{i}"
             embed.add_field(
                 name=f"{label} — {track['title']}",
-                value=(
-                    f"Duration: {MusicHandler.format_duration(track['duration'])} "
-                    f"| Requested by: {track['requester']}"
-                ),
-                inline=False,
+                value=f"By: {track['requester']}",
+                inline=False
             )
         await interaction.response.send_message(embed=embed)
 
-    # ─── /skip ────────────────────────────────────────────────────────────────
-
     @app_commands.command(name="skip", description="Skip the current song")
     async def skip(self, interaction: discord.Interaction) -> None:
+        vc = self.music.voice_clients.get(interaction.guild_id) # type: ignore
+        if not vc or not vc.is_playing():
+            return await interaction.response.send_message("Nothing is playing.", ephemeral=True)
+
+        vc.stop()
+        await interaction.response.send_message("Skipped ⏭️")
+
+    @app_commands.command(name="leave-call", description="Disconnect the bot")
+    async def leave_call(self, interaction: discord.Interaction) -> None:
+        guild_id = interaction.guild_id # type: ignore
+        vc = self.music.voice_clients.get(guild_id)
+        if vc:
+            self.music.queues[guild_id].clear()
+            await vc.disconnect()
+            self.music.voice_clients.pop(guild_id, None)
+            await interaction.response.send_message("Goodbye! 👋")
+        else:
+            await interaction.response.send_message("Not in a channel.", ephemeral=True)
+
+    # ─── /pause ───────────────────────────────────────────────────────────────
+
+    @app_commands.command(name="pause", description="Pause the current track")
+    async def pause(self, interaction: discord.Interaction) -> None:
         if not interaction.guild:
-            await interaction.response.send_message(
-                "This command only works in a server.", ephemeral=True
-            )
-            return
+            return await interaction.response.send_message("Servers only.", ephemeral=True)
 
         vc = self.music.voice_clients.get(interaction.guild.id)
+        
         if not vc or not vc.is_playing():
-            await interaction.response.send_message(
-                "Nothing is playing right now.", ephemeral=True
-            )
-            return
+            return await interaction.response.send_message("Nothing is playing right now.", ephemeral=True)
 
-        vc.stop()  # Triggers after_playing → pops track → calls play_next.
-        await interaction.response.send_message("Skipped ⏭️")
-        log.info(f"[{interaction.user}] Skipped track in guild {interaction.guild.id}.")
+        if vc.is_paused():
+            return await interaction.response.send_message("The music is already paused.", ephemeral=True)
 
-    # ─── /leave-call ──────────────────────────────────────────────────────────
+        vc.pause()
+        await interaction.response.send_message("Paused ⏸️")
+        log.info(f"[{interaction.user}] Paused playback in guild {interaction.guild.id}.")
 
-    @app_commands.command(name="leave-call", description="Make Axis leave the voice channel")
-    async def leave_call(self, interaction: discord.Interaction) -> None:
+    # ─── /resume ──────────────────────────────────────────────────────────────
+
+    @app_commands.command(name="resume", description="Resume the paused track")
+    async def resume(self, interaction: discord.Interaction) -> None:
         if not interaction.guild:
-            await interaction.response.send_message(
-                "This command only works in a server.", ephemeral=True
-            )
-            return
+            return await interaction.response.send_message("Servers only.", ephemeral=True)
 
-        guild_id = interaction.guild.id
-        vc       = self.music.voice_clients.get(guild_id)
-        if not vc or not vc.is_connected():
-            await interaction.response.send_message(
-                "I am not in a voice channel.", ephemeral=True
-            )
-            return
+        vc = self.music.voice_clients.get(interaction.guild.id)
 
-        self.music.queues[guild_id].clear()
-        await vc.disconnect()
-        self.music.voice_clients.pop(guild_id, None)
-        await interaction.response.send_message("Left the voice channel and cleared the queue. 👋")
-        log.info(f"[{interaction.user}] Bot disconnected from guild {guild_id}.")
+        if not vc:
+            return await interaction.response.send_message("I am not in a voice channel.", ephemeral=True)
 
-    # ─── /reset-queue ─────────────────────────────────────────────────────────
+        if not vc.is_paused():
+            return await interaction.response.send_message("The music is not paused.", ephemeral=True)
 
-    @app_commands.command(name="reset-queue", description="Clear the entire music queue")
-    async def reset_queue(self, interaction: discord.Interaction) -> None:
-        if not interaction.guild:
-            await interaction.response.send_message(
-                "This command only works in a server.", ephemeral=True
-            )
-            return
+        vc.resume()
+        await interaction.response.send_message("Resumed ▶️")
+        log.info(f"[{interaction.user}] Resumed playback in guild {interaction.guild.id}.")
 
-        guild_id = interaction.guild.id
-        vc       = self.music.voice_clients.get(guild_id)
-        if vc and vc.is_playing():
-            vc.stop()
-        self.music.queues[guild_id].clear()
-        await interaction.response.send_message("Queue cleared. 🗑️")
-        log.info(f"[{interaction.user}] Queue reset in guild {guild_id}.")
+async def setup(bot: commands.Bot) -> None:
+    # This assumes you instantiate MusicHandler once and pass it to the Cog
+    handler = MusicHandler()
+    await bot.add_cog(MusicCog(bot, handler))
