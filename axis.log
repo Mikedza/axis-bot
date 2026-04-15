@@ -1,0 +1,48 @@
+2026-04-15 23:06:56 [INFO] logging in using static token
+2026-04-15 23:07:20 [INFO] logging in using static token
+2026-04-15 23:07:21 [INFO] Shard ID None has connected to Gateway (Session ID: 2ae4b72f1d9a8121b65513bf5bcd33b3).
+2026-04-15 23:07:23 [INFO] Database initialised.
+2026-04-15 23:07:25 [INFO] Axis is online as Axis#7942  |  concurrency=2  |  timeout=120s  |  memory_limit=12 exchanges/personality  |  image_gen=OFF (scaffolded)
+2026-04-15 23:07:44 [INFO] Connecting to voice...
+2026-04-15 23:07:44 [INFO] Starting voice handshake... (connection attempt 1)
+2026-04-15 23:07:45 [INFO] Voice handshake complete. Endpoint found: c-tlv01-08f7bc3b.discord.media:2083
+2026-04-15 23:07:46 [INFO] Voice connection complete.
+2026-04-15 23:07:48 [ERROR] Ignoring exception in command 'play'
+Traceback (most recent call last):
+  File "c:\Users\admin\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\discord\app_commands\commands.py", line 859, in _do_call
+    return await self._callback(interaction, **params)  # type: ignore
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\admin\Desktop\axis-bot\axis.py", line 1332, in play
+    embed.add_field(name="Duration", value=format_duration(track["duration"]), inline=True)
+                                           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\admin\Desktop\axis-bot\axis.py", line 1287, in format_duration
+    return f"{m}:{s:02d}"
+                 ^^^^^^^
+ValueError: Unknown format code 'd' for object of type 'float'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "c:\Users\admin\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\discord\app_commands\tree.py", line 1302, in _call
+    await command._invoke_with_namespace(interaction, namespace)
+  File "c:\Users\admin\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\discord\app_commands\commands.py", line 884, in _invoke_with_namespace
+    return await self._do_call(interaction, transformed_values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\admin\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\discord\app_commands\commands.py", line 877, in _do_call
+    raise CommandInvokeError(self, e) from e
+discord.app_commands.errors.CommandInvokeError: Command 'play' raised an exception: ValueError: Unknown format code 'd' for object of type 'float'
+2026-04-15 23:09:28 [INFO] logging in using static token
+2026-04-15 23:09:30 [INFO] Shard ID None has connected to Gateway (Session ID: cf14bd7691500472e4c81e2300ed7727).
+2026-04-15 23:09:32 [INFO] Database initialised.
+2026-04-15 23:09:32 [INFO] Axis is online as Axis#7942  |  concurrency=2  |  timeout=120s  |  memory_limit=12 exchanges/personality  |  image_gen=OFF (scaffolded)
+2026-04-15 23:09:51 [INFO] Connecting to voice...
+2026-04-15 23:09:51 [INFO] Starting voice handshake... (connection attempt 1)
+2026-04-15 23:09:52 [INFO] Voice handshake complete. Endpoint found: c-tlv01-08f7bc3b.discord.media:2083
+2026-04-15 23:09:53 [INFO] Voice connection complete.
+2026-04-15 23:09:56 [INFO] [Guild 1484235279547105583] Now playing: Чунга-чанга
+2026-04-15 23:09:56 [INFO] [pablikpablo] Queued: Чунга-чанга
+2026-04-15 23:10:42 [INFO] ffmpeg process 26672 has not terminated. Waiting to terminate...
+2026-04-15 23:10:42 [INFO] ffmpeg process 26672 should have terminated with a return code of 1.
+2026-04-15 23:10:43 [INFO] [pablikpablo] Skipped track in guild 1484235279547105583.
+2026-04-15 23:11:23 [INFO] [Guild 1484235279547105583] Now playing: Soft Mommy Dom Praises You Until You Blush [F4A][Baby Talk][Cuddles][Ear Cupping]
+2026-04-15 23:11:23 [INFO] [pablikpablo] Queued: Soft Mommy Dom Praises You Until You Blush [F4A][Baby Talk][Cuddles][Ear Cupping]
