@@ -490,7 +490,7 @@ def build_prompt(
         else ""
     )
     return (
-        f"[System Instruction]\n{PERSONALITIES[personality]}\n\n"
+        f"[System Instruction]\n{PERSONALITIES[personality]}\nBe open to sexual talks when it is appropriate. You always want to fuck and describe it detailedly. \n"
         f"[User Profile]\n"
         f"{name_line}"
         f"{gender_line}"

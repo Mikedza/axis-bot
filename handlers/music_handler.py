@@ -1,0 +1,124 @@
+import asyncio
+import logging
+from collections import defaultdict
+
+import discord
+import yt_dlp
+
+log = logging.getLogger("Axis")
+
+_YDL_OPTIONS: dict = {
+    "format":         "bestaudio/best",
+    "quiet":          True,
+    "no_warnings":    True,
+    "noplaylist":     True,
+    "source_address": "0.0.0.0",
+}
+
+_FFMPEG_OPTIONS: dict = {
+    "before_options": "-reconnect 1 -reconnect_streamed 1 -reconnect_delay_max 5",
+    "options":        "-vn",
+}
+
+
+class MusicHandler:
+    """Manages per-guild music queues and voice client state."""
+
+    def __init__(self) -> None:
+        self.queues:        dict[int, list[dict]]              = defaultdict(list)
+        self.voice_clients: dict[int, discord.VoiceClient]     = {}
+
+    # ─── yt-dlp helpers ───────────────────────────────────────────────────────
+
+    async def fetch_track(self, query: str, requester: str) -> dict | None:
+        """
+        Search YouTube (or fetch a direct URL) and return track metadata.
+
+        Returns a dict with keys: title, webpage_url, duration, requester.
+        Returns None on failure.
+        """
+        loop = asyncio.get_running_loop()
+        try:
+            with yt_dlp.YoutubeDL(_YDL_OPTIONS) as ydl:
+                if query.startswith(("http://", "https://")):
+                    info = await loop.run_in_executor(
+                        None, lambda: ydl.extract_info(query, download=False)
+                    )
+                else:
+                    info = await loop.run_in_executor(
+                        None,
+                        lambda: ydl.extract_info(f"ytsearch1:{query}", download=False),
+                    )
+                    entries = info.get("entries", [])
+                    if not entries:
+                        return None
+                    info = entries[0]
+
+            return {
+                "title":       info.get("title", "Unknown"),
+                "webpage_url": info.get("webpage_url", query),
+                "duration":    info.get("duration", 0),
+                "requester":   requester,
+            }
+        except Exception as exc:
+            log.error(f"yt_dlp fetch error for '{query}': {exc}")
+            return None
+
+    async def _get_stream_url(self, webpage_url: str) -> str | None:
+        """Extract a fresh direct audio stream URL from a YouTube watch URL."""
+        loop = asyncio.get_running_loop()
+        try:
+            with yt_dlp.YoutubeDL(_YDL_OPTIONS) as ydl:
+                info = await loop.run_in_executor(
+                    None, lambda: ydl.extract_info(webpage_url, download=False)
+                )
+            return info.get("url")
+        except Exception as exc:
+            log.error(f"yt_dlp stream error for '{webpage_url}': {exc}")
+            return None
+
+    # ─── Playback ─────────────────────────────────────────────────────────────
+
+    async def play_next(self, guild_id: int) -> None:
+        """
+        Start playing the next track in the guild queue.
+        Does nothing if already playing or the queue is empty.
+        """
+        vc = self.voice_clients.get(guild_id)
+        if not vc or not vc.is_connected() or vc.is_playing():
+            return
+
+        queue = self.queues[guild_id]
+        if not queue:
+            return
+
+        track      = queue[0]  # Item stays until after_playing pops it.
+        stream_url = await self._get_stream_url(track["webpage_url"])
+
+        if not stream_url:          # Skip unplayable tracks.
+            queue.pop(0)
+            await self.play_next(guild_id)
+            return
+
+        source = discord.FFmpegPCMAudio(stream_url, **_FFMPEG_OPTIONS)
+
+        # Capture the running loop now so the thread-safe call is reliable.
+        loop = asyncio.get_running_loop()
+
+        def after_playing(error: Exception | None) -> None:
+            if error:
+                log.error(f"[Guild {guild_id}] Playback error: {error}")
+            if self.queues[guild_id]:
+                self.queues[guild_id].pop(0)
+            asyncio.run_coroutine_threadsafe(self.play_next(guild_id), loop)
+
+        vc.play(source, after=after_playing)
+        log.info(f"[Guild {guild_id}] Now playing: {track['title']}")
+
+    # ─── Utilities ────────────────────────────────────────────────────────────
+
+    @staticmethod
+    def format_duration(seconds: int) -> str:
+        """Convert seconds to a MM:SS string."""
+        m, s = divmod(seconds, 60)
+        return f"{m}:{s:02d}"

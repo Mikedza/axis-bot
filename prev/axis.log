@@ -406,3 +406,55 @@ discord.app_commands.errors.CommandInvokeError: Command 'play-music' raised an e
 2026-04-03 19:31:10 [INFO] [evgen1805] Queued (depth=2)
 2026-04-03 19:31:10 [INFO] [evgen1805] Sending prompt (1145 chars) to Ollama ...
 2026-04-03 19:31:30 [INFO] Shard ID None session has been invalidated.
+2026-04-15 21:32:04 [WARNING] PyNaCl is not installed, voice will NOT be supported
+2026-04-15 21:32:04 [WARNING] davey is not installed, voice will NOT be supported
+2026-04-15 21:32:04 [INFO] logging in using static token
+2026-04-15 21:34:03 [WARNING] PyNaCl is not installed, voice will NOT be supported
+2026-04-15 21:34:03 [WARNING] davey is not installed, voice will NOT be supported
+2026-04-15 21:34:03 [INFO] logging in using static token
+2026-04-15 21:34:04 [INFO] Shard ID None has connected to Gateway (Session ID: 73e651ca99cbd8f1845ca45bb102c880).
+2026-04-15 21:34:06 [INFO] Database initialised.
+2026-04-15 21:34:07 [INFO] Axis is online as Axis#7942  |  concurrency=2  |  timeout=120s  |  memory_limit=12 exchanges/personality  |  image_gen=OFF (scaffolded)
+2026-04-15 21:34:28 [INFO] [ani6565] Starting Axis setup.
+2026-04-15 21:34:38 [INFO] [ani6565] Personality set to 'tsundere' during setup.
+2026-04-15 21:34:41 [INFO] [ani6565] Gender set to 'male'.
+2026-04-15 21:34:47 [INFO] [ani6565] Name saved as 'hewse' (from_setup=True).
+2026-04-15 21:34:54 [INFO] [ani6565] Queued (depth=1)
+2026-04-15 21:34:54 [INFO] [ani6565] Sending prompt (937 chars) to Ollama ...
+2026-04-15 21:34:56 [ERROR] [ani6565] Ollama connection refused: Cannot connect to host localhost:11434 ssl:default [The remote computer refused the network connection]
+2026-04-15 21:50:04 [WARNING] PyNaCl is not installed, voice will NOT be supported
+2026-04-15 21:50:04 [WARNING] davey is not installed, voice will NOT be supported
+2026-04-15 21:50:04 [INFO] logging in using static token
+2026-04-15 21:51:12 [WARNING] PyNaCl is not installed, voice will NOT be supported
+2026-04-15 21:51:12 [WARNING] davey is not installed, voice will NOT be supported
+2026-04-15 21:51:12 [INFO] logging in using static token
+2026-04-15 21:51:14 [INFO] Shard ID None has connected to Gateway (Session ID: e64ba52e3e2abe417ae56eaece7e4507).
+2026-04-15 21:51:16 [INFO] Database initialised.
+2026-04-15 21:51:16 [INFO] Axis is online as Axis#7942  |  concurrency=2  |  timeout=120s  |  memory_limit=12 exchanges/personality  |  image_gen=OFF (scaffolded)
+2026-04-15 21:51:19 [ERROR] Ignoring exception in command 'play'
+Traceback (most recent call last):
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\app_commands\commands.py", line 859, in _do_call
+    return await self._callback(interaction, **params)  # type: ignore
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\Sagia\OneDrive\שולחן העבודה\hackaton_nitzanim\axis-bot\axis.py", line 1316, in play
+    vc = await channel.connect()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\abc.py", line 2144, in connect
+    voice: T = cls(client, self)
+               ^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\voice_client.py", line 220, in __init__
+    raise RuntimeError('PyNaCl library needed in order to use voice')
+RuntimeError: PyNaCl library needed in order to use voice
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\app_commands\tree.py", line 1302, in _call
+    await command._invoke_with_namespace(interaction, namespace)
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\app_commands\commands.py", line 884, in _invoke_with_namespace
+    return await self._do_call(interaction, transformed_values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sagia\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\app_commands\commands.py", line 877, in _do_call
+    raise CommandInvokeError(self, e) from e
+discord.app_commands.errors.CommandInvokeError: Command 'play' raised an exception: RuntimeError: PyNaCl library needed in order to use voice
+2026-04-15 21:52:13 [INFO] Shard ID None session has been invalidated.
