@@ -29,4 +29,5 @@ Axis supports both public and private interactions and is powered by a local AI 
 
 בקיצור — Axis הוא לא עוד בוט רגיל שעונה על שאלות. הוא חבר דיגיטלי שמתפתח איתכם, זוכר אתכם, ומדבר איתכם בדיוק איך שאתם צריכים.
 
-תודה שהקשבתם! 🙏
+תודה שהקשבתם!🙏
+https://canva.link/lhnxbc5f1ywx01w
